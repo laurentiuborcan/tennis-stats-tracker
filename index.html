@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tennis Journal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🎾</span>
+        <span class="logo-text">Tennis Journal</span>
+      </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Bottom Nav (mobile) / Side Nav concept -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="nav-btn active" data-page="dashboard">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-btn" data-page="log">
+      <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      <span>Log Match</span>
+    </button>
+    <button class="nav-btn" data-page="notes">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM6 20V4h5v7h7v9H6z"/></svg>
+      <span>Notes</span>
+    </button>
+    <button class="nav-btn" data-page="stats">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+      <span>Stats</span>
+    </button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <span class="date-display" id="todayDate"></span>
+      </div>
+
+      <!-- Quick Stats Cards -->
+      <div class="stats-grid" id="quickStats">
+        <div class="stat-card wins">
+          <div class="stat-value" id="qs-wins">0</div>
+          <div class="stat-label">Wins</div>
+        </div>
+        <div class="stat-card losses">
+          <div class="stat-value" id="qs-losses">0</div>
+          <div class="stat-label">Losses</div>
+        </div>
+        <div class="stat-card winrate">
+          <div class="stat-value" id="qs-winrate">—</div>
+          <div class="stat-label">Win Rate</div>
+        </div>
+        <div class="stat-card streak">
+          <div class="stat-value" id="qs-streak">—</div>
+          <div class="stat-label">Streak</div>
+        </div>
+      </div>
+
+      <!-- Recent Matches -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2>Recent Matches</h2>
+          <button class="btn btn-sm btn-primary" data-page-link="log">+ Log Match</button>
+        </div>
+        <div id="recentMatchesList" class="matches-list">
+          <div class="empty-state">
+            <span class="empty-icon">🎾</span>
+            <p>No matches logged yet.</p>
+            <button class="btn btn-primary" data-page-link="log">Log Your First Match</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== LOG MATCH PAGE ===== -->
+    <section class="page" id="page-log">
+      <div class="page-header">
+        <h1 id="logFormTitle">Log a Match</h1>
+      </div>
+
+      <div class="section-card form-card">
+        <form id="matchForm" novalidate>
+          <input type="hidden" id="editMatchId" value="" />
+
+          <div class="form-group">
+            <label for="matchDate">Date</label>
+            <input type="date" id="matchDate" required />
+          </div>
+
+          <div class="form-group">
+            <label for="opponentName">Opponent Name</label>
+            <input type="text" id="opponentName" placeholder="e.g. John Smith" required />
+          </div>
+
+          <div class="form-group">
+            <label for="matchScore">Score</label>
+            <input type="text" id="matchScore" placeholder="e.g. 6-3, 7-5" />
+          </div>
+
+          <div class="form-group">
+            <label>Result</label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn active" data-value="win" id="resultWin">Win</button>
+              <button type="button" class="toggle-btn" data-value="loss" id="resultLoss">Loss</button>
+            </div>
+            <input type="hidden" id="matchResult" value="win" />
+          </div>
+
+          <div class="form-group">
+            <label>Surface</label>
+            <div class="toggle-group surface-group">
+              <button type="button" class="toggle-btn surface-btn active" data-value="hard" data-surface="hard">Hard</button>
+              <button type="button" class="toggle-btn surface-btn" data-value="clay" data-surface="clay">Clay</button>
+              <button type="button" class="toggle-btn surface-btn" data-value="grass" data-surface="grass">Grass</button>
+              <button type="button" class="toggle-btn surface-btn" data-value="indoor" data-surface="indoor">Indoor</button>
+            </div>
+            <input type="hidden" id="matchSurface" value="hard" />
+          </div>
+
+          <div class="form-group">
+            <label for="matchNotes">Match Notes</label>
+            <textarea id="matchNotes" rows="4" placeholder="How did the match go? Strengths, weaknesses, key moments..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancelEdit" style="display:none">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-full" id="submitMatchBtn">Save Match</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Match History -->
+      <div class="section-card" style="margin-top: 1.5rem;">
+        <div class="section-header">
+          <h2>Match History</h2>
+          <div class="filter-group">
+            <select id="filterSurface" class="filter-select">
+              <option value="all">All Surfaces</option>
+              <option value="hard">Hard</option>
+              <option value="clay">Clay</option>
+              <option value="grass">Grass</option>
+              <option value="indoor">Indoor</option>
+            </select>
+            <select id="filterResult" class="filter-select">
+              <option value="all">All Results</option>
+              <option value="win">Wins</option>
+              <option value="loss">Losses</option>
+            </select>
+          </div>
+        </div>
+        <div id="matchHistoryList" class="matches-list"></div>
+      </div>
+    </section>
+
+    <!-- ===== NOTES PAGE ===== -->
+    <section class="page" id="page-notes">
+      <div class="page-header">
+        <h1>Tennis Notes</h1>
+        <button class="btn btn-primary btn-sm" id="newNoteBtn">+ New Note</button>
+      </div>
+
+      <!-- Note Editor (hidden by default) -->
+      <div class="section-card form-card" id="noteEditor" style="display:none">
+        <div class="form-group">
+          <label for="noteTitle">Title</label>
+          <input type="text" id="noteTitle" placeholder="Note title..." />
+        </div>
+        <div class="form-group">
+          <label for="noteContent">Content</label>
+          <textarea id="noteContent" rows="6" placeholder="Write your tennis notes here...&#10;&#10;Ideas: serve technique, footwork drills, match tactics..."></textarea>
+        </div>
+        <div class="tag-row">
+          <label>Tag</label>
+          <div class="tag-options">
+            <button type="button" class="tag-btn active" data-tag="general">General</button>
+            <button type="button" class="tag-btn" data-tag="technique">Technique</button>
+            <button type="button" class="tag-btn" data-tag="tactics">Tactics</button>
+            <button type="button" class="tag-btn" data-tag="fitness">Fitness</button>
+            <button type="button" class="tag-btn" data-tag="mental">Mental</button>
+          </div>
+          <input type="hidden" id="noteTag" value="general" />
+          <input type="hidden" id="editNoteId" value="" />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="cancelNote">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveNote">Save Note</button>
+        </div>
+      </div>
+
+      <!-- Notes List -->
+      <div id="notesList" class="notes-list">
+        <div class="empty-state">
+          <span class="empty-icon">📝</span>
+          <p>No notes yet. Start capturing your tennis thoughts!</p>
+          <button class="btn btn-primary" id="newNoteBtn2">Create First Note</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STATS PAGE ===== -->
+    <section class="page" id="page-stats">
+      <div class="page-header">
+        <h1>Stats</h1>
+      </div>
+
+      <!-- Overall Record -->
+      <div class="section-card">
+        <h2>Overall Record</h2>
+        <div class="record-display">
+          <span class="record-wins" id="stat-wins">0</span>
+          <span class="record-sep"> - </span>
+          <span class="record-losses" id="stat-losses">0</span>
+        </div>
+        <div class="winrate-bar-wrap">
+          <div class="winrate-bar" id="winrateBar" style="width: 0%"></div>
+        </div>
+        <div class="winrate-label" id="winrateLabel">—</div>
+      </div>
+
+      <!-- Streak -->
+      <div class="section-card">
+        <h2>Current Streak</h2>
+        <div id="streakDisplay" class="streak-display">—</div>
+      </div>
+
+      <!-- Surface breakdown -->
+      <div class="section-card">
+        <h2>Record by Surface</h2>
+        <div id="surfaceStats" class="surface-stats"></div>
+      </div>
+
+      <!-- Monthly activity -->
+      <div class="section-card">
+        <h2>Monthly Activity</h2>
+        <div id="monthlyStats" class="monthly-stats"></div>
+      </div>
+
+      <!-- Best/Worst opponents -->
+      <div class="section-card">
+        <h2>Opponents</h2>
+        <div id="opponentStats" class="opponent-stats"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Match Detail Modal -->
+  <div class="modal-overlay" id="matchModal">
+    <div class="modal">
+      <button class="modal-close" id="closeMatchModal">&times;</button>
+      <div id="matchModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Note Detail Modal -->
+  <div class="modal-overlay" id="noteModal">
+    <div class="modal">
+      <button class="modal-close" id="closeNoteModal">&times;</button>
+      <div id="noteModalContent"></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary btn-sm" id="editNoteFromModal">Edit</button>
+        <button class="btn btn-danger btn-sm" id="deleteNoteFromModal">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
