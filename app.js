@@ -72,6 +72,8 @@ function parseRankings(data) {
 
     // name
     const name =
+      item.team?.name ??
+      item.rowName ??
       item.player?.name ??
       item.player?.fullName ??
       (item.player?.firstName && item.player?.lastName
