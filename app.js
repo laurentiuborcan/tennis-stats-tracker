@@ -306,6 +306,83 @@ function init() {
 
   // Load initial tour
   loadTour('atp');
+
+  // DEBUG: probe match-related endpoints — remove when done
+  probeEndpoints();
+}
+
+// ===== DEBUG: ENDPOINT PROBE =====
+const PROBE_ENDPOINTS = [
+  '/api/tennis/matches/live',
+  '/api/tennis/events/live',
+  '/api/tennis/matches/today',
+  '/api/tennis/events',
+  '/api/tennis/scores',
+  '/api/tennis/matches',
+];
+
+async function probeEndpoints() {
+  const container = document.getElementById('debugProbeBody');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const results = await Promise.all(PROBE_ENDPOINTS.map(async path => {
+    const url = `https://${API_HOST}${path}`;
+    try {
+      const res = await fetch(url, {
+        headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': API_HOST },
+      });
+      const text = await res.text();
+      let parsed = null;
+      try { parsed = JSON.parse(text); } catch (_) {}
+      const topKeys = parsed && typeof parsed === 'object' ? Object.keys(parsed) : null;
+      const firstArr = topKeys && topKeys.find(k => Array.isArray(parsed[k]));
+      const itemCount = firstArr ? parsed[firstArr].length : (Array.isArray(parsed) ? parsed.length : null);
+      const sampleKeys = firstArr && parsed[firstArr].length
+        ? Object.keys(parsed[firstArr][0])
+        : (Array.isArray(parsed) && parsed.length ? Object.keys(parsed[0]) : null);
+      return { path, status: res.status, ok: res.ok, topKeys, firstArr, itemCount, sampleKeys, raw: parsed };
+    } catch (err) {
+      return { path, status: 'ERR', ok: false, error: err.message };
+    }
+  }));
+
+  results.forEach(r => {
+    const row = document.createElement('div');
+    row.style.cssText = 'border-bottom:1px solid #333;padding:0.6rem 0;display:grid;grid-template-columns:1.8rem 1fr;gap:0.5rem;align-items:start;';
+
+    const dot = document.createElement('span');
+    dot.textContent = r.ok ? '✓' : '✗';
+    dot.style.cssText = `color:${r.ok ? '#4ec9b0' : '#f44747'};font-size:1rem;`;
+
+    const info = document.createElement('div');
+    let html = `<span style="color:${r.ok ? '#4ec9b0' : '#f44747'};font-weight:bold;">HTTP ${r.status}</span>`
+             + `  <span style="color:#ddd;">${r.path}</span>`;
+    if (r.ok) {
+      if (r.topKeys)  html += `<br><span style="color:#888;">top-level keys: </span><span style="color:#ce9178;">${r.topKeys.join(', ')}</span>`;
+      if (r.firstArr) html += `<br><span style="color:#888;">data key: </span><span style="color:#ce9178;">"${r.firstArr}"</span>`
+                            + ` <span style="color:#888;">(${r.itemCount} items)</span>`;
+      if (r.sampleKeys) html += `<br><span style="color:#888;">item fields: </span><span style="color:#9cdcfe;">${r.sampleKeys.join(', ')}</span>`;
+      if (r.raw) {
+        const pre = document.createElement('pre');
+        pre.style.cssText = 'margin:0.5rem 0 0;color:#d4d4d4;font-size:0.75rem;max-height:200px;overflow:auto;background:#252526;padding:0.5rem;border-radius:3px;white-space:pre-wrap;word-break:break-all;';
+        const arr = r.firstArr ? r.raw[r.firstArr] : (Array.isArray(r.raw) ? r.raw : null);
+        pre.textContent = arr ? JSON.stringify(arr[0], null, 2) : JSON.stringify(r.raw, null, 2);
+        info.innerHTML = html;
+        info.appendChild(pre);
+        row.appendChild(dot);
+        row.appendChild(info);
+        container.appendChild(row);
+        return;
+      }
+    } else {
+      if (r.error) html += `<br><span style="color:#888;">${r.error}</span>`;
+    }
+    info.innerHTML = html;
+    row.appendChild(dot);
+    row.appendChild(info);
+    container.appendChild(row);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', init);
