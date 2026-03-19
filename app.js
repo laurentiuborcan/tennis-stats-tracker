@@ -86,6 +86,7 @@ function parseRankings(data) {
 
     // country
     const country =
+      item.team?.country?.name ??
       item.player?.country?.name ??
       item.player?.nationality ??
       item.player?.country ??
@@ -95,6 +96,7 @@ function parseRankings(data) {
       '—';
 
     const countryCode =
+      item.team?.country?.alpha2 ??
       item.player?.country?.alpha2 ??
       item.player?.country?.ioc ??
       item.player?.countryCode ??
