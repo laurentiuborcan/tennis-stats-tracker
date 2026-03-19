@@ -239,13 +239,6 @@ async function loadTour(tour) {
   try {
     const data    = await fetchRankings(tour);
 
-    // DEBUG: show raw first item for WTA
-    if (tour === 'wta') {
-      const items = Array.isArray(data) ? data : (data?.rankings ?? data?.data ?? data?.results ?? Object.values(data).find(v => Array.isArray(v)) ?? []);
-      const debugEl = document.getElementById('debugOutput');
-      if (debugEl) debugEl.textContent = JSON.stringify(items[0], null, 2);
-    }
-
     const players = parseRankings(data);
 
     if (players.length === 0) {
