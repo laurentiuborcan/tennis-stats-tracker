@@ -312,77 +312,155 @@ function init() {
 }
 
 // ===== DEBUG: ENDPOINT PROBE =====
-const PROBE_ENDPOINTS = [
-  '/api/tennis/matches/live',
-  '/api/tennis/events/live',
-  '/api/tennis/matches/today',
-  '/api/tennis/events',
-  '/api/tennis/scores',
-  '/api/tennis/matches',
+// Phase 1: flat event/match routes
+const PROBE_ENDPOINTS_PHASE1 = [
+  { path: '/api/tennis/matches/live',    label: null },
+  { path: '/api/tennis/events/live',     label: null },
+  { path: '/api/tennis/matches/today',   label: null },
+  { path: '/api/tennis/events',          label: null },
+  { path: '/api/tennis/scores',          label: null },
+  { path: '/api/tennis/matches',         label: null },
 ];
+
+// Phase 2: results/schedule variations
+const PROBE_ENDPOINTS_PHASE2 = [
+  { path: '/api/tennis/events/results',           label: null },
+  { path: '/api/tennis/events/today',             label: null },
+  { path: '/api/tennis/events/2026-03-19',        label: null },
+  { path: '/api/tennis/events/finished',          label: null },
+  { path: '/api/tennis/events/schedule',          label: null },
+  { path: '/api/tennis/events/2026/3/19',         label: '204 = valid but empty (no data for date)' },
+  { path: '/api/tennis/category/3',               label: null },
+  { path: '/api/tennis/tournament/2430',          label: 'ATP Miami' },
+  { path: '/api/tennis/tournament/2430/seasons',  label: 'ATP Miami seasons → 17 items' },
+  { path: '/api/tennis/tournament/2587/seasons',  label: 'WTA Miami seasons → 17 items' },
+];
+
+// Phase 3: the working season-based routes (discovered via live event tournament IDs)
+const PROBE_ENDPOINTS_PHASE3 = [
+  {
+    path: '/api/tennis/tournament/2430/season/80799/events/last/0',
+    label: 'ATP Miami 2026 — finished results (30 events, hasNextPage)',
+  },
+  {
+    path: '/api/tennis/tournament/2430/season/80799/events/next/0',
+    label: 'ATP Miami 2026 — upcoming/live events (30 events, hasNextPage)',
+  },
+  {
+    path: '/api/tennis/tournament/2430/season/80799/rounds',
+    label: 'ATP Miami 2026 — round list (9 rounds)',
+  },
+  {
+    path: '/api/tennis/tournament/2587/seasons',
+    label: 'WTA Miami — season list',
+  },
+];
+
+async function probeOne(path) {
+  const url = `https://${API_HOST}${path}`;
+  try {
+    const res = await fetch(url, {
+      headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': API_HOST },
+    });
+    const text = await res.text();
+    let parsed = null;
+    try { parsed = JSON.parse(text); } catch (_) {}
+    const topKeys = parsed && typeof parsed === 'object' ? Object.keys(parsed) : null;
+    const firstArr = topKeys && topKeys.find(k => Array.isArray(parsed[k]));
+    const itemCount = firstArr ? parsed[firstArr].length : (Array.isArray(parsed) ? parsed.length : null);
+    const sampleKeys = firstArr && parsed[firstArr].length
+      ? Object.keys(parsed[firstArr][0])
+      : (Array.isArray(parsed) && parsed.length ? Object.keys(parsed[0]) : null);
+    return { path, status: res.status, ok: res.ok, topKeys, firstArr, itemCount, sampleKeys, raw: parsed };
+  } catch (err) {
+    return { path, status: 'ERR', ok: false, error: err.message };
+  }
+}
+
+function renderProbeRow(r, label, container) {
+  const isSuccess = r.ok || r.status === 204;
+  const row = document.createElement('div');
+  row.style.cssText = 'border-bottom:1px solid #2a2a2a;padding:0.65rem 0;display:grid;grid-template-columns:1.5rem 1fr;gap:0.4rem;align-items:start;';
+
+  const dot = document.createElement('span');
+  dot.textContent = isSuccess ? '✓' : '✗';
+  dot.style.cssText = `color:${isSuccess ? '#4ec9b0' : '#f44747'};font-size:1rem;margin-top:1px;`;
+
+  const info = document.createElement('div');
+  let html = `<span style="color:${isSuccess ? '#4ec9b0' : '#f44747'};font-weight:bold;">HTTP ${r.status}</span>`
+           + `  <span style="color:#ddd;">${r.path}</span>`;
+
+  if (label) html += `<br><span style="color:#888;font-style:italic;">${label}</span>`;
+
+  if (r.ok) {
+    if (r.topKeys)  html += `<br><span style="color:#666;">keys: </span><span style="color:#ce9178;">${r.topKeys.join(', ')}</span>`;
+    if (r.firstArr) html += `  <span style="color:#666;">→ </span><span style="color:#ce9178;">"${r.firstArr}"</span>`
+                          + ` <span style="color:#888;">(${r.itemCount} items)</span>`;
+    if (r.sampleKeys) html += `<br><span style="color:#666;">fields: </span><span style="color:#9cdcfe;">${r.sampleKeys.slice(0, 12).join(', ')}${r.sampleKeys.length > 12 ? '…' : ''}</span>`;
+    if (r.raw) {
+      const arr = r.firstArr ? r.raw[r.firstArr] : (Array.isArray(r.raw) ? r.raw : null);
+      const sample = arr ? arr[0] : r.raw;
+      const pre = document.createElement('pre');
+      pre.style.cssText = 'margin:0.4rem 0 0;color:#d4d4d4;font-size:0.72rem;max-height:220px;overflow:auto;background:#252526;padding:0.5rem;border-radius:3px;white-space:pre-wrap;word-break:break-all;';
+      pre.textContent = JSON.stringify(sample, null, 2);
+      info.innerHTML = html;
+      info.appendChild(pre);
+      row.appendChild(dot);
+      row.appendChild(info);
+      container.appendChild(row);
+      return;
+    }
+  } else if (r.status === 204) {
+    html += `<br><span style="color:#888;font-style:italic;">No content — route exists but returned empty body</span>`;
+  } else {
+    if (r.error) html += `<br><span style="color:#888;">${r.error}</span>`;
+  }
+
+  info.innerHTML = html;
+  row.appendChild(dot);
+  row.appendChild(info);
+  container.appendChild(row);
+}
+
+function renderPhaseHeader(text, container) {
+  const h = document.createElement('div');
+  h.style.cssText = 'color:#569cd6;font-weight:bold;margin:1rem 0 0.4rem;padding-top:0.4rem;border-top:1px solid #333;font-size:0.8rem;letter-spacing:0.05em;';
+  h.textContent = text;
+  container.appendChild(h);
+}
 
 async function probeEndpoints() {
   const container = document.getElementById('debugProbeBody');
   if (!container) return;
+  container.innerHTML = '<p style="color:#888;margin:0">Probing endpoints…</p>';
+
+  const [r1, r2, r3] = await Promise.all([
+    Promise.all(PROBE_ENDPOINTS_PHASE1.map(e => probeOne(e.path))),
+    Promise.all(PROBE_ENDPOINTS_PHASE2.map(e => probeOne(e.path))),
+    Promise.all(PROBE_ENDPOINTS_PHASE3.map(e => probeOne(e.path))),
+  ]);
+
   container.innerHTML = '';
 
-  const results = await Promise.all(PROBE_ENDPOINTS.map(async path => {
-    const url = `https://${API_HOST}${path}`;
-    try {
-      const res = await fetch(url, {
-        headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': API_HOST },
-      });
-      const text = await res.text();
-      let parsed = null;
-      try { parsed = JSON.parse(text); } catch (_) {}
-      const topKeys = parsed && typeof parsed === 'object' ? Object.keys(parsed) : null;
-      const firstArr = topKeys && topKeys.find(k => Array.isArray(parsed[k]));
-      const itemCount = firstArr ? parsed[firstArr].length : (Array.isArray(parsed) ? parsed.length : null);
-      const sampleKeys = firstArr && parsed[firstArr].length
-        ? Object.keys(parsed[firstArr][0])
-        : (Array.isArray(parsed) && parsed.length ? Object.keys(parsed[0]) : null);
-      return { path, status: res.status, ok: res.ok, topKeys, firstArr, itemCount, sampleKeys, raw: parsed };
-    } catch (err) {
-      return { path, status: 'ERR', ok: false, error: err.message };
-    }
-  }));
+  renderPhaseHeader('Phase 1 — Basic event/match routes (from previous probe)', container);
+  r1.forEach((r, i) => renderProbeRow(r, PROBE_ENDPOINTS_PHASE1[i].label, container));
 
-  results.forEach(r => {
-    const row = document.createElement('div');
-    row.style.cssText = 'border-bottom:1px solid #333;padding:0.6rem 0;display:grid;grid-template-columns:1.8rem 1fr;gap:0.5rem;align-items:start;';
+  renderPhaseHeader('Phase 2 — Results / schedule / category / tournament variations', container);
+  r2.forEach((r, i) => renderProbeRow(r, PROBE_ENDPOINTS_PHASE2[i].label, container));
 
-    const dot = document.createElement('span');
-    dot.textContent = r.ok ? '✓' : '✗';
-    dot.style.cssText = `color:${r.ok ? '#4ec9b0' : '#f44747'};font-size:1rem;`;
+  renderPhaseHeader('Phase 3 — Season-based routes (WORKING — discovered via live event tournament IDs)', container);
+  r3.forEach((r, i) => renderProbeRow(r, PROBE_ENDPOINTS_PHASE3[i].label, container));
 
-    const info = document.createElement('div');
-    let html = `<span style="color:${r.ok ? '#4ec9b0' : '#f44747'};font-weight:bold;">HTTP ${r.status}</span>`
-             + `  <span style="color:#ddd;">${r.path}</span>`;
-    if (r.ok) {
-      if (r.topKeys)  html += `<br><span style="color:#888;">top-level keys: </span><span style="color:#ce9178;">${r.topKeys.join(', ')}</span>`;
-      if (r.firstArr) html += `<br><span style="color:#888;">data key: </span><span style="color:#ce9178;">"${r.firstArr}"</span>`
-                            + ` <span style="color:#888;">(${r.itemCount} items)</span>`;
-      if (r.sampleKeys) html += `<br><span style="color:#888;">item fields: </span><span style="color:#9cdcfe;">${r.sampleKeys.join(', ')}</span>`;
-      if (r.raw) {
-        const pre = document.createElement('pre');
-        pre.style.cssText = 'margin:0.5rem 0 0;color:#d4d4d4;font-size:0.75rem;max-height:200px;overflow:auto;background:#252526;padding:0.5rem;border-radius:3px;white-space:pre-wrap;word-break:break-all;';
-        const arr = r.firstArr ? r.raw[r.firstArr] : (Array.isArray(r.raw) ? r.raw : null);
-        pre.textContent = arr ? JSON.stringify(arr[0], null, 2) : JSON.stringify(r.raw, null, 2);
-        info.innerHTML = html;
-        info.appendChild(pre);
-        row.appendChild(dot);
-        row.appendChild(info);
-        container.appendChild(row);
-        return;
-      }
-    } else {
-      if (r.error) html += `<br><span style="color:#888;">${r.error}</span>`;
-    }
-    info.innerHTML = html;
-    row.appendChild(dot);
-    row.appendChild(info);
-    container.appendChild(row);
-  });
+  const summary = document.createElement('div');
+  summary.style.cssText = 'margin-top:1.2rem;padding:0.8rem;background:#0d2d0d;border:1px solid #4ec9b0;border-radius:4px;color:#4ec9b0;font-size:0.78rem;line-height:1.6;';
+  summary.innerHTML = `<strong>Key findings:</strong><br>
+  ✓ <code>/api/tennis/events/live</code> — 18 live events<br>
+  ✓ <code>/api/tennis/tournament/{id}/seasons</code> — season list for any tournament<br>
+  ✓ <code>/api/tennis/tournament/{id}/season/{sid}/events/last/0</code> — <strong>finished results</strong> (paginated)<br>
+  ✓ <code>/api/tennis/tournament/{id}/season/{sid}/events/next/0</code> — upcoming/in-progress (paginated)<br>
+  ✓ <code>/api/tennis/tournament/{id}/season/{sid}/rounds</code> — round/draw structure<br>
+  ✗ All flat date-based and category routes return 404`;
+  container.appendChild(summary);
 }
 
 document.addEventListener('DOMContentLoaded', init);
