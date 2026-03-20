@@ -258,21 +258,10 @@ function showLiveArea() {
 }
 
 function setAllHidden() {
-  welcomeEl.style.display  = 'none';
-  loadingEl.style.display  = 'none';
-  errorEl.style.display    = 'none';
-  tableEl.style.display    = 'none';
+  loadingEl.style.display   = 'none';
+  errorEl.style.display     = 'none';
+  tableEl.style.display     = 'none';
   emptySearch.style.display = 'none';
-}
-
-function showWelcome() {
-  stopAgeTick();
-  toolbar.style.display    = 'none';
-  searchWrap.style.display = 'none';
-  livePanel.style.display  = 'none';
-  tableWrap.style.display  = 'block';
-  setAllHidden();
-  welcomeEl.style.display  = '';
 }
 
 function showLoading(label) {
@@ -545,11 +534,6 @@ function init() {
     });
   });
 
-  // Welcome screen shortcut buttons
-  document.querySelectorAll('.welcome-tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => loadTour(btn.dataset.tour));
-  });
-
   // Search
   searchInput.addEventListener('input', applySearch);
   searchInput.addEventListener('keydown', e => {
@@ -578,15 +562,9 @@ function init() {
     }
   });
 
-  // On load: check for fresh cached ATP data → show it silently, otherwise welcome
-  const cached = getCached('atp');
-  if (cached) {
-    activateTab('atp');
-    showRankingsArea();
-    renderTable(cached.data, '', cached.ts);
-  } else {
-    showWelcome();
-  }
+  // On load: always show ATP tab (uses cache if fresh, hits API otherwise,
+  // falls back to demo data if API is unavailable)
+  loadTour('atp');
 }
 
 document.addEventListener('DOMContentLoaded', init);
