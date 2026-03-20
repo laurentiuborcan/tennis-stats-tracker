@@ -247,6 +247,22 @@ const DRAW_DATA = {
   },
 };
 
+// ===== PLAYER PROFILE DATA =====
+const PLAYER_DATA = {
+  // ATP
+  'Jannik Sinner':     { cc:'IT', ranking:1,  age:23, height:'188 cm', hand:'Right', backhand:'Two-handed', season:{w:18,l:3,  titles:2, prize:'$3,240,000'}, career:{gs:2,  hi:1, titles:17}, surfaces:{hard:82,clay:67,grass:71}, recent:[{opp:'Carlos Alcaraz',   tourn:'Miami Open F',  score:'4-6, 3-5*',    r:'Live'},{opp:'Alexander Zverev', tourn:'Miami Open SF', score:'7-6, 6-4',     r:'W'},{opp:'Taylor Fritz',     tourn:'Miami Open QF', score:'6-4, 7-6',     r:'W'},{opp:'Ugo Humbert',      tourn:'Miami Open R16',score:'6-3, 6-2',     r:'W'},{opp:'Daniil Medvedev',  tourn:'Australian Open',score:'6-3, 6-4, 6-3',r:'W'}]},
+  'Carlos Alcaraz':    { cc:'ES', ranking:2,  age:21, height:'185 cm', hand:'Right', backhand:'One-handed', season:{w:16,l:4,  titles:1, prize:'$2,800,000'}, career:{gs:4,  hi:1, titles:16}, surfaces:{hard:76,clay:81,grass:79}, recent:[{opp:'Jannik Sinner',    tourn:'Miami Open F',  score:'6-4, 5-3*',    r:'Live'},{opp:'Daniil Medvedev',  tourn:'Miami Open SF', score:'6-3, 6-4',     r:'W'},{opp:'Ben Shelton',      tourn:'Miami Open QF', score:'6-3, 7-5',     r:'W'},{opp:'Holger Rune',      tourn:'Miami Open R16',score:'6-3, 6-4',     r:'W'},{opp:'Novak Djokovic',   tourn:'Wimbledon',     score:'6-2, 6-2, 7-6',r:'W'}]},
+  'Alexander Zverev':  { cc:'DE', ranking:3,  age:27, height:'198 cm', hand:'Right', backhand:'Two-handed', season:{w:14,l:5,  titles:1, prize:'$1,860,000'}, career:{gs:0,  hi:2, titles:23}, surfaces:{hard:73,clay:65,grass:62}, recent:[{opp:'Jannik Sinner',    tourn:'Miami Open SF', score:'6-7, 4-6',     r:'L'},{opp:'Andrey Rublev',    tourn:'Miami Open QF', score:'7-5, 6-3',     r:'W'},{opp:'F. Cerundolo',     tourn:'Miami Open R16',score:'6-2, 6-4',     r:'W'},{opp:'Novak Djokovic',   tourn:'Paris Masters', score:'7-5, 6-4',     r:'W'},{opp:'Carlos Alcaraz',   tourn:'Roland Garros', score:'4-6, 7-5, 3-6, 4-6',r:'L'}]},
+  'Novak Djokovic':    { cc:'RS', ranking:4,  age:37, height:'188 cm', hand:'Right', backhand:'Two-handed', season:{w:11,l:5,  titles:0, prize:'$980,000'},  career:{gs:24, hi:1, titles:99}, surfaces:{hard:84,clay:79,grass:81}, recent:[{opp:'Sebastian Korda',  tourn:'Monte Carlo R16',score:'6-4, 6-2',    r:'W'},{opp:'Carlos Alcaraz',   tourn:'Wimbledon',     score:'2-6, 2-6, 7-6, 6-3, 3-6',r:'L'},{opp:'Carlos Alcaraz',   tourn:'Olympics Final',score:'6-7, 6-4, 6-2',r:'W'},{opp:'Jannik Sinner',    tourn:'Australian Open',score:'3-6, 6-7, 3-6',r:'L'},{opp:'Alexander Zverev', tourn:'Paris Masters', score:'5-7, 4-6',     r:'L'}]},
+  'Daniil Medvedev':   { cc:'RU', ranking:5,  age:28, height:'198 cm', hand:'Right', backhand:'Two-handed', season:{w:12,l:6,  titles:1, prize:'$1,420,000'}, career:{gs:1,  hi:1, titles:21}, surfaces:{hard:78,clay:51,grass:63}, recent:[{opp:'Carlos Alcaraz',   tourn:'Miami Open SF', score:'3-6, 4-6',     r:'L'},{opp:'Tommy Paul',       tourn:'Miami Open QF', score:'6-2, 7-5',     r:'W'},{opp:'Stefanos Tsitsipas',tourn:'Miami Open R16',score:'6-3, 6-4',    r:'W'},{opp:'Jannik Sinner',    tourn:'Australian Open',score:'3-6, 4-6, 6-7',r:'L'},{opp:'Holger Rune',      tourn:'Indian Wells',  score:'6-4, 7-6',     r:'W'}]},
+  // WTA
+  'Aryna Sabalenka':   { cc:'BY', ranking:1,  age:26, height:'182 cm', hand:'Right', backhand:'Two-handed', season:{w:19,l:2,  titles:3, prize:'$3,860,000'}, career:{gs:3,  hi:1, titles:14}, surfaces:{hard:84,clay:65,grass:71}, recent:[{opp:'Coco Gauff',       tourn:'Miami Open F',  score:'6-3, 4-5*',    r:'Live'},{opp:'Elena Rybakina',   tourn:'Miami Open SF', score:'6-4, 7-6',     r:'W'},{opp:'Jessica Pegula',   tourn:'Miami Open QF', score:'6-3, 6-2',     r:'W'},{opp:'B. Haddad Maia',   tourn:'Miami Open R16',score:'6-2, 6-1',     r:'W'},{opp:'Madison Keys',     tourn:'Australian Open',score:'6-3, 7-6',    r:'W'}]},
+  'Iga Swiatek':       { cc:'PL', ranking:2,  age:23, height:'175 cm', hand:'Right', backhand:'Two-handed', season:{w:14,l:5,  titles:2, prize:'$2,420,000'}, career:{gs:5,  hi:1, titles:23}, surfaces:{hard:75,clay:88,grass:65}, recent:[{opp:'Coco Gauff',       tourn:'Miami Open SF', score:'6-3, 4-6, 3-6',r:'L'},{opp:'Jasmine Paolini',  tourn:'Miami Open QF', score:'6-2, 6-4',     r:'W'},{opp:'Maria Sakkari',    tourn:'Miami Open R16',score:'6-1, 6-3',     r:'W'},{opp:'Elena Rybakina',   tourn:'Indian Wells',  score:'7-5, 6-3',     r:'W'},{opp:'Aryna Sabalenka',  tourn:'Australian Open',score:'6-7, 5-7',    r:'L'}]},
+  'Coco Gauff':        { cc:'US', ranking:3,  age:20, height:'180 cm', hand:'Right', backhand:'Two-handed', season:{w:15,l:4,  titles:2, prize:'$2,180,000'}, career:{gs:1,  hi:2, titles:9},  surfaces:{hard:77,clay:68,grass:70}, recent:[{opp:'Aryna Sabalenka',  tourn:'Miami Open F',  score:'3-6, 5-4*',    r:'Live'},{opp:'Iga Swiatek',      tourn:'Miami Open SF', score:'3-6, 6-4, 6-3',r:'W'},{opp:'Emma Navarro',     tourn:'Miami Open QF', score:'6-4, 6-3',     r:'W'},{opp:'Paula Badosa',     tourn:'Miami Open R16',score:'7-5, 6-4',     r:'W'},{opp:'Iga Swiatek',      tourn:'Indian Wells',  score:'6-3, 6-1',     r:'W'}]},
+  'Elena Rybakina':    { cc:'KZ', ranking:4,  age:25, height:'184 cm', hand:'Right', backhand:'Two-handed', season:{w:13,l:5,  titles:1, prize:'$1,650,000'}, career:{gs:1,  hi:3, titles:12}, surfaces:{hard:74,clay:61,grass:76}, recent:[{opp:'Aryna Sabalenka',  tourn:'Miami Open SF', score:'4-6, 6-7',     r:'L'},{opp:'Mirra Andreeva',   tourn:'Miami Open QF', score:'7-5, 6-4',     r:'W'},{opp:'Barbora Krejcikova',tourn:'Miami Open R16',score:'6-4, 7-6',    r:'W'},{opp:'Iga Swiatek',      tourn:'Indian Wells',  score:'5-7, 3-6',     r:'L'},{opp:'Aryna Sabalenka',  tourn:'Australian Open',score:'6-7, 5-7',    r:'L'}]},
+  'Jessica Pegula':    { cc:'US', ranking:5,  age:30, height:'170 cm', hand:'Right', backhand:'Two-handed', season:{w:10,l:6,  titles:0, prize:'$880,000'},  career:{gs:0,  hi:3, titles:5},  surfaces:{hard:72,clay:60,grass:63}, recent:[{opp:'Aryna Sabalenka',  tourn:'Miami Open QF', score:'3-6, 2-6',     r:'L'},{opp:'Daria Kasatkina',  tourn:'Miami Open R16',score:'6-3, 7-5',     r:'W'},{opp:'Iga Swiatek',      tourn:'Indian Wells',  score:'4-6, 3-6',     r:'L'},{opp:'Emma Navarro',     tourn:'Doha',          score:'6-4, 6-2',     r:'W'},{opp:'Aryna Sabalenka',  tourn:'US Open',       score:'6-7, 4-6, 5-7',r:'L'}]},
+};
+
 // ===== STATE =====
 const state = {
   currentTour:       null,
@@ -256,6 +272,7 @@ const state = {
   activeTournament:  null,    // slug key when a draw is open
   drawFilter:        'all',   // All / completed / live / upcoming in draw view
   ageTick:           null,
+  prevView:          null,    // Navigation context for back button in player profile
 };
 
 // ===== DOM REFS =====
@@ -278,6 +295,7 @@ const emptySearch = $('emptySearch');
 const emptyQuery  = $('emptyQuery');
 const livePanel        = $('livePanel');
 const tournamentsPanel = $('tournamentsPanel');
+const playerPanel      = $('playerPanel');
 const demoBanner       = $('demoBanner');
 
 // ===== LOCAL STORAGE CACHE =====
@@ -449,6 +467,16 @@ function showTournamentsArea() {
   demoBanner.style.display       = '';
 }
 
+function showPlayerPanel() {
+  tableWrap.style.display        = 'none';
+  searchWrap.style.display       = 'none';
+  livePanel.style.display        = 'none';
+  tournamentsPanel.style.display = 'none';
+  playerPanel.style.display      = 'block';
+  toolbar.style.display          = 'none';
+  demoBanner.style.display       = 'none';
+}
+
 function setAllHidden() {
   loadingEl.style.display   = 'none';
   errorEl.style.display     = 'none';
@@ -509,7 +537,7 @@ function renderTable(players, query, ts) {
     return `
       <tr>
         <td class="cell-rank">${rankHTML}</td>
-        <td class="cell-player"><span class="player-name">${highlight(p.name, query)}</span></td>
+        <td class="cell-player"><span class="player-name player-link" data-player="${escHtml(p.name)}">${highlight(p.name, query)}</span></td>
         <td class="cell-country">
           <div class="country-wrap">
             ${flag ? `<span class="country-flag">${flag}</span>` : ''}
@@ -614,7 +642,7 @@ async function loadRankings(tour, force = false) {
       return `
         <tr>
           <td class="cell-rank">${rankHTML}</td>
-          <td class="cell-player"><span class="player-name">${escHtml(p.name)}</span></td>
+          <td class="cell-player"><span class="player-name player-link" data-player="${escHtml(p.name)}">${escHtml(p.name)}</span></td>
           <td class="cell-country">
             <div class="country-wrap">
               ${flag ? `<span class="country-flag">${flag}</span>` : ''}
@@ -713,7 +741,7 @@ function renderMatchCard(match) {
       <div class="match-row${isWinner ? ' match-row--winner' : ''}">
         <div class="match-player-info">
           <span class="match-flag">${flag}</span>
-          <span class="${nameCls}">${escHtml(player.name)}</span>
+          <span class="${nameCls}${!isTBD ? ' player-link' : ''}" ${!isTBD ? `data-player="${escHtml(player.name)}"` : ''}>${escHtml(player.name)}</span>
           ${seed}
         </div>
         ${scoresHtml}${tickHtml}
@@ -777,7 +805,7 @@ function renderBracketCard(match) {
     return `<div class="${rowCls}">
       <div class="bk-player-info">
         <span class="bk-flag">${flag}</span>
-        <span class="${nameCls}">${escHtml(name)}</span>${seed}
+        <span class="${nameCls}${!isTBD ? ' player-link' : ''}" ${!isTBD ? `data-player="${escHtml(player.name)}"` : ''}>${escHtml(name)}</span>${seed}
       </div>${setsHtml}
     </div>`;
   }
@@ -1093,6 +1121,155 @@ function loadTournaments() {
   renderTournaments(state.tourFilter);
 }
 
+// ===== PLAYER PROFILES =====
+function openPlayerProfile(name) {
+  if (state.currentTour === 'tournaments') {
+    state.prevView = state.activeTournament
+      ? { type: 'tournament-detail', key: state.activeTournament, filter: state.drawFilter }
+      : { type: 'tournaments' };
+  } else {
+    state.prevView = { type: 'rankings', tour: state.currentTour || 'atp' };
+  }
+  showPlayerPanel();
+  renderPlayerProfile(name);
+}
+
+function goBack() {
+  const pv = state.prevView;
+  if (!pv) { loadTour('atp'); return; }
+  if (pv.type === 'rankings') {
+    loadTour(pv.tour);
+  } else if (pv.type === 'tournament-detail') {
+    state.activeTournament = pv.key;
+    showTournamentsArea();
+    renderTournamentDetail(pv.key, pv.filter);
+  } else {
+    loadTournaments();
+  }
+}
+
+function renderPlayerProfile(name) {
+  const d = PLAYER_DATA[name];
+
+  if (!d) {
+    playerPanel.innerHTML = `
+      <div class="profile-view">
+        <button class="draw-back-btn" id="profileBackBtn">← Back</button>
+        <div class="draw-empty-state">
+          <p>No profile data available for ${escHtml(name)}.</p>
+        </div>
+      </div>`;
+    document.getElementById('profileBackBtn').addEventListener('click', goBack);
+    return;
+  }
+
+  const flag   = countryFlag(d.cc);
+  const wl     = `${d.season.w}W – ${d.season.l}L`;
+  const winPct = Math.round(d.season.w / (d.season.w + d.season.l) * 100);
+
+  const surfBars = ['hard', 'clay', 'grass'].map(s => {
+    const pct  = d.surfaces[s] ?? 0;
+    const label = s[0].toUpperCase() + s.slice(1);
+    return `<div class="surface-row">
+      <span class="surface-label">${label}</span>
+      <div class="surface-bar-track">
+        <div class="surface-bar-fill surface-bar-fill--${s}" style="width:${pct}%"></div>
+      </div>
+      <span class="surface-pct">${pct}%</span>
+    </div>`;
+  }).join('');
+
+  const recentRows = d.recent.map(r => {
+    const isLive = r.r === 'Live';
+    const badge  = isLive
+      ? `<span class="result-badge result-badge--live">● LIVE</span>`
+      : `<span class="result-badge result-badge--${r.r === 'W' ? 'w' : 'l'}">${r.r}</span>`;
+    return `<div class="recent-row">
+      <div class="recent-main">
+        <span class="recent-opp player-link" data-player="${escHtml(r.opp)}">${escHtml(r.opp)}</span>
+        <span class="recent-tourn">${escHtml(r.tourn)}</span>
+      </div>
+      <div class="recent-right">
+        <span class="recent-score">${escHtml(r.score)}</span>
+        ${badge}
+      </div>
+    </div>`;
+  }).join('');
+
+  playerPanel.innerHTML = `
+    <div class="profile-view">
+      <button class="draw-back-btn" id="profileBackBtn">← Back</button>
+      <div class="profile-header">
+        <div class="profile-flag-big">${flag}</div>
+        <div class="profile-header-info">
+          <h2 class="profile-name">${escHtml(name)}</h2>
+          <div class="profile-meta">
+            <span class="profile-rank">#${d.ranking} in the World</span>
+            <span class="profile-sep">·</span>
+            <span>Age ${d.age}</span>
+            <span class="profile-sep">·</span>
+            <span>${escHtml(d.height)}</span>
+          </div>
+          <div class="profile-meta">
+            <span>${escHtml(d.hand)}-handed</span>
+            <span class="profile-sep">·</span>
+            <span>${escHtml(d.backhand)} backhand</span>
+          </div>
+        </div>
+      </div>
+      <div class="profile-sections">
+        <section class="profile-section">
+          <h3 class="profile-section-title">2025 Season</h3>
+          <div class="profile-stat-grid">
+            <div class="profile-stat-card">
+              <span class="stat-value">${escHtml(wl)}</span>
+              <span class="stat-label">Win / Loss</span>
+            </div>
+            <div class="profile-stat-card">
+              <span class="stat-value">${winPct}%</span>
+              <span class="stat-label">Win Rate</span>
+            </div>
+            <div class="profile-stat-card">
+              <span class="stat-value">${d.season.titles}</span>
+              <span class="stat-label">Titles</span>
+            </div>
+            <div class="profile-stat-card">
+              <span class="stat-value">${escHtml(d.season.prize)}</span>
+              <span class="stat-label">Prize Money</span>
+            </div>
+          </div>
+        </section>
+        <section class="profile-section">
+          <h3 class="profile-section-title">Career Highlights</h3>
+          <div class="profile-stat-grid">
+            <div class="profile-stat-card">
+              <span class="stat-value">${d.career.gs}</span>
+              <span class="stat-label">Grand Slams</span>
+            </div>
+            <div class="profile-stat-card">
+              <span class="stat-value">#${d.career.hi}</span>
+              <span class="stat-label">Career High</span>
+            </div>
+            <div class="profile-stat-card">
+              <span class="stat-value">${d.career.titles}</span>
+              <span class="stat-label">Career Titles</span>
+            </div>
+          </div>
+        </section>
+        <section class="profile-section">
+          <h3 class="profile-section-title">Surface Win %</h3>
+          <div class="surface-bars">${surfBars}</div>
+        </section>
+        <section class="profile-section profile-section--last">
+          <h3 class="profile-section-title">Recent Results</h3>
+          <div class="recent-results">${recentRows}</div>
+        </section>
+      </div>
+    </div>`;
+
+  document.getElementById('profileBackBtn').addEventListener('click', goBack);
+}
+
 // ===== ACTIVATE TAB =====
 function activateTab(tour) {
   state.currentTour = tour;
@@ -1172,6 +1349,12 @@ function init() {
     } else {
       loadRankings(state.currentTour, true);
     }
+  });
+
+  // Player profile — delegated handler for all [data-player] clicks
+  document.addEventListener('click', e => {
+    const link = e.target.closest('[data-player]');
+    if (link) openPlayerProfile(link.dataset.player);
   });
 
   // On load: always show ATP tab (uses cache if fresh, hits API otherwise,

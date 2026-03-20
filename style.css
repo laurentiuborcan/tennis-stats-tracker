@@ -1015,6 +1015,204 @@ details[open].live-debug > summary::before { content: '▼'; }
 .bk-winner-name   { font-size: 0.79rem; font-weight: 700; color: var(--rank-gold); white-space: nowrap; }
 .bk-winner-tbd    { font-size: 0.72rem; color: var(--text-dim); font-style: italic; white-space: nowrap; }
 
+/* ===== CLICKABLE PLAYER NAMES ===== */
+.player-link {
+  cursor: pointer;
+}
+.player-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===== PLAYER PROFILE PANEL ===== */
+.profile-view {
+  animation: fadeIn 0.15s ease;
+}
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.profile-flag-big {
+  font-size: 3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.profile-name {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 0.4rem;
+}
+.profile-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+.profile-rank { color: var(--green); font-weight: 600; }
+.profile-sep  { color: var(--text-dim); }
+
+.profile-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.profile-section {
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.profile-section--last {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.profile-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+}
+
+/* Stat grid */
+.profile-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.65rem;
+}
+.profile-stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+/* Surface bars */
+.surface-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.surface-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.surface-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  width: 40px;
+  flex-shrink: 0;
+}
+.surface-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--border-hl);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.surface-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.surface-bar-fill--hard  { background: #58a6ff; }
+.surface-bar-fill--clay  { background: #e07a3a; }
+.surface-bar-fill--grass { background: #3fb950; }
+.surface-pct {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  width: 34px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Recent results */
+.recent-results {
+  display: flex;
+  flex-direction: column;
+}
+.recent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.recent-row:last-child { border-bottom: none; }
+.recent-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+.recent-opp {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recent-tourn {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+.recent-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.recent-score {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.result-badge--w    { background: rgba(63,185,80,0.15);  color: var(--green); }
+.result-badge--l    { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+.result-badge--live {
+  background: rgba(63,185,80,0.15);
+  color: var(--green);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   .header-sub { display: none; }
