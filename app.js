@@ -475,6 +475,7 @@ function showPlayerPanel() {
   playerPanel.style.display      = 'block';
   toolbar.style.display          = 'none';
   demoBanner.style.display       = 'none';
+  state.currentTour              = null;  // let loadTour() run freely on back-navigation
 }
 
 function setAllHidden() {
