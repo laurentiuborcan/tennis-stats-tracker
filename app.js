@@ -107,14 +107,155 @@ const DEMO_TOURNAMENTS = {
   ],
 };
 
+// ===== TOURNAMENT DRAW DATA =====
+// Compact player helper: (name, countryCode, seed)
+const _p = (name, cc, seed = null) => ({ name, cc, seed });
+// Completed set pair helper
+const _s = (a, b) => ({ p1: a, p2: b });
+
+const DRAW_DATA = {
+  // ---- MIAMI OPEN (ATP) ----
+  'miami-open-atp': {
+    rounds: [
+      { name: 'Final', matches: [
+        { p1:_p('Jannik Sinner','IT',1),    p2:_p('Carlos Alcaraz','ES',2),
+          status:'live', winner:null, sets:[_s(6,4),_s(3,5)], inProgress:true, court:'Stadium Court' },
+      ]},
+      { name: 'Semi-Finals', matches: [
+        { p1:_p('Jannik Sinner','IT',1),    p2:_p('Alexander Zverev','DE',3),
+          status:'completed', winner:1, sets:[_s(7,6),_s(6,4)] },
+        { p1:_p('Carlos Alcaraz','ES',2),   p2:_p('Daniil Medvedev','RU',4),
+          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
+      ]},
+      { name: 'Quarter-Finals', matches: [
+        { p1:_p('Jannik Sinner','IT',1),    p2:_p('Taylor Fritz','US',8),
+          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
+        { p1:_p('Alexander Zverev','DE',3), p2:_p('Andrey Rublev','RU',7),
+          status:'completed', winner:1, sets:[_s(7,5),_s(6,3)] },
+        { p1:_p('Carlos Alcaraz','ES',2),   p2:_p('Ben Shelton','US',14),
+          status:'completed', winner:1, sets:[_s(6,3),_s(7,5)] },
+        { p1:_p('Daniil Medvedev','RU',4),  p2:_p('Tommy Paul','US',11),
+          status:'completed', winner:1, sets:[_s(6,2),_s(7,5)] },
+      ]},
+      { name: 'Round of 16', matches: [
+        { p1:_p('Jannik Sinner','IT',1),      p2:_p('Ugo Humbert','FR',15),
+          status:'completed', winner:1, sets:[_s(6,3),_s(6,2)] },
+        { p1:_p('Taylor Fritz','US',8),        p2:_p('Grigor Dimitrov','BG',10),
+          status:'completed', winner:1, sets:[_s(7,6),_s(4,6),_s(7,6)] },
+        { p1:_p('Alexander Zverev','DE',3),    p2:_p('Francisco Cerundolo','AR',18),
+          status:'completed', winner:1, sets:[_s(6,2),_s(6,4)] },
+        { p1:_p('Andrey Rublev','RU',7),       p2:_p('Alex de Minaur','AU',9),
+          status:'completed', winner:1, sets:[_s(4,6),_s(6,3),_s(7,5)] },
+        { p1:_p('Carlos Alcaraz','ES',2),      p2:_p('Holger Rune','DK',13),
+          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
+        { p1:_p('Ben Shelton','US',14),        p2:_p('Casper Ruud','NO',6),
+          status:'completed', winner:1, sets:[_s(7,5),_s(6,4)] },
+        { p1:_p('Daniil Medvedev','RU',4),     p2:_p('Stefanos Tsitsipas','GR',12),
+          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
+        { p1:_p('Tommy Paul','US',11),         p2:_p('Sebastian Korda','US',16),
+          status:'completed', winner:1, sets:[_s(7,6),_s(6,3)] },
+      ]},
+    ],
+  },
+
+  // ---- MIAMI OPEN (WTA) ----
+  'miami-open-wta': {
+    rounds: [
+      { name: 'Final', matches: [
+        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('Coco Gauff','US',3),
+          status:'live', winner:null, sets:[_s(6,3),_s(4,5)], inProgress:true, court:'Stadium Court' },
+      ]},
+      { name: 'Semi-Finals', matches: [
+        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('Elena Rybakina','KZ',4),
+          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
+        { p1:_p('Coco Gauff','US',3),      p2:_p('Iga Swiatek','PL',2),
+          status:'completed', winner:1, sets:[_s(3,6),_s(6,4),_s(6,3)] },
+      ]},
+      { name: 'Quarter-Finals', matches: [
+        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('Jessica Pegula','US',5),
+          status:'completed', winner:1, sets:[_s(6,3),_s(6,2)] },
+        { p1:_p('Elena Rybakina','KZ',4),  p2:_p('Mirra Andreeva','RU',6),
+          status:'completed', winner:1, sets:[_s(7,5),_s(6,4)] },
+        { p1:_p('Coco Gauff','US',3),      p2:_p('Emma Navarro','US',8),
+          status:'completed', winner:1, sets:[_s(6,4),_s(6,3)] },
+        { p1:_p('Iga Swiatek','PL',2),     p2:_p('Jasmine Paolini','IT',7),
+          status:'completed', winner:1, sets:[_s(6,2),_s(6,4)] },
+      ]},
+      { name: 'Round of 16', matches: [
+        { p1:_p('Aryna Sabalenka','BY',1),    p2:_p('Beatriz Haddad Maia','BR',16),
+          status:'completed', winner:1, sets:[_s(6,2),_s(6,1)] },
+        { p1:_p('Jessica Pegula','US',5),      p2:_p('Daria Kasatkina','RU',10),
+          status:'completed', winner:1, sets:[_s(6,3),_s(7,5)] },
+        { p1:_p('Elena Rybakina','KZ',4),      p2:_p('Barbora Krejcikova','CZ',11),
+          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
+        { p1:_p('Mirra Andreeva','RU',6),      p2:_p('Madison Keys','US',9),
+          status:'completed', winner:1, sets:[_s(6,4),_s(3,6),_s(6,3)] },
+        { p1:_p('Coco Gauff','US',3),          p2:_p('Paula Badosa','ES',12),
+          status:'completed', winner:1, sets:[_s(7,5),_s(6,4)] },
+        { p1:_p('Emma Navarro','US',8),        p2:_p('Qinwen Zheng','CN',13),
+          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
+        { p1:_p('Iga Swiatek','PL',2),         p2:_p('Maria Sakkari','GR',19),
+          status:'completed', winner:1, sets:[_s(6,1),_s(6,3)] },
+        { p1:_p('Jasmine Paolini','IT',7),     p2:_p('Karolina Muchova','CZ',14),
+          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
+      ]},
+    ],
+  },
+
+  // ---- MONTE CARLO ROLEX MASTERS (ATP) ----
+  'monte-carlo-rolex-masters-atp': {
+    rounds: [
+      { name: 'Final', matches: [
+        { p1:_p('TBD','',null), p2:_p('TBD','',null),
+          status:'upcoming', sets:[], scheduled:'Apr 13', court:'Court Rainier III' },
+      ]},
+      { name: 'Semi-Finals', matches: [
+        { p1:_p('TBD','',null), p2:_p('TBD','',null),
+          status:'upcoming', sets:[], scheduled:'Apr 12', court:'Court Rainier III' },
+        { p1:_p('TBD','',null), p2:_p('TBD','',null),
+          status:'upcoming', sets:[], scheduled:'Apr 12', court:'Court Rainier III' },
+      ]},
+      { name: 'Quarter-Finals', matches: [
+        { p1:_p('Jannik Sinner','IT',1),    p2:_p('TBD','',null),
+          status:'upcoming', sets:[], scheduled:'Apr 11' },
+        { p1:_p('Alexander Zverev','DE',3), p2:_p('TBD','',null),
+          status:'upcoming', sets:[], scheduled:'Apr 11' },
+        { p1:_p('Carlos Alcaraz','ES',2),   p2:_p('TBD','',null),
+          status:'upcoming', sets:[], scheduled:'Apr 11' },
+        { p1:_p('Novak Djokovic','RS',4),   p2:_p('TBD','',null),
+          status:'upcoming', sets:[], scheduled:'Apr 11' },
+      ]},
+      { name: 'Round of 16', matches: [
+        { p1:_p('Jannik Sinner','IT',1),       p2:_p('Francisco Cerundolo','AR'),
+          status:'completed', winner:1, sets:[_s(6,4),_s(6,2)] },
+        { p1:_p('Alexander Zverev','DE',3),    p2:_p('Grigor Dimitrov','BG',10),
+          status:'completed', winner:1, sets:[_s(7,5),_s(6,3)] },
+        { p1:_p('Carlos Alcaraz','ES',2),      p2:_p('Holger Rune','DK',13),
+          status:'completed', winner:1, sets:[_s(6,2),_s(6,3)] },
+        { p1:_p('Novak Djokovic','RS',4),      p2:_p('Sebastian Korda','US',16),
+          status:'completed', winner:1, sets:[_s(6,4),_s(6,2)] },
+        { p1:_p('Andrey Rublev','RU',7),       p2:_p('Ugo Humbert','FR',15),
+          status:'live', winner:null, sets:[_s(4,6),_s(3,2)], inProgress:true, court:'Court Rainier III' },
+        { p1:_p('Taylor Fritz','US',8),        p2:_p('Stefanos Tsitsipas','GR',12),
+          status:'live', winner:null, sets:[_s(6,7),_s(5,4)], inProgress:true, court:'Court des Princes' },
+        { p1:_p('Daniil Medvedev','RU',5),     p2:_p('Tommy Paul','US',11),
+          status:'upcoming', sets:[], scheduled:'Apr 10, 2:00 PM' },
+        { p1:_p('Casper Ruud','NO',6),         p2:_p('Ben Shelton','US',14),
+          status:'upcoming', sets:[], scheduled:'Apr 10, 4:00 PM' },
+      ]},
+    ],
+  },
+};
+
 // ===== STATE =====
 const state = {
-  currentTour: null,
-  // In-session memory cache: { data, ts } per tour
-  cache: { atp: null, wta: null, live: null },
-  query: '',
-  tourFilter: 'all',  // filter for tournaments tab
-  ageTick: null,  // setInterval handle for "last updated" counter
+  currentTour:       null,
+  cache:             { atp: null, wta: null, live: null },
+  query:             '',
+  tourFilter:        'all',   // All / atp / wta on tournament list
+  activeTournament:  null,    // slug key when a draw is open
+  drawFilter:        'all',   // All / completed / live / upcoming in draw view
+  ageTick:           null,
 };
 
 // ===== DOM REFS =====
@@ -537,6 +678,171 @@ async function loadLive(force = false) {
 }
 
 // ===== TOURNAMENTS =====
+function tournSlug(name, tour) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + tour;
+}
+
+// ----- Match card -----
+function renderMatchCard(match) {
+  const { p1, p2, status, winner, sets = [], inProgress, court, scheduled } = match;
+
+  function playerRow(player, pNum, isWinner) {
+    const flag    = player.cc ? countryFlag(player.cc) : '';
+    const seed    = player.seed ? `<span class="match-seed">(${player.seed})</span>` : '';
+    const isTBD   = player.name === 'TBD';
+    const nameCls = `match-player-name${isWinner ? ' match-player-name--winner' : ''}${isTBD ? ' match-tbd' : ''}`;
+
+    let scoresHtml = '';
+    let tickHtml   = '';
+
+    if (status !== 'upcoming') {
+      const cells = sets.map((s, i) => {
+        const mine = pNum === 1 ? s.p1 : s.p2;
+        const opp  = pNum === 1 ? s.p2 : s.p1;
+        const isLast = i === sets.length - 1;
+        const cls = (isLast && inProgress) ? 'match-set--live'
+                  : mine > opp             ? 'match-set--won'
+                  :                          'match-set--lost';
+        return `<span class="match-set ${cls}">${mine}</span>`;
+      }).join('');
+      scoresHtml = `<div class="match-scores">${cells}</div>`;
+      tickHtml   = `<span class="match-tick">${isWinner ? '✓' : ''}</span>`;
+    }
+
+    return `
+      <div class="match-row${isWinner ? ' match-row--winner' : ''}">
+        <div class="match-player-info">
+          <span class="match-flag">${flag}</span>
+          <span class="${nameCls}">${escHtml(player.name)}</span>
+          ${seed}
+        </div>
+        ${scoresHtml}${tickHtml}
+      </div>`;
+  }
+
+  let hdr = '';
+  if (status === 'live') {
+    hdr = `<div class="match-card-hdr">
+      <span class="match-live-badge">&#9679;&nbsp;LIVE</span>
+      ${court ? `<span class="match-court">${escHtml(court)}</span>` : ''}
+    </div>`;
+  } else if (status === 'upcoming') {
+    const left = scheduled ? `<span class="match-scheduled">${escHtml(scheduled)}</span>` : '<span></span>';
+    const right = court ? `<span class="match-court">${escHtml(court)}</span>` : '';
+    hdr = `<div class="match-card-hdr match-card-hdr--muted">${left}${right}</div>`;
+  } else if (court) {
+    hdr = `<div class="match-card-hdr match-card-hdr--muted">
+      <span></span><span class="match-court">${escHtml(court)}</span>
+    </div>`;
+  }
+
+  return `<div class="match-card match-card--${status}">
+    ${hdr}
+    <div class="match-players">
+      ${playerRow(p1, 1, winner === 1)}
+      ${playerRow(p2, 2, winner === 2)}
+    </div>
+  </div>`;
+}
+
+// ----- Draw detail -----
+function renderTournamentDetail(key, filter) {
+  state.activeTournament = key;
+  state.drawFilter       = filter;
+
+  const draw = DRAW_DATA[key];
+  const FILTER_LABELS = { all: 'All Matches', completed: 'Completed', live: 'In Progress', upcoming: 'Upcoming' };
+
+  if (!draw) {
+    tournamentsPanel.innerHTML = `
+      <button class="draw-back-btn" id="drawBackBtn">← Tournaments</button>
+      <div class="draw-empty-state">
+        <p>Draw not yet available for this tournament.</p>
+        <p class="draw-empty-sub">Check back closer to the start date.</p>
+      </div>`;
+    document.getElementById('drawBackBtn').addEventListener('click', () => {
+      state.activeTournament = null;
+      loadTournaments();
+    });
+    return;
+  }
+
+  // Count matches per filter for badge counts
+  function countMatches(f) {
+    return draw.rounds.reduce((n, r) =>
+      n + (f === 'all' ? r.matches.length : r.matches.filter(m => m.status === f).length), 0);
+  }
+
+  const filterBtns = ['all', 'completed', 'live', 'upcoming'].map(f => {
+    const cnt = countMatches(f);
+    if (cnt === 0 && f !== 'all') return '';
+    return `<button class="draw-filter-btn${filter === f ? ' active' : ''}" data-filter="${f}">
+      ${FILTER_LABELS[f]}<span class="draw-filter-count">${cnt}</span>
+    </button>`;
+  }).join('');
+
+  // Filter rounds
+  const visibleRounds = filter === 'all'
+    ? draw.rounds
+    : draw.rounds
+        .map(r => ({ ...r, matches: r.matches.filter(m => m.status === filter) }))
+        .filter(r => r.matches.length > 0);
+
+  const roundsHtml = visibleRounds.length
+    ? visibleRounds.map(round => `
+        <section class="draw-round">
+          <h3 class="draw-round-title">${escHtml(round.name)}</h3>
+          <div class="draw-round-matches">
+            ${round.matches.map(renderMatchCard).join('')}
+          </div>
+        </section>`).join('')
+    : `<div class="draw-empty-state">
+        <p>No ${FILTER_LABELS[filter].toLowerCase()} matches.</p>
+      </div>`;
+
+  // Build header
+  const catCls   = categoryClass(draw.rounds[0] ? 'Masters 1000' : '');
+  const tournMeta = (() => {
+    // Find source tournament metadata from DEMO_TOURNAMENTS
+    const tourKey = key.endsWith('-wta') ? 'wta' : 'atp';
+    const slug    = key;
+    return DEMO_TOURNAMENTS[tourKey]?.find(t => tournSlug(t.name, tourKey) === slug) || null;
+  })();
+  const meta = tournMeta || {};
+
+  const isLive = (meta.status === 'ongoing') || draw.rounds.some(r => r.matches.some(m => m.status === 'live'));
+  const surfBadge = meta.surface
+    ? `<span class="badge badge-surface badge-${meta.surface}">${meta.surface[0].toUpperCase() + meta.surface.slice(1)}</span>` : '';
+  const catBadge  = meta.category
+    ? `<span class="badge badge-cat badge-cat--${categoryClass(meta.category)}">${escHtml(meta.category)}</span>` : '';
+
+  tournamentsPanel.innerHTML = `
+    <div class="draw-view">
+      <button class="draw-back-btn" id="drawBackBtn">← Tournaments</button>
+      <div class="draw-header">
+        <div class="draw-title-row">
+          <h2 class="draw-title">${escHtml(meta.name || key)}</h2>
+          ${isLive ? '<span class="tourn-live-badge">&#9679; LIVE NOW</span>' : ''}
+        </div>
+        <div class="draw-header-meta">
+          ${meta.location ? `<span class="draw-meta-item">📍 ${escHtml(meta.location)}</span><span class="draw-meta-sep">·</span>` : ''}
+          ${meta.dates    ? `<span class="draw-meta-item">${escHtml(meta.dates)}</span><span class="draw-meta-sep">·</span>` : ''}
+          <div class="draw-badges">${surfBadge}${catBadge}</div>
+        </div>
+      </div>
+      <div class="draw-filter-bar">${filterBtns}</div>
+      <div class="draw-rounds">${roundsHtml}</div>
+    </div>`;
+
+  document.getElementById('drawBackBtn').addEventListener('click', () => {
+    state.activeTournament = null;
+    loadTournaments();
+  });
+  tournamentsPanel.querySelectorAll('.draw-filter-btn').forEach(btn =>
+    btn.addEventListener('click', () => renderTournamentDetail(key, btn.dataset.filter))
+  );
+}
+
 function categoryClass(cat) {
   if (cat === 'Grand Slam')                       return 'gs';
   if (cat === 'Masters 1000' || cat === 'WTA 1000') return 'm1000';
@@ -551,12 +857,15 @@ function renderTournaments(filter) {
   const sectionsHtml = tours.map(tour => {
     const label = tour === 'atp' ? 'ATP Tour' : 'WTA Tour';
     const cards = DEMO_TOURNAMENTS[tour].map(t => {
-      const catCls = categoryClass(t.category);
+      const catCls  = categoryClass(t.category);
+      const key     = tournSlug(t.name, tour);
+      const hasDraw = !!DRAW_DATA[key];
       const ongoingBadge = t.status === 'ongoing'
         ? `<span class="tourn-live-badge">&#9679; LIVE NOW</span>`
         : '';
       return `
-        <div class="tourn-card${t.status === 'ongoing' ? ' tourn-card--ongoing' : ''}">
+        <div class="tourn-card${t.status === 'ongoing' ? ' tourn-card--ongoing' : ''}"
+             data-key="${escHtml(key)}" role="button" tabindex="0">
           <div class="tourn-card-top">
             <span class="tourn-name">${escHtml(t.name)}</span>
             ${ongoingBadge}
@@ -567,7 +876,10 @@ function renderTournaments(filter) {
               <span class="badge badge-surface badge-${t.surface}">${t.surface[0].toUpperCase() + t.surface.slice(1)}</span>
               <span class="badge badge-cat badge-cat--${catCls}">${escHtml(t.category)}</span>
             </div>
-            <span class="tourn-dates">${escHtml(t.dates)}</span>
+            <div class="tourn-card-right">
+              ${hasDraw ? '<span class="tourn-draw-hint">View draw →</span>' : ''}
+              <span class="tourn-dates">${escHtml(t.dates)}</span>
+            </div>
           </div>
         </div>`;
     }).join('');
@@ -591,9 +903,16 @@ function renderTournaments(filter) {
       renderTournaments(state.tourFilter);
     });
   });
+
+  tournamentsPanel.querySelectorAll('.tourn-card[data-key]').forEach(card => {
+    const open = () => renderTournamentDetail(card.dataset.key, 'all');
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+  });
 }
 
 function loadTournaments() {
+  state.activeTournament = null;
   showTournamentsArea();
   stopAgeTick();
   lastUpdEl.textContent = '';
@@ -611,7 +930,9 @@ function activateTab(tour) {
 
 // ===== LOAD TOUR (entry point for tab clicks) =====
 function loadTour(tour, force = false) {
-  if (!force && tour === state.currentTour) return;
+  // Allow re-entry to tournaments when viewing a draw detail
+  const inDrawDetail = tour === 'tournaments' && state.activeTournament !== null;
+  if (!force && tour === state.currentTour && !inDrawDetail) return;
   activateTab(tour);
 
   if (tour === 'live') {
