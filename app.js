@@ -1074,9 +1074,13 @@ function renderTournaments(filter) {
   });
 
   tournamentsPanel.querySelectorAll('.tourn-card[data-key]').forEach(card => {
-    const open = () => renderTournamentDetail(card.dataset.key, 'all');
-    card.addEventListener('click', open);
-    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+    card.addEventListener('click', e => {
+      const filter = e.target.closest('.tourn-draw-hint') ? 'draw' : 'all';
+      renderTournamentDetail(card.dataset.key, filter);
+    });
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') renderTournamentDetail(card.dataset.key, 'all');
+    });
   });
 }
 
