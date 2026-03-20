@@ -263,6 +263,60 @@ const PLAYER_DATA = {
   'Jessica Pegula':    { cc:'US', ranking:5,  age:30, height:'170 cm', hand:'Right', backhand:'Two-handed', season:{w:10,l:6,  titles:0, prize:'$880,000'},  career:{gs:0,  hi:3, titles:5},  surfaces:{hard:72,clay:60,grass:63}, recent:[{opp:'Aryna Sabalenka',  tourn:'Miami Open QF', score:'3-6, 2-6',     r:'L'},{opp:'Daria Kasatkina',  tourn:'Miami Open R16',score:'6-3, 7-5',     r:'W'},{opp:'Iga Swiatek',      tourn:'Indian Wells',  score:'4-6, 3-6',     r:'L'},{opp:'Emma Navarro',     tourn:'Doha',          score:'6-4, 6-2',     r:'W'},{opp:'Aryna Sabalenka',  tourn:'US Open',       score:'6-7, 4-6, 5-7',r:'L'}]},
 };
 
+// ===== HEAD-TO-HEAD DATA =====
+// Key = alphabetically sorted player names joined by '|'
+// record: [wins for name-A (alpha-first), wins for name-B (alpha-second)]
+const H2H_DATA = {
+  'Carlos Alcaraz|Jannik Sinner': {
+    record: [6, 8],
+    meetings: [
+      { tourn: 'Australian Open 2025',  score: '3-6, 6-7, 3-6',           winner: 'Jannik Sinner'   },
+      { tourn: 'ATP Finals 2024',       score: '6-4, 6-4',                 winner: 'Carlos Alcaraz'  },
+      { tourn: 'Wimbledon 2024 F',      score: '2-6, 6-3, 6-4, 6-2',      winner: 'Carlos Alcaraz'  },
+    ],
+  },
+  'Daniil Medvedev|Jannik Sinner': {
+    record: [10, 7],
+    meetings: [
+      { tourn: 'Miami Open 2025 QF',    score: '2-6, 5-7',                 winner: 'Jannik Sinner'   },
+      { tourn: 'Australian Open 2024 F',score: '3-6, 3-6, 6-4, 6-4, 6-3', winner: 'Jannik Sinner'   },
+      { tourn: 'ATP Finals 2023',       score: '4-6, 4-6',                 winner: 'Daniil Medvedev' },
+    ],
+  },
+  'Carlos Alcaraz|Novak Djokovic': {
+    record: [5, 3],
+    meetings: [
+      { tourn: 'Wimbledon 2024 F',      score: '6-2, 6-2, 7-6',           winner: 'Carlos Alcaraz'  },
+      { tourn: 'Olympics 2024 F',       score: '6-7, 6-4, 6-2',           winner: 'Novak Djokovic'  },
+      { tourn: 'Roland Garros 2024 SF', score: '6-3, 2-6, 5-7, 4-6',      winner: 'Carlos Alcaraz'  },
+    ],
+  },
+  'Aryna Sabalenka|Iga Swiatek': {
+    record: [8, 12],
+    meetings: [
+      { tourn: 'WTA Finals 2024',       score: '7-6, 6-4',                 winner: 'Iga Swiatek'     },
+      { tourn: 'US Open 2024 F',        score: '3-6, 6-3, 6-3',           winner: 'Aryna Sabalenka' },
+      { tourn: 'Roland Garros 2024 SF', score: '7-5, 3-6, 5-7',           winner: 'Iga Swiatek'     },
+    ],
+  },
+  'Coco Gauff|Iga Swiatek': {
+    record: [7, 13],
+    meetings: [
+      { tourn: 'Miami Open 2025 SF',    score: '3-6, 6-4, 6-3',           winner: 'Coco Gauff'      },
+      { tourn: 'Indian Wells 2025',     score: '6-3, 6-1',                 winner: 'Coco Gauff'      },
+      { tourn: 'US Open 2023 F',        score: '2-6, 6-1, 6-3',           winner: 'Coco Gauff'      },
+    ],
+  },
+  'Aryna Sabalenka|Elena Rybakina': {
+    record: [9, 6],
+    meetings: [
+      { tourn: 'Miami Open 2025 SF',    score: '6-4, 7-6',                 winner: 'Aryna Sabalenka' },
+      { tourn: 'Australian Open 2025',  score: '7-6, 6-4',                 winner: 'Aryna Sabalenka' },
+      { tourn: 'Australian Open 2024',  score: '4-6, 7-6, 6-4',           winner: 'Aryna Sabalenka' },
+    ],
+  },
+};
+
 // ===== STATE =====
 const state = {
   currentTour:       null,
@@ -273,6 +327,8 @@ const state = {
   drawFilter:        'all',   // All / completed / live / upcoming in draw view
   ageTick:           null,
   prevView:          null,    // Navigation context for back button in player profile
+  h2hP1:            null,    // H2H selected player 1
+  h2hP2:            null,    // H2H selected player 2
 };
 
 // ===== DOM REFS =====
@@ -295,6 +351,7 @@ const emptySearch = $('emptySearch');
 const emptyQuery  = $('emptyQuery');
 const livePanel        = $('livePanel');
 const tournamentsPanel = $('tournamentsPanel');
+const h2hPanel         = $('h2hPanel');
 const playerPanel      = $('playerPanel');
 const demoBanner       = $('demoBanner');
 
@@ -444,6 +501,7 @@ function parseRankings(data) {
 function showRankingsArea() {
   livePanel.style.display        = 'none';
   tournamentsPanel.style.display = 'none';
+  h2hPanel.style.display         = 'none';
   tableWrap.style.display        = 'block';
   searchWrap.style.display       = '';
   toolbar.style.display          = '';
@@ -454,6 +512,7 @@ function showLiveArea() {
   searchWrap.style.display       = 'none';
   livePanel.style.display        = 'block';
   tournamentsPanel.style.display = 'none';
+  h2hPanel.style.display         = 'none';
   toolbar.style.display          = '';
   demoBanner.style.display       = 'none';
 }
@@ -463,6 +522,7 @@ function showTournamentsArea() {
   searchWrap.style.display       = 'none';
   livePanel.style.display        = 'none';
   tournamentsPanel.style.display = 'block';
+  h2hPanel.style.display         = 'none';
   toolbar.style.display          = '';
   demoBanner.style.display       = '';
 }
@@ -472,6 +532,7 @@ function showPlayerPanel() {
   searchWrap.style.display       = 'none';
   livePanel.style.display        = 'none';
   tournamentsPanel.style.display = 'none';
+  h2hPanel.style.display         = 'none';
   playerPanel.style.display      = 'block';
   toolbar.style.display          = 'none';
   demoBanner.style.display       = 'none';
@@ -1271,6 +1332,182 @@ function renderPlayerProfile(name) {
   document.getElementById('profileBackBtn').addEventListener('click', goBack);
 }
 
+// ===== H2H PANEL =====
+function showH2HPanel() {
+  tableWrap.style.display        = 'none';
+  searchWrap.style.display       = 'none';
+  livePanel.style.display        = 'none';
+  tournamentsPanel.style.display = 'none';
+  playerPanel.style.display      = 'none';
+  h2hPanel.style.display         = 'block';
+  toolbar.style.display          = '';
+  demoBanner.style.display       = '';
+}
+
+function renderH2HComparison(p1Name, p2Name) {
+  const d1 = PLAYER_DATA[p1Name];
+  const d2 = PLAYER_DATA[p2Name];
+
+  // Resolve H2H record from p1's perspective
+  const key  = [p1Name, p2Name].sort().join('|');
+  const h2h  = H2H_DATA[key];
+  let p1w = 0, p2w = 0;
+  if (h2h) {
+    const [nameA] = [p1Name, p2Name].sort();
+    [p1w, p2w] = nameA === p1Name ? h2h.record : [h2h.record[1], h2h.record[0]];
+  }
+  const total = p1w + p2w;
+  const recText = p1w > p2w
+    ? `${escHtml(shortName(p1Name))} leads ${p1w}–${p2w}`
+    : p2w > p1w
+    ? `${escHtml(shortName(p2Name))} leads ${p2w}–${p1w}`
+    : total > 0 ? `Series tied ${p1w}–${p2w}` : 'No recorded meetings';
+
+  // Helper: which side is "better"
+  const better = (v1, v2, lowerIsBetter = false) =>
+    v1 === v2 ? null : (lowerIsBetter ? (v1 < v2 ? 'p1' : 'p2') : (v1 > v2 ? 'p1' : 'p2'));
+
+  const statsRows = [
+    ['Ranking',      `#${d1.ranking}`,                    `#${d2.ranking}`,                    better(d1.ranking,       d2.ranking,       true)],
+    ['Age',          `${d1.age}`,                         `${d2.age}`,                         null                                           ],
+    ['Grand Slams',  `${d1.career.gs}`,                   `${d2.career.gs}`,                   better(d1.career.gs,     d2.career.gs)          ],
+    ['Career High',  `#${d1.career.hi}`,                  `#${d2.career.hi}`,                  better(d1.career.hi,     d2.career.hi,     true)],
+    ['Titles',       `${d1.career.titles}`,               `${d2.career.titles}`,               better(d1.career.titles, d2.career.titles)      ],
+    ['2025 W–L',     `${d1.season.w}–${d1.season.l}`,    `${d2.season.w}–${d2.season.l}`,    better(d1.season.w,      d2.season.w)           ],
+  ].map(([label, v1, v2, side]) => `
+    <div class="h2h-stat-row">
+      <span class="h2h-val${side === 'p1' ? ' h2h-val--leader' : ''}">${v1}</span>
+      <span class="h2h-stat-label">${label}</span>
+      <span class="h2h-val${side === 'p2' ? ' h2h-val--leader' : ''}">${v2}</span>
+    </div>`).join('');
+
+  const surfRows = ['hard', 'clay', 'grass'].map(s => {
+    const a = d1.surfaces[s] ?? 0;
+    const b = d2.surfaces[s] ?? 0;
+    const lbl = s[0].toUpperCase() + s.slice(1);
+    return `<div class="h2h-surf-row">
+      <div class="h2h-surf-side h2h-surf-side--left">
+        <span class="h2h-surf-pct${a >= b ? ' h2h-val--leader' : ''}">${a}%</span>
+        <div class="h2h-surf-track">
+          <div class="h2h-surf-fill h2h-surf-fill--${s}" style="width:${a}%"></div>
+        </div>
+      </div>
+      <span class="h2h-surf-label">${lbl}</span>
+      <div class="h2h-surf-side h2h-surf-side--right">
+        <div class="h2h-surf-track">
+          <div class="h2h-surf-fill h2h-surf-fill--${s}" style="width:${b}%"></div>
+        </div>
+        <span class="h2h-surf-pct${b >= a ? ' h2h-val--leader' : ''}">${b}%</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const meetingsHtml = h2h?.meetings?.length
+    ? h2h.meetings.map(m => {
+        const side = m.winner === p1Name ? 'p1' : 'p2';
+        return `<div class="h2h-meeting">
+          <div class="h2h-meeting-left">
+            <span class="h2h-meeting-tourn">${escHtml(m.tourn)}</span>
+            <span class="h2h-meeting-score">${escHtml(m.score)}</span>
+          </div>
+          <span class="h2h-meeting-winner h2h-meeting-winner--${side} player-link"
+                data-player="${escHtml(m.winner)}">${escHtml(shortName(m.winner))} won</span>
+        </div>`;
+      }).join('')
+    : '<p class="h2h-no-data">No recorded meetings.</p>';
+
+  return `
+    <div class="h2h-comparison">
+      <div class="h2h-header">
+        <div class="h2h-player-hdr">
+          <div class="h2h-avatar">${countryFlag(d1.cc)}</div>
+          <div class="h2h-player-name player-link" data-player="${escHtml(p1Name)}">${escHtml(p1Name)}</div>
+          <div class="h2h-player-sub">#${d1.ranking} · Age ${d1.age}</div>
+        </div>
+        <div class="h2h-vs-center">VS</div>
+        <div class="h2h-player-hdr h2h-player-hdr--right">
+          <div class="h2h-avatar">${countryFlag(d2.cc)}</div>
+          <div class="h2h-player-name player-link" data-player="${escHtml(p2Name)}">${escHtml(p2Name)}</div>
+          <div class="h2h-player-sub">#${d2.ranking} · Age ${d2.age}</div>
+        </div>
+      </div>
+
+      <div class="h2h-section">
+        <div class="h2h-stats">${statsRows}</div>
+      </div>
+
+      <div class="h2h-section">
+        <div class="h2h-section-title">Surface Win %</div>
+        <div class="h2h-surf-rows">${surfRows}</div>
+      </div>
+
+      <div class="h2h-section h2h-section--last">
+        <div class="h2h-record-box">
+          <div class="h2h-record-nums">
+            <span class="h2h-rec-n${p1w > p2w ? ' h2h-val--leader' : ''}">${p1w}</span>
+            <span class="h2h-rec-sep">–</span>
+            <span class="h2h-rec-n${p2w > p1w ? ' h2h-val--leader' : ''}">${p2w}</span>
+          </div>
+          <div class="h2h-record-sub">${recText}</div>
+        </div>
+        <div class="h2h-section-title" style="margin-top:1.25rem">Recent Meetings</div>
+        <div class="h2h-meetings">${meetingsHtml}</div>
+      </div>
+    </div>`;
+}
+
+function loadH2H() {
+  showH2HPanel();
+  stopAgeTick();
+  statusEl.textContent  = 'Demo data';
+  lastUpdEl.textContent = '';
+
+  const atpNames = DEMO.atp.map(p => p.name).filter(n => PLAYER_DATA[n]);
+  const wtaNames = DEMO.wta.map(p => p.name).filter(n => PLAYER_DATA[n]);
+
+  function makeOptions(selected) {
+    const blank   = '<option value="">— Select player —</option>';
+    const atpOpts = atpNames.map(n =>
+      `<option value="${escHtml(n)}"${n === selected ? ' selected' : ''}>${escHtml(n)}</option>`
+    ).join('');
+    const wtaOpts = wtaNames.map(n =>
+      `<option value="${escHtml(n)}"${n === selected ? ' selected' : ''}>${escHtml(n)}</option>`
+    ).join('');
+    return blank
+      + `<optgroup label="ATP">${atpOpts}</optgroup>`
+      + `<optgroup label="WTA">${wtaOpts}</optgroup>`;
+  }
+
+  function render() {
+    const p1 = state.h2hP1;
+    const p2 = state.h2hP2;
+    const compHtml = (p1 && p2 && p1 !== p2)
+      ? renderH2HComparison(p1, p2)
+      : `<div class="h2h-empty"><p>Select two players above to compare them head-to-head.</p></div>`;
+
+    h2hPanel.innerHTML = `
+      <div class="h2h-view">
+        <div class="h2h-select-bar">
+          <select class="h2h-select" id="h2hSel1">${makeOptions(p1)}</select>
+          <div class="h2h-vs-pill">VS</div>
+          <select class="h2h-select" id="h2hSel2">${makeOptions(p2)}</select>
+        </div>
+        ${compHtml}
+      </div>`;
+
+    document.getElementById('h2hSel1').addEventListener('change', e => {
+      state.h2hP1 = e.target.value || null;
+      render();
+    });
+    document.getElementById('h2hSel2').addEventListener('change', e => {
+      state.h2hP2 = e.target.value || null;
+      render();
+    });
+  }
+
+  render();
+}
+
 // ===== ACTIVATE TAB =====
 function activateTab(tour) {
   state.currentTour = tour;
@@ -1290,6 +1527,8 @@ function loadTour(tour, force = false) {
     loadLive(force);
   } else if (tour === 'tournaments') {
     loadTournaments();
+  } else if (tour === 'h2h') {
+    loadH2H();
   } else {
     // Clear search when switching between ranking tabs
     if (state.currentTour !== tour || force) {
