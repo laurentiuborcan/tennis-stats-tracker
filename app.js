@@ -502,6 +502,7 @@ function showRankingsArea() {
   livePanel.style.display        = 'none';
   tournamentsPanel.style.display = 'none';
   h2hPanel.style.display         = 'none';
+  playerPanel.style.display      = 'none';
   tableWrap.style.display        = 'block';
   searchWrap.style.display       = '';
   toolbar.style.display          = '';
@@ -513,6 +514,7 @@ function showLiveArea() {
   livePanel.style.display        = 'block';
   tournamentsPanel.style.display = 'none';
   h2hPanel.style.display         = 'none';
+  playerPanel.style.display      = 'none';
   toolbar.style.display          = '';
   demoBanner.style.display       = 'none';
 }
@@ -523,6 +525,7 @@ function showTournamentsArea() {
   livePanel.style.display        = 'none';
   tournamentsPanel.style.display = 'block';
   h2hPanel.style.display         = 'none';
+  playerPanel.style.display      = 'none';
   toolbar.style.display          = '';
   demoBanner.style.display       = '';
 }
