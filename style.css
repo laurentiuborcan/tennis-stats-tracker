@@ -530,6 +530,126 @@ details[open].live-debug > summary::before { content: '▼'; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-hl); border-radius: 3px; }
 
+/* ===== TOURNAMENTS ===== */
+.tourn-filter-bar {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.4rem;
+}
+.tourn-filter-btn {
+  padding: 0.28rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  transition: color var(--transition), border-color var(--transition),
+              background var(--transition);
+}
+.tourn-filter-btn:hover { color: var(--text); border-color: var(--border-hl); }
+.tourn-filter-btn.active {
+  color: var(--green);
+  border-color: var(--green-dim);
+  background: var(--green-glow);
+}
+
+.tourn-group { margin-bottom: 2rem; }
+.tourn-group-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.tourn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 0.65rem;
+}
+
+.tourn-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  transition: border-color var(--transition), background var(--transition);
+}
+.tourn-card:hover { border-color: var(--border-hl); }
+.tourn-card--ongoing {
+  border-color: rgba(63, 185, 80, 0.35);
+  background: rgba(63, 185, 80, 0.03);
+}
+
+.tourn-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.tourn-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.tourn-live-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+.tourn-location {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.tourn-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+.tourn-badges {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.tourn-dates {
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Surface + category badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+/* Surface */
+.badge-hard  { background: rgba(88,166,255,0.12); color: #58a6ff; border-color: rgba(88,166,255,0.25); }
+.badge-clay  { background: rgba(217,100,40,0.12);  color: #e07a3a; border-color: rgba(217,100,40,0.25);  }
+.badge-grass { background: rgba(63,185,80,0.12);   color: #3fb950; border-color: rgba(63,185,80,0.25);   }
+/* Category */
+.badge-cat--gs    { background: rgba(240,180,41,0.12);  color: #f0b429; border-color: rgba(240,180,41,0.25); }
+.badge-cat--m1000 { background: rgba(163,113,247,0.12); color: #a371f7; border-color: rgba(163,113,247,0.25); }
+.badge-cat--c500  { background: rgba(56,189,193,0.12);  color: #38bdc1; border-color: rgba(56,189,193,0.25); }
+.badge-cat--c250  { background: rgba(125,133,144,0.12); color: #8b949e; border-color: rgba(125,133,144,0.25); }
+.badge-cat--finals { background: rgba(240,180,41,0.08); color: #e3b341; border-color: rgba(240,180,41,0.2); }
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   .header-sub { display: none; }
@@ -542,7 +662,7 @@ details[open].live-debug > summary::before { content: '▼'; }
   .col-rank { width: 56px; }
   .rank-badge { width: 27px; height: 27px; font-size: 0.75rem; }
   .toolbar { flex-wrap: wrap; gap: 0.4rem; }
-  .welcome-state { padding: 3rem 1.5rem; }
+  .tourn-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 380px) {

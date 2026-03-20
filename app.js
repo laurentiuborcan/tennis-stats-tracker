@@ -68,12 +68,52 @@ const DEMO = {
   ],
 };
 
+// ===== TOURNAMENT DEMO DATA =====
+const DEMO_TOURNAMENTS = {
+  atp: [
+    { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 18 – Apr 1',  category: 'Masters 1000', status: 'ongoing'  },
+    { name: 'Monte Carlo Rolex Masters',    location: 'Monte Carlo, Monaco',   surface: 'clay',  dates: 'Apr 7 – 13',      category: 'Masters 1000', status: 'upcoming' },
+    { name: 'Barcelona Open',               location: 'Barcelona, Spain',      surface: 'clay',  dates: 'Apr 14 – 20',     category: '500',          status: 'upcoming' },
+    { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 21 – May 3',  category: 'Masters 1000', status: 'upcoming' },
+    { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 4 – 17',      category: 'Masters 1000', status: 'upcoming' },
+    { name: 'Roland Garros',                location: 'Paris, France',         surface: 'clay',  dates: 'May 24 – Jun 7',  category: 'Grand Slam',   status: 'upcoming' },
+    { name: 'Cinch Championships',          location: 'London, UK',            surface: 'grass', dates: 'Jun 15 – 21',     category: '500',          status: 'upcoming' },
+    { name: 'Halle Open',                   location: 'Halle, Germany',        surface: 'grass', dates: 'Jun 15 – 21',     category: '500',          status: 'upcoming' },
+    { name: 'Wimbledon',                    location: 'London, UK',            surface: 'grass', dates: 'Jun 29 – Jul 12', category: 'Grand Slam',   status: 'upcoming' },
+    { name: 'Hamburg Open',                 location: 'Hamburg, Germany',      surface: 'clay',  dates: 'Jul 14 – 20',     category: '500',          status: 'upcoming' },
+    { name: 'National Bank Open',           location: 'Montreal, Canada',      surface: 'hard',  dates: 'Jul 27 – Aug 9',  category: 'Masters 1000', status: 'upcoming' },
+    { name: 'Western & Southern Open',      location: 'Cincinnati, USA',       surface: 'hard',  dates: 'Aug 10 – 16',     category: 'Masters 1000', status: 'upcoming' },
+    { name: 'US Open',                      location: 'New York, USA',         surface: 'hard',  dates: 'Aug 24 – Sep 6',  category: 'Grand Slam',   status: 'upcoming' },
+    { name: 'China Open',                   location: 'Beijing, China',        surface: 'hard',  dates: 'Sep 28 – Oct 4',  category: '500',          status: 'upcoming' },
+    { name: 'Rolex Shanghai Masters',       location: 'Shanghai, China',       surface: 'hard',  dates: 'Oct 5 – 12',      category: 'Masters 1000', status: 'upcoming' },
+    { name: 'Nitto ATP Finals',             location: 'Turin, Italy',          surface: 'hard',  dates: 'Nov 9 – 16',      category: 'Finals',       status: 'upcoming' },
+  ],
+  wta: [
+    { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 18 – Apr 1',  category: 'WTA 1000',     status: 'ongoing'  },
+    { name: 'Stuttgart Open',               location: 'Stuttgart, Germany',    surface: 'clay',  dates: 'Apr 14 – 20',     category: 'WTA 500',      status: 'upcoming' },
+    { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 21 – May 3',  category: 'WTA 1000',     status: 'upcoming' },
+    { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 4 – 17',      category: 'WTA 1000',     status: 'upcoming' },
+    { name: 'Roland Garros',                location: 'Paris, France',         surface: 'clay',  dates: 'May 24 – Jun 7',  category: 'Grand Slam',   status: 'upcoming' },
+    { name: 'Birmingham Classic',           location: 'Birmingham, UK',        surface: 'grass', dates: 'Jun 9 – 15',      category: 'WTA 250',      status: 'upcoming' },
+    { name: 'Bad Homburg Open',             location: 'Bad Homburg, Germany',  surface: 'grass', dates: 'Jun 16 – 22',     category: 'WTA 250',      status: 'upcoming' },
+    { name: 'Wimbledon',                    location: 'London, UK',            surface: 'grass', dates: 'Jun 29 – Jul 12', category: 'Grand Slam',   status: 'upcoming' },
+    { name: 'Palermo Open',                 location: 'Palermo, Italy',        surface: 'clay',  dates: 'Jul 14 – 20',     category: 'WTA 250',      status: 'upcoming' },
+    { name: 'National Bank Open',           location: 'Toronto, Canada',       surface: 'hard',  dates: 'Jul 27 – Aug 9',  category: 'WTA 1000',     status: 'upcoming' },
+    { name: 'Western & Southern Open',      location: 'Cincinnati, USA',       surface: 'hard',  dates: 'Aug 10 – 16',     category: 'WTA 1000',     status: 'upcoming' },
+    { name: 'US Open',                      location: 'New York, USA',         surface: 'hard',  dates: 'Aug 24 – Sep 6',  category: 'Grand Slam',   status: 'upcoming' },
+    { name: 'China Open',                   location: 'Beijing, China',        surface: 'hard',  dates: 'Sep 28 – Oct 4',  category: 'WTA 1000',     status: 'upcoming' },
+    { name: 'Jiangxi Open',                 location: 'Nanchang, China',       surface: 'hard',  dates: 'Oct 5 – 11',      category: 'WTA 500',      status: 'upcoming' },
+    { name: 'WTA Finals',                   location: 'Riyadh, Saudi Arabia',  surface: 'hard',  dates: 'Nov 2 – 8',       category: 'Finals',       status: 'upcoming' },
+  ],
+};
+
 // ===== STATE =====
 const state = {
   currentTour: null,
   // In-session memory cache: { data, ts } per tour
   cache: { atp: null, wta: null, live: null },
   query: '',
+  tourFilter: 'all',  // filter for tournaments tab
   ageTick: null,  // setInterval handle for "last updated" counter
 };
 
@@ -93,11 +133,11 @@ const statusEl    = $('statusBar');
 const lastUpdEl   = $('lastUpdated');
 const refreshBtn  = $('refreshBtn');
 const tableWrap   = $('tableWrap');
-const welcomeEl   = $('welcomeState');
 const emptySearch = $('emptySearch');
 const emptyQuery  = $('emptyQuery');
-const livePanel   = $('livePanel');
-const demoBanner  = $('demoBanner');
+const livePanel        = $('livePanel');
+const tournamentsPanel = $('tournamentsPanel');
+const demoBanner       = $('demoBanner');
 
 // ===== LOCAL STORAGE CACHE =====
 function lsGet(tour) {
@@ -243,18 +283,29 @@ function parseRankings(data) {
 
 // ===== SHOW / HIDE HELPERS =====
 function showRankingsArea() {
-  livePanel.style.display = 'none';
-  tableWrap.style.display = 'block';
-  searchWrap.style.display = '';
-  toolbar.style.display   = '';
+  livePanel.style.display        = 'none';
+  tournamentsPanel.style.display = 'none';
+  tableWrap.style.display        = 'block';
+  searchWrap.style.display       = '';
+  toolbar.style.display          = '';
 }
 
 function showLiveArea() {
-  tableWrap.style.display  = 'none';
-  searchWrap.style.display = 'none';
-  livePanel.style.display  = 'block';
-  toolbar.style.display    = '';
-  demoBanner.style.display = 'none';
+  tableWrap.style.display        = 'none';
+  searchWrap.style.display       = 'none';
+  livePanel.style.display        = 'block';
+  tournamentsPanel.style.display = 'none';
+  toolbar.style.display          = '';
+  demoBanner.style.display       = 'none';
+}
+
+function showTournamentsArea() {
+  tableWrap.style.display        = 'none';
+  searchWrap.style.display       = 'none';
+  livePanel.style.display        = 'none';
+  tournamentsPanel.style.display = 'block';
+  toolbar.style.display          = '';
+  demoBanner.style.display       = '';
 }
 
 function setAllHidden() {
@@ -485,6 +536,71 @@ async function loadLive(force = false) {
   }
 }
 
+// ===== TOURNAMENTS =====
+function categoryClass(cat) {
+  if (cat === 'Grand Slam')                       return 'gs';
+  if (cat === 'Masters 1000' || cat === 'WTA 1000') return 'm1000';
+  if (cat === '500'          || cat === 'WTA 500')  return 'c500';
+  if (cat === '250'          || cat === 'WTA 250')  return 'c250';
+  return 'finals';
+}
+
+function renderTournaments(filter) {
+  const tours = filter === 'all' ? ['atp', 'wta'] : [filter];
+
+  const sectionsHtml = tours.map(tour => {
+    const label = tour === 'atp' ? 'ATP Tour' : 'WTA Tour';
+    const cards = DEMO_TOURNAMENTS[tour].map(t => {
+      const catCls = categoryClass(t.category);
+      const ongoingBadge = t.status === 'ongoing'
+        ? `<span class="tourn-live-badge">&#9679; LIVE NOW</span>`
+        : '';
+      return `
+        <div class="tourn-card${t.status === 'ongoing' ? ' tourn-card--ongoing' : ''}">
+          <div class="tourn-card-top">
+            <span class="tourn-name">${escHtml(t.name)}</span>
+            ${ongoingBadge}
+          </div>
+          <span class="tourn-location">${escHtml(t.location)}</span>
+          <div class="tourn-card-foot">
+            <div class="tourn-badges">
+              <span class="badge badge-surface badge-${t.surface}">${t.surface[0].toUpperCase() + t.surface.slice(1)}</span>
+              <span class="badge badge-cat badge-cat--${catCls}">${escHtml(t.category)}</span>
+            </div>
+            <span class="tourn-dates">${escHtml(t.dates)}</span>
+          </div>
+        </div>`;
+    }).join('');
+    return `<section class="tourn-group">
+      <h3 class="tourn-group-title">${label}</h3>
+      <div class="tourn-grid">${cards}</div>
+    </section>`;
+  }).join('');
+
+  tournamentsPanel.innerHTML = `
+    <div class="tourn-filter-bar">
+      <button class="tourn-filter-btn${filter === 'all' ? ' active' : ''}" data-filter="all">All</button>
+      <button class="tourn-filter-btn${filter === 'atp' ? ' active' : ''}" data-filter="atp">ATP</button>
+      <button class="tourn-filter-btn${filter === 'wta' ? ' active' : ''}" data-filter="wta">WTA</button>
+    </div>
+    ${sectionsHtml}`;
+
+  tournamentsPanel.querySelectorAll('.tourn-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.tourFilter = btn.dataset.filter;
+      renderTournaments(state.tourFilter);
+    });
+  });
+}
+
+function loadTournaments() {
+  showTournamentsArea();
+  stopAgeTick();
+  lastUpdEl.textContent = '';
+  statusEl.textContent  = 'Demo data';
+  renderTournaments(state.tourFilter);
+}
+
 // ===== ACTIVATE TAB =====
 function activateTab(tour) {
   state.currentTour = tour;
@@ -500,6 +616,8 @@ function loadTour(tour, force = false) {
 
   if (tour === 'live') {
     loadLive(force);
+  } else if (tour === 'tournaments') {
+    loadTournaments();
   } else {
     // Clear search when switching between ranking tabs
     if (state.currentTour !== tour || force) {
