@@ -745,13 +745,166 @@ function renderMatchCard(match) {
   </div>`;
 }
 
+// ----- Bracket helpers -----
+// "Jannik Sinner" → "J. Sinner"
+function shortName(n) {
+  if (!n || n === 'TBD') return n || 'TBD';
+  const parts = n.split(' ');
+  return parts.length < 2 ? n : parts[0][0] + '. ' + parts.slice(1).join(' ');
+}
+
+function renderBracketCard(match) {
+  const { p1, p2, status, winner, sets = [], inProgress } = match;
+
+  function bkRow(player, pNum, isWinner, isLoser) {
+    const flag  = player.cc ? countryFlag(player.cc) : '';
+    const isTBD = !player.name || player.name === 'TBD';
+    const name  = isTBD ? 'TBD' : shortName(player.name);
+    const seed  = player.seed ? `<span class="bk-seed">(${player.seed})</span>` : '';
+
+    let setsHtml = '';
+    if (status !== 'upcoming' && sets.length > 0) {
+      const cells = sets.map((s, i) => {
+        const n   = pNum === 1 ? s.p1 : s.p2;
+        const cls = (i === sets.length - 1 && inProgress) ? ' bk-set--live' : '';
+        return `<span class="bk-set${cls}">${n}</span>`;
+      }).join('');
+      setsHtml = `<div class="bk-sets">${cells}</div>`;
+    }
+
+    const rowCls  = `bk-player${isWinner ? ' bk-player--winner' : isLoser ? ' bk-player--loser' : ''}`;
+    const nameCls = `bk-name${isTBD ? ' bk-tbd' : ''}`;
+    return `<div class="${rowCls}">
+      <div class="bk-player-info">
+        <span class="bk-flag">${flag}</span>
+        <span class="${nameCls}">${escHtml(name)}</span>${seed}
+      </div>${setsHtml}
+    </div>`;
+  }
+
+  return `<div class="bk-players">
+    ${bkRow(p1, 1, winner === 1, winner === 2)}
+    <div class="bk-divider"></div>
+    ${bkRow(p2, 2, winner === 2, winner === 1)}
+  </div>`;
+}
+
+function renderBracket(key) {
+  const draw = DRAW_DATA[key];
+  if (!draw) return `<div class="draw-empty-state"><p>No bracket data available.</p></div>`;
+
+  // Reverse so earliest round (R16) is leftmost (index 0)
+  const rounds = [...draw.rounds].reverse();
+
+  // Layout constants (all in px)
+  const CARD_H  = 49;   // 2×24px player rows + 1px divider
+  const BORDER  = 2;    // top+bottom card borders
+  const SLOT_H  = CARD_H + BORDER;
+  const CARD_W  = 180;
+  const GAP     = 14;   // vertical gap between adjacent cards in earliest round
+  const COL_GAP = 38;   // horizontal gap between columns (connector space)
+  const LABEL_H = 28;   // round label height at top
+  const UNIT    = SLOT_H + GAP;
+
+  // Vertical center of match at (ri, mi)
+  function matchCY(ri, mi) {
+    const step = Math.pow(2, ri);
+    return Math.round(LABEL_H + step * mi * UNIT + (step - 1) * UNIT / 2) + SLOT_H / 2;
+  }
+  function matchTop(ri, mi) { return Math.round(matchCY(ri, mi) - SLOT_H / 2); }
+  function colX(ri)          { return ri * (CARD_W + BORDER + COL_GAP); }
+
+  const stageH   = LABEL_H + rounds[0].matches.length * UNIT - GAP;
+  const WINNER_W = 160;
+  const winX     = colX(rounds.length - 1) + CARD_W + BORDER + COL_GAP;
+  const stageW   = winX + WINNER_W;
+
+  // Match cards
+  const cardsHtml = rounds.flatMap((round, ri) =>
+    round.matches.map((match, mi) =>
+      `<div class="bk-card bk-card--${match.status}"
+            style="position:absolute;top:${matchTop(ri,mi)}px;left:${colX(ri)}px;width:${CARD_W}px">
+        ${renderBracketCard(match)}
+      </div>`
+    )
+  ).join('');
+
+  // Round labels
+  const labelsHtml = rounds.map((round, ri) =>
+    `<div class="bk-round-label"
+          style="position:absolute;top:0;left:${colX(ri)}px;width:${CARD_W + BORDER}px">
+      ${escHtml(round.name)}
+    </div>`
+  ).join('');
+
+  // SVG connector lines
+  let lines = '';
+  for (let ri = 0; ri < rounds.length - 1; ri++) {
+    const n = rounds[ri].matches.length;
+    for (let mi = 0; mi + 1 < n; mi += 2) {
+      const mj = mi / 2;
+      const ay = matchCY(ri, mi);
+      const by = matchCY(ri, mi + 1);
+      const ny = matchCY(ri + 1, mj);
+      const ax = colX(ri) + CARD_W + BORDER;
+      const nx = colX(ri + 1);
+      const sx = ax + COL_GAP / 2;
+
+      lines += `<line x1="${ax}"  y1="${ay}" x2="${sx}"  y2="${ay}"/>`;   // top arm
+      lines += `<line x1="${sx}"  y1="${ay}" x2="${sx}"  y2="${by}"/>`;   // spine
+      lines += `<line x1="${ax}"  y1="${by}" x2="${sx}"  y2="${by}"/>`;   // bottom arm
+      lines += `<line x1="${sx}"  y1="${ny}" x2="${nx}"  y2="${ny}"/>`;   // exit arm
+    }
+  }
+
+  // Connector from Final to winner slot
+  const finalCY    = matchCY(rounds.length - 1, 0);
+  const finalRightX = colX(rounds.length - 1) + CARD_W + BORDER;
+  lines += `<line x1="${finalRightX}" y1="${finalCY}" x2="${winX}" y2="${finalCY}"/>`;
+
+  // Winner display
+  const finalMatch = rounds[rounds.length - 1].matches[0];
+  let winnerHtml;
+  if (finalMatch.status === 'completed' && finalMatch.winner) {
+    const w    = finalMatch.winner === 1 ? finalMatch.p1 : finalMatch.p2;
+    const flag = w.cc ? countryFlag(w.cc) : '';
+    const seed = w.seed ? ` (${w.seed})` : '';
+    winnerHtml = `<div class="bk-winner-slot"
+                       style="position:absolute;top:${finalCY - 30}px;left:${winX}px">
+      <div class="bk-winner-trophy">🏆</div>
+      <div class="bk-winner-name">${flag}&nbsp;${escHtml(shortName(w.name))}${escHtml(seed)}</div>
+    </div>`;
+  } else {
+    winnerHtml = `<div class="bk-winner-slot"
+                       style="position:absolute;top:${finalCY - 10}px;left:${winX}px">
+      <div class="bk-winner-tbd">Champion TBD</div>
+    </div>`;
+  }
+
+  return `<div class="bracket-scroll-outer">
+    <div class="bracket-stage" style="width:${stageW}px;height:${stageH}px">
+      <svg class="bracket-svg" width="${stageW}" height="${stageH}">
+        <g stroke="var(--border-hl)" stroke-width="1.5" fill="none"
+           stroke-linecap="round" stroke-linejoin="round">
+          ${lines}
+        </g>
+      </svg>
+      ${labelsHtml}
+      ${cardsHtml}
+      ${winnerHtml}
+    </div>
+  </div>`;
+}
+
 // ----- Draw detail -----
 function renderTournamentDetail(key, filter) {
   state.activeTournament = key;
   state.drawFilter       = filter;
 
   const draw = DRAW_DATA[key];
-  const FILTER_LABELS = { all: 'All Matches', completed: 'Completed', live: 'In Progress', upcoming: 'Upcoming' };
+  const FILTER_LABELS = {
+    all: 'All Matches', completed: 'Completed', live: 'In Progress', upcoming: 'Upcoming', draw: 'Draw',
+  };
 
   if (!draw) {
     tournamentsPanel.innerHTML = `
@@ -773,7 +926,19 @@ function renderTournamentDetail(key, filter) {
       n + (f === 'all' ? r.matches.length : r.matches.filter(m => m.status === f).length), 0);
   }
 
-  const filterBtns = ['all', 'completed', 'live', 'upcoming'].map(f => {
+  const filterBtns = ['all', 'completed', 'live', 'upcoming', 'draw'].map(f => {
+    if (f === 'draw') {
+      return `<button class="draw-filter-btn draw-filter-btn--draw${filter === 'draw' ? ' active' : ''}" data-filter="draw">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0" aria-hidden="true">
+          <rect x="0.5" y="0.5" width="3" height="3.5" rx="0.5" stroke="currentColor"/>
+          <rect x="0.5" y="6.5" width="3" height="3.5" rx="0.5" stroke="currentColor"/>
+          <rect x="7.5" y="3.5" width="3" height="3.5" rx="0.5" stroke="currentColor"/>
+          <line x1="3.5" y1="2.3" x2="7.5" y2="5.3" stroke="currentColor" stroke-width="0.9"/>
+          <line x1="3.5" y1="8.3" x2="7.5" y2="5.3" stroke="currentColor" stroke-width="0.9"/>
+        </svg>
+        Draw
+      </button>`;
+    }
     const cnt = countMatches(f);
     if (cnt === 0 && f !== 'all') return '';
     return `<button class="draw-filter-btn${filter === f ? ' active' : ''}" data-filter="${f}">
@@ -799,6 +964,10 @@ function renderTournamentDetail(key, filter) {
     : `<div class="draw-empty-state">
         <p>No ${FILTER_LABELS[filter].toLowerCase()} matches.</p>
       </div>`;
+
+  const contentArea = filter === 'draw'
+    ? renderBracket(key)
+    : `<div class="draw-rounds">${roundsHtml}</div>`;
 
   // Build header
   const catCls   = categoryClass(draw.rounds[0] ? 'Masters 1000' : '');
@@ -831,7 +1000,7 @@ function renderTournamentDetail(key, filter) {
         </div>
       </div>
       <div class="draw-filter-bar">${filterBtns}</div>
-      <div class="draw-rounds">${roundsHtml}</div>
+      ${contentArea}
     </div>`;
 
   document.getElementById('drawBackBtn').addEventListener('click', () => {
