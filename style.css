@@ -236,6 +236,21 @@ input  { font-family: inherit; font-size: 1rem; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ===== DEMO BANNER ===== */
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  margin-bottom: 0.65rem;
+  background: rgba(227, 179, 65, 0.08);
+  border: 1px solid rgba(227, 179, 65, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--orange);
+  line-height: 1.4;
+}
+
 /* ===== TABLE WRAPPER ===== */
 .table-wrap {
   background: var(--bg-card);
@@ -267,29 +282,7 @@ input  { font-family: inherit; font-size: 1rem; }
   max-width: 340px;
   line-height: 1.55;
 }
-.welcome-tabs {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 0.5rem;
-}
-.welcome-tab-btn {
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  border: 1px solid var(--border-hl);
-  border-radius: var(--radius-sm);
-  background: var(--bg-hover);
-  transition: color var(--transition), border-color var(--transition),
-              background var(--transition);
-}
-.welcome-tab-btn:hover {
-  color: var(--green);
-  border-color: var(--green-dim);
-  background: var(--green-glow);
-}
+
 
 /* ===== LOADING ===== */
 .loading {

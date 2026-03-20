@@ -20,6 +20,54 @@ const TTL = {
 
 const CACHE_KEY = tour => `tennis_v1_${tour}`;
 
+// ===== DEMO DATA (fallback when API quota is exhausted) =====
+const DEMO = {
+  atp: [
+    { rank:  1, name: 'Jannik Sinner',                country: 'Italy',     countryCode: 'IT', points: 11830 },
+    { rank:  2, name: 'Carlos Alcaraz',               country: 'Spain',     countryCode: 'ES', points:  9255 },
+    { rank:  3, name: 'Alexander Zverev',             country: 'Germany',   countryCode: 'DE', points:  7880 },
+    { rank:  4, name: 'Novak Djokovic',               country: 'Serbia',    countryCode: 'RS', points:  6160 },
+    { rank:  5, name: 'Daniil Medvedev',              country: 'Russia',    countryCode: 'RU', points:  5765 },
+    { rank:  6, name: 'Casper Ruud',                  country: 'Norway',    countryCode: 'NO', points:  4320 },
+    { rank:  7, name: 'Andrey Rublev',                country: 'Russia',    countryCode: 'RU', points:  3890 },
+    { rank:  8, name: 'Taylor Fritz',                 country: 'USA',       countryCode: 'US', points:  3645 },
+    { rank:  9, name: 'Alex de Minaur',               country: 'Australia', countryCode: 'AU', points:  3410 },
+    { rank: 10, name: 'Grigor Dimitrov',              country: 'Bulgaria',  countryCode: 'BG', points:  3280 },
+    { rank: 11, name: 'Tommy Paul',                   country: 'USA',       countryCode: 'US', points:  3050 },
+    { rank: 12, name: 'Stefanos Tsitsipas',           country: 'Greece',    countryCode: 'GR', points:  2985 },
+    { rank: 13, name: 'Holger Rune',                  country: 'Denmark',   countryCode: 'DK', points:  2740 },
+    { rank: 14, name: 'Ben Shelton',                  country: 'USA',       countryCode: 'US', points:  2615 },
+    { rank: 15, name: 'Ugo Humbert',                  country: 'France',    countryCode: 'FR', points:  2480 },
+    { rank: 16, name: 'Sebastian Korda',              country: 'USA',       countryCode: 'US', points:  2210 },
+    { rank: 17, name: 'Frances Tiafoe',               country: 'USA',       countryCode: 'US', points:  2070 },
+    { rank: 18, name: 'Francisco Cerundolo',          country: 'Argentina', countryCode: 'AR', points:  1960 },
+    { rank: 19, name: 'Alejandro Davidovich Fokina',  country: 'Spain',     countryCode: 'ES', points:  1885 },
+    { rank: 20, name: 'Karen Khachanov',              country: 'Russia',    countryCode: 'RU', points:  1810 },
+  ],
+  wta: [
+    { rank:  1, name: 'Aryna Sabalenka',      country: 'Belarus',        countryCode: 'BY', points: 10485 },
+    { rank:  2, name: 'Iga Swiatek',          country: 'Poland',         countryCode: 'PL', points:  9295 },
+    { rank:  3, name: 'Coco Gauff',           country: 'USA',            countryCode: 'US', points:  6530 },
+    { rank:  4, name: 'Elena Rybakina',       country: 'Kazakhstan',     countryCode: 'KZ', points:  5745 },
+    { rank:  5, name: 'Jessica Pegula',       country: 'USA',            countryCode: 'US', points:  4960 },
+    { rank:  6, name: 'Mirra Andreeva',       country: 'Russia',         countryCode: 'RU', points:  4215 },
+    { rank:  7, name: 'Jasmine Paolini',      country: 'Italy',          countryCode: 'IT', points:  4050 },
+    { rank:  8, name: 'Emma Navarro',         country: 'USA',            countryCode: 'US', points:  3620 },
+    { rank:  9, name: 'Madison Keys',         country: 'USA',            countryCode: 'US', points:  3290 },
+    { rank: 10, name: 'Daria Kasatkina',      country: 'Russia',         countryCode: 'RU', points:  3105 },
+    { rank: 11, name: 'Barbora Krejcikova',   country: 'Czech Republic', countryCode: 'CZ', points:  2870 },
+    { rank: 12, name: 'Paula Badosa',         country: 'Spain',          countryCode: 'ES', points:  2755 },
+    { rank: 13, name: 'Qinwen Zheng',         country: 'China',          countryCode: 'CN', points:  2630 },
+    { rank: 14, name: 'Karolina Muchova',     country: 'Czech Republic', countryCode: 'CZ', points:  2510 },
+    { rank: 15, name: 'Anna Kalinskaya',      country: 'Russia',         countryCode: 'RU', points:  2380 },
+    { rank: 16, name: 'Beatriz Haddad Maia',  country: 'Brazil',         countryCode: 'BR', points:  2225 },
+    { rank: 17, name: 'Elina Svitolina',      country: 'Ukraine',        countryCode: 'UA', points:  2090 },
+    { rank: 18, name: 'Caroline Garcia',      country: 'France',         countryCode: 'FR', points:  1965 },
+    { rank: 19, name: 'Maria Sakkari',        country: 'Greece',         countryCode: 'GR', points:  1870 },
+    { rank: 20, name: 'Liudmila Samsonova',   country: 'Russia',         countryCode: 'RU', points:  1755 },
+  ],
+};
+
 // ===== STATE =====
 const state = {
   currentTour: null,
@@ -49,6 +97,7 @@ const welcomeEl   = $('welcomeState');
 const emptySearch = $('emptySearch');
 const emptyQuery  = $('emptyQuery');
 const livePanel   = $('livePanel');
+const demoBanner  = $('demoBanner');
 
 // ===== LOCAL STORAGE CACHE =====
 function lsGet(tour) {
@@ -205,6 +254,7 @@ function showLiveArea() {
   searchWrap.style.display = 'none';
   livePanel.style.display  = 'block';
   toolbar.style.display    = '';
+  demoBanner.style.display = 'none';
 }
 
 function setAllHidden() {
@@ -342,6 +392,7 @@ function showLivePlaceholder() {
 // ===== LOAD RANKINGS =====
 async function loadRankings(tour, force = false) {
   showRankingsArea();
+  demoBanner.style.display = 'none';
 
   if (!force) {
     const cached = getCached(tour);
@@ -361,13 +412,37 @@ async function loadRankings(tour, force = false) {
       return;
     }
     setCached(tour, players);
+    demoBanner.style.display = 'none';
     renderTable(players, state.query, state.cache[tour].ts);
   } catch (err) {
-    if (err.status === 429) {
-      showError('API rate limit reached — please try again in a few minutes.', true);
-    } else {
-      showError(`Could not load ${tour.toUpperCase()} rankings. ${err.message}`);
-    }
+    // API unavailable — fall back to demo data
+    const demo = DEMO[tour];
+    setAllHidden();
+    tableEl.style.display    = 'table';
+    demoBanner.style.display = '';
+    statusEl.textContent     = `${demo.length} players (demo)`;
+    lastUpdEl.textContent    = '';
+    stopAgeTick();
+    bodyEl.innerHTML = demo.map(p => {
+      let rankHTML;
+      if (p.rank === 1)      rankHTML = `<span class="rank-badge gold">1</span>`;
+      else if (p.rank === 2) rankHTML = `<span class="rank-badge silver">2</span>`;
+      else if (p.rank === 3) rankHTML = `<span class="rank-badge bronze">3</span>`;
+      else                   rankHTML = `<span class="rank-num">${p.rank}</span>`;
+      const flag = countryFlag(p.countryCode);
+      return `
+        <tr>
+          <td class="cell-rank">${rankHTML}</td>
+          <td class="cell-player"><span class="player-name">${escHtml(p.name)}</span></td>
+          <td class="cell-country">
+            <div class="country-wrap">
+              ${flag ? `<span class="country-flag">${flag}</span>` : ''}
+              <span class="country-name">${escHtml(p.country)}</span>
+            </div>
+          </td>
+          <td class="cell-points">${fmtPoints(p.points)}</td>
+        </tr>`;
+    }).join('');
   }
 }
 
