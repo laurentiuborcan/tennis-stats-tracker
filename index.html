@@ -14,7 +14,7 @@
         <span class="logo-icon">🎾</span>
         <span class="logo-text">Tennis Stats Tracker</span>
       </div>
-      <span class="header-sub">Live ATP &amp; WTA Rankings</span>
+      <span class="header-sub">ATP &amp; WTA Rankings</span>
     </div>
   </header>
 
@@ -22,14 +22,19 @@
 
     <!-- Tabs -->
     <div class="tabs-bar">
-      <button class="tab-btn active" data-tour="atp">ATP Rankings</button>
+      <button class="tab-btn" data-tour="atp">ATP Rankings</button>
       <button class="tab-btn" data-tour="wta">WTA Rankings</button>
+      <button class="tab-btn" data-tour="live">
+        <span class="tab-live-pip" aria-hidden="true"></span>Live Matches
+      </button>
+      <button class="tab-btn" data-tour="tournaments">Tournaments</button>
+      <button class="tab-btn" data-tour="h2h">H2H</button>
     </div>
 
-    <!-- Search -->
-    <div class="search-wrap">
+    <!-- Search (rankings only) -->
+    <div class="search-wrap" id="searchWrap" style="display:none">
       <span class="search-icon">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
       </span>
@@ -41,25 +46,47 @@
         autocomplete="off"
         spellcheck="false"
       />
-      <button class="search-clear" id="searchClear" title="Clear search" aria-label="Clear search">&#x2715;</button>
+      <button class="search-clear" id="searchClear" title="Clear" aria-label="Clear search">&#x2715;</button>
     </div>
 
-    <!-- Status bar -->
-    <div class="status-bar" id="statusBar"></div>
+    <!-- Toolbar: status left, last-updated + refresh right -->
+    <div class="toolbar" id="toolbar" style="display:none">
+      <span class="status-text" id="statusBar"></span>
+      <div class="toolbar-right">
+        <span class="last-updated" id="lastUpdated"></span>
+        <button class="btn-refresh" id="refreshBtn" title="Refresh data">
+          <svg class="refresh-icon" viewBox="0 0 16 16" width="13" height="13" fill="currentColor">
+            <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+          </svg>
+          Refresh
+        </button>
+      </div>
+    </div>
 
-    <!-- Table container -->
+    <!-- Demo data banner -->
+    <div class="demo-banner" id="demoBanner" style="display:none">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>
+      Showing demo data — live data will load when API quota resets
+    </div>
+
+    <!-- Rankings table container -->
     <div class="table-wrap" id="tableWrap">
+
+      <!-- Loading -->
       <div class="loading" id="loadingState">
         <div class="spinner"></div>
-        <span>Loading rankings…</span>
+        <span>Loading…</span>
       </div>
 
+      <!-- Error -->
       <div class="error-state" id="errorState" style="display:none">
-        <span class="error-icon">⚠️</span>
-        <p id="errorMsg">Failed to load rankings.</p>
+        <span class="error-icon" id="errorIcon">⚠️</span>
+        <p id="errorMsg">Failed to load data.</p>
         <button class="btn-retry" id="retryBtn">Try Again</button>
       </div>
 
+      <!-- Rankings table -->
       <table class="rankings-table" id="rankingsTable" style="display:none">
         <thead>
           <tr>
@@ -72,11 +99,25 @@
         <tbody id="rankingsBody"></tbody>
       </table>
 
+      <!-- Empty search -->
       <div class="empty-search" id="emptySearch" style="display:none">
-        <span>🎾</span>
+        <span>🔍</span>
         <p>No players match "<span id="emptyQuery"></span>"</p>
       </div>
+
     </div>
+
+    <!-- Live Matches panel (outside table-wrap) -->
+    <div id="livePanel" style="display:none"></div>
+
+    <!-- Tournaments panel (outside table-wrap) -->
+    <div id="tournamentsPanel" style="display:none"></div>
+
+    <!-- H2H panel -->
+    <div id="h2hPanel" style="display:none"></div>
+
+    <!-- Player Profile panel -->
+    <div id="playerPanel" style="display:none"></div>
 
   </main>
 
