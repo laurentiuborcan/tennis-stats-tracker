@@ -324,7 +324,10 @@ const state = {
   prevView:          null,    // Navigation context for back button in player profile
   h2hP1:            null,    // H2H selected player 1
   h2hP2:            null,    // H2H selected player 2
+  playerCache:       {},      // name → parsed API profile object
 };
+
+let _playerDebounceTimer = null;
 
 // ===== DOM REFS =====
 const $ = id => document.getElementById(id);
@@ -1264,6 +1267,71 @@ function loadTournaments() {
 }
 
 // ===== PLAYER PROFILES =====
+async function fetchPlayerProfile(name) {
+  if (state.playerCache[name]) return state.playerCache[name];
+
+  // Step 1: search for the player by name
+  const searchData = await apiFetch(
+    `https://${API_HOST}/api/tennis/search/${encodeURIComponent(name)}`
+  );
+  const results = Array.isArray(searchData?.results) ? searchData.results : [];
+
+  // Find first result that is a Tennis individual player (type 1 = player, not doubles team)
+  const match = results.find(r =>
+    r?.entity?.sport?.name === 'Tennis' && r?.entity?.type === 1
+  );
+  if (!match) return null;
+
+  // Step 2: fetch full player details using the numeric ID
+  const playerData = await apiFetch(
+    `https://${API_HOST}/api/tennis/player/${match.entity.id}`
+  );
+  const team = playerData?.team ?? {};
+  const info = team.playerTeamInfo ?? {};
+
+  // Derive age from birth timestamp (seconds → years)
+  let age = null;
+  if (info.birthDateTimestamp) {
+    age = Math.floor(
+      (Date.now() - info.birthDateTimestamp * 1000) / (365.25 * 24 * 60 * 60 * 1000)
+    );
+  }
+
+  // Height: API returns meters (e.g. 1.88) → display as "188 cm"
+  let height = null;
+  if (info.height) height = `${Math.round(info.height * 100)} cm`;
+
+  // Hand: "right-handed" → "Right", "left-handed" → "Left"
+  let hand = null;
+  if (info.plays) {
+    const m = info.plays.match(/^(right|left)/i);
+    if (m) hand = m[1][0].toUpperCase() + m[1].slice(1);
+  }
+
+  // Career prize money (currency from raw field)
+  let prize = null;
+  if (info.prizeTotal != null) {
+    const currency = info.prizeTotalRaw?.currency ?? '';
+    const sym = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : (currency ? currency + '\u00a0' : '');
+    prize = sym + Math.round(info.prizeTotal).toLocaleString('en-US');
+  }
+
+  const profile = {
+    source: 'api',
+    name: team.fullName ?? team.name ?? name,
+    country: team.country?.name ?? null,
+    countryCode: team.country?.alpha2 ?? '',
+    ranking: team.ranking ?? info.currentRanking ?? null,
+    age,
+    height,
+    hand,
+    prize,
+  };
+
+  state.playerCache[name] = profile;
+  return profile;
+}
+
 function openPlayerProfile(name) {
   if (state.currentTour === 'tournaments') {
     state.prevView = state.activeTournament
@@ -1272,8 +1340,33 @@ function openPlayerProfile(name) {
   } else {
     state.prevView = { type: 'rankings', tour: state.currentTour || 'atp' };
   }
+
+  // Show panel with loading state immediately
   showPlayerPanel();
-  renderPlayerProfile(name);
+  playerPanel.innerHTML = `
+    <div class="profile-view">
+      <button class="draw-back-btn" id="profileBackBtn">← Back</button>
+      <div class="profile-loading">
+        <div class="spinner"></div>
+        <span>Loading profile…</span>
+      </div>
+    </div>`;
+  document.getElementById('profileBackBtn').addEventListener('click', goBack);
+
+  // Debounce: rapid clicks only trigger a single fetch for the last name
+  clearTimeout(_playerDebounceTimer);
+  _playerDebounceTimer = setTimeout(async () => {
+    let profile = null;
+    try {
+      profile = await fetchPlayerProfile(name);
+    } catch { /* network/API error — fall through to PLAYER_DATA */ }
+
+    if (profile) {
+      renderPlayerProfileFromAPI(profile);
+    } else {
+      renderPlayerProfile(name);
+    }
+  }, 500);
 }
 
 function goBack() {
@@ -1405,6 +1498,59 @@ function renderPlayerProfile(name) {
         <section class="profile-section profile-section--last">
           <h3 class="profile-section-title">Recent Results</h3>
           <div class="recent-results">${recentRows}</div>
+        </section>
+      </div>
+    </div>`;
+
+  document.getElementById('profileBackBtn').addEventListener('click', goBack);
+}
+
+function renderPlayerProfileFromAPI(profile) {
+  const flag = countryFlag(profile.countryCode);
+
+  const metaParts = [];
+  if (profile.ranking != null) metaParts.push(`<span class="profile-rank">#${profile.ranking} in the World</span>`);
+  if (profile.age != null)     metaParts.push(`<span>Age ${profile.age}</span>`);
+  if (profile.height)          metaParts.push(`<span>${escHtml(profile.height)}</span>`);
+
+  const metaHtml = metaParts.length
+    ? `<div class="profile-meta">${metaParts.join('<span class="profile-sep">·</span>')}</div>`
+    : '';
+  const handHtml = profile.hand
+    ? `<div class="profile-meta"><span>${escHtml(profile.hand)}-handed</span></div>`
+    : '';
+
+  // Build stat cards for whatever fields the API returned
+  const statCards = [];
+  if (profile.ranking != null) statCards.push(['Ranking',      `#${profile.ranking}`]);
+  if (profile.country)         statCards.push(['Country',      escHtml(profile.country)]);
+  if (profile.age != null)     statCards.push(['Age',          String(profile.age)]);
+  if (profile.height)          statCards.push(['Height',       escHtml(profile.height)]);
+  if (profile.hand)            statCards.push(['Plays',        `${escHtml(profile.hand)}-handed`]);
+  if (profile.prize)           statCards.push(['Career Prize', escHtml(profile.prize)]);
+
+  const statsHtml = statCards.map(([label, val]) => `
+    <div class="profile-stat-card">
+      <span class="stat-value">${val}</span>
+      <span class="stat-label">${escHtml(label)}</span>
+    </div>`).join('');
+
+  playerPanel.innerHTML = `
+    <div class="profile-view">
+      <button class="draw-back-btn" id="profileBackBtn">← Back</button>
+      <div class="profile-header">
+        <div class="profile-flag-big">${flag}</div>
+        <div class="profile-header-info">
+          <h2 class="profile-name">${escHtml(profile.name)}</h2>
+          ${metaHtml}${handHtml}
+        </div>
+      </div>
+      <div class="profile-sections">
+        <section class="profile-section profile-section--last">
+          <h3 class="profile-section-title">
+            Player Info <span class="profile-api-badge">Live · RapidAPI</span>
+          </h3>
+          <div class="profile-stat-grid">${statsHtml}</div>
         </section>
       </div>
     </div>`;
