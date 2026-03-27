@@ -614,9 +614,92 @@ function renderTable(players, query, ts) {
   }).join('');
 }
 
+// ===== LIVE DATA PARSING =====
+function parseLiveEvents(data) {
+  let items = [];
+  if      (Array.isArray(data?.events))  items = data.events;
+  else if (Array.isArray(data?.data))    items = data.data;
+  else if (Array.isArray(data))          items = data;
+  else {
+    const arr = Object.values(data || {}).find(v => Array.isArray(v));
+    if (arr) items = arr;
+  }
+
+  return items.map(e => {
+    const tournament =
+      e.tournament?.uniqueTournament?.name ?? e.tournament?.name ??
+      e.category?.name ?? e.event?.tournament?.name ?? 'Unknown Tournament';
+
+    const round =
+      e.roundInfo?.name ?? e.round?.name ??
+      (e.roundInfo?.round ? `Round ${e.roundInfo.round}` : '');
+
+    const p1Name =
+      e.homeTeam?.name ?? e.player1?.name ?? e.firstPlayer?.name ??
+      e.home?.name ?? 'Player 1';
+    const p2Name =
+      e.awayTeam?.name ?? e.player2?.name ?? e.secondPlayer?.name ??
+      e.away?.name ?? 'Player 2';
+
+    const p1Code =
+      e.homeTeam?.country?.alpha2 ?? e.player1?.country?.alpha2 ?? '';
+    const p2Code =
+      e.awayTeam?.country?.alpha2 ?? e.player2?.country?.alpha2 ?? '';
+
+    // Build per-set scores from period1, period2, … keys
+    const hScore = e.homeScore ?? {};
+    const aScore = e.awayScore ?? {};
+    const sets = [];
+    for (let i = 1; i <= 7; i++) {
+      const h = hScore[`period${i}`], a = aScore[`period${i}`];
+      if (h === undefined && a === undefined) break;
+      sets.push({ p1: h ?? 0, p2: a ?? 0 });
+    }
+    // Fall back to current game score when no period data
+    if (!sets.length) {
+      const h = hScore.current ?? hScore.display;
+      const a = aScore.current ?? aScore.display;
+      if (h !== undefined || a !== undefined) sets.push({ p1: h ?? 0, p2: a ?? 0 });
+    }
+
+    return { tournament, round, p1Name, p2Name, p1Code, p2Code, sets };
+  });
+}
+
+function renderLiveCard(ev) {
+  const meta = escHtml(ev.tournament) + (ev.round ? ` · ${escHtml(ev.round)}` : '');
+
+  const playerRow = (name, code, setIdx) => {
+    const flag     = countryFlag(code);
+    const setSpans = ev.sets.map((s, i) => {
+      const val    = setIdx === 0 ? s.p1 : s.p2;
+      const isLast = i === ev.sets.length - 1;
+      return `<span class="lc-set${isLast ? ' lc-set--cur' : ''}">${val}</span>`;
+    }).join('');
+    return `
+      <div class="lc-row">
+        <span class="lc-flag" aria-hidden="true">${flag}</span>
+        <span class="lc-name">${escHtml(name)}</span>
+        <div class="lc-scores">${setSpans}</div>
+      </div>`;
+  };
+
+  return `
+    <div class="live-match-card">
+      <div class="lc-header">
+        <span class="lc-live-badge"><span class="lc-pip" aria-hidden="true"></span>LIVE</span>
+        <span class="lc-meta">${meta}</span>
+      </div>
+      <div class="lc-body">
+        ${playerRow(ev.p1Name, ev.p1Code, 0)}
+        ${playerRow(ev.p2Name, ev.p2Code, 1)}
+      </div>
+    </div>`;
+}
+
 // ===== LIVE RENDER =====
 function renderLive(data, ts) {
-  const events = data?.events ?? [];
+  const events = parseLiveEvents(data);
 
   if (ts) {
     lastUpdEl.textContent = `Updated ${formatAge(ts)}`;
@@ -624,11 +707,15 @@ function renderLive(data, ts) {
   }
 
   if (events.length === 0) {
+    const tsLine = ts
+      ? `<p class="live-ts">Last checked ${new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>`
+      : '';
     livePanel.innerHTML = `
       <div class="live-empty">
         <div class="live-empty-icon">📡</div>
         <p class="live-empty-title">No live matches right now</p>
-        <p class="live-empty-sub">Check back later or click Refresh to try again.</p>
+        <p class="live-empty-sub">Check back during tournament hours</p>
+        ${tsLine}
       </div>`;
     statusEl.textContent = '0 live matches';
     return;
@@ -636,17 +723,12 @@ function renderLive(data, ts) {
 
   statusEl.textContent = `${events.length} live match${events.length !== 1 ? 'es' : ''}`;
 
-  // DEBUG: raw JSON of first event so field names are visible for next mapping step
-  const first = events[0];
   livePanel.innerHTML = `
     <div class="live-header">
       <span class="live-dot" aria-hidden="true"></span>
       <span>${events.length} live match${events.length !== 1 ? 'es' : ''}</span>
     </div>
-    <details open class="live-debug">
-      <summary>Field reference — raw JSON of first event (remove once mapped)</summary>
-      <pre>${escHtml(JSON.stringify(first, null, 2))}</pre>
-    </details>`;
+    <div class="live-cards">${events.map(renderLiveCard).join('')}</div>`;
 }
 
 function showLivePlaceholder() {
@@ -753,8 +835,8 @@ async function loadLive(force = false) {
       livePanel.innerHTML = `
         <div class="live-error-card">
           <div class="live-error-icon">🕐</div>
-          <p class="live-error-title">Rate limit reached</p>
-          <p class="live-error-sub">Too many requests — please wait a few minutes, then click Refresh.</p>
+          <p class="live-error-title">Live data unavailable</p>
+          <p class="live-error-sub">API quota reached — try again later</p>
         </div>`;
       statusEl.textContent  = '';
       lastUpdEl.textContent = '';
