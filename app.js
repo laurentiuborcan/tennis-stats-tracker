@@ -23,48 +23,48 @@ const CACHE_KEY = tour => `tennis_v1_${tour}`;
 // ===== DEMO DATA (fallback when API quota is exhausted) =====
 const DEMO = {
   atp: [
-    { rank:  1, name: 'Jannik Sinner',                country: 'Italy',     countryCode: 'IT', points: 11830 },
-    { rank:  2, name: 'Carlos Alcaraz',               country: 'Spain',     countryCode: 'ES', points:  9255 },
-    { rank:  3, name: 'Alexander Zverev',             country: 'Germany',   countryCode: 'DE', points:  7880 },
-    { rank:  4, name: 'Novak Djokovic',               country: 'Serbia',    countryCode: 'RS', points:  6160 },
-    { rank:  5, name: 'Daniil Medvedev',              country: 'Russia',    countryCode: 'RU', points:  5765 },
-    { rank:  6, name: 'Casper Ruud',                  country: 'Norway',    countryCode: 'NO', points:  4320 },
-    { rank:  7, name: 'Andrey Rublev',                country: 'Russia',    countryCode: 'RU', points:  3890 },
-    { rank:  8, name: 'Taylor Fritz',                 country: 'USA',       countryCode: 'US', points:  3645 },
-    { rank:  9, name: 'Alex de Minaur',               country: 'Australia', countryCode: 'AU', points:  3410 },
-    { rank: 10, name: 'Grigor Dimitrov',              country: 'Bulgaria',  countryCode: 'BG', points:  3280 },
-    { rank: 11, name: 'Tommy Paul',                   country: 'USA',       countryCode: 'US', points:  3050 },
-    { rank: 12, name: 'Stefanos Tsitsipas',           country: 'Greece',    countryCode: 'GR', points:  2985 },
-    { rank: 13, name: 'Holger Rune',                  country: 'Denmark',   countryCode: 'DK', points:  2740 },
-    { rank: 14, name: 'Ben Shelton',                  country: 'USA',       countryCode: 'US', points:  2615 },
-    { rank: 15, name: 'Ugo Humbert',                  country: 'France',    countryCode: 'FR', points:  2480 },
-    { rank: 16, name: 'Sebastian Korda',              country: 'USA',       countryCode: 'US', points:  2210 },
-    { rank: 17, name: 'Frances Tiafoe',               country: 'USA',       countryCode: 'US', points:  2070 },
-    { rank: 18, name: 'Francisco Cerundolo',          country: 'Argentina', countryCode: 'AR', points:  1960 },
-    { rank: 19, name: 'Alejandro Davidovich Fokina',  country: 'Spain',     countryCode: 'ES', points:  1885 },
-    { rank: 20, name: 'Karen Khachanov',              country: 'Russia',    countryCode: 'RU', points:  1810 },
+    { rank:  1, name: 'Carlos Alcaraz',              country: 'Spain',     countryCode: 'ES', points: 10945 },
+    { rank:  2, name: 'Jannik Sinner',               country: 'Italy',     countryCode: 'IT', points:  9830 },
+    { rank:  3, name: 'Novak Djokovic',              country: 'Serbia',    countryCode: 'RS', points:  7560 },
+    { rank:  4, name: 'Alexander Zverev',            country: 'Germany',   countryCode: 'DE', points:  6890 },
+    { rank:  5, name: 'Lorenzo Musetti',             country: 'Italy',     countryCode: 'IT', points:  4120 },
+    { rank:  6, name: 'Alex de Minaur',              country: 'Australia', countryCode: 'AU', points:  3970 },
+    { rank:  7, name: 'Taylor Fritz',                country: 'USA',       countryCode: 'US', points:  3740 },
+    { rank:  8, name: 'Felix Auger-Aliassime',       country: 'Canada',    countryCode: 'CA', points:  3510 },
+    { rank:  9, name: 'Ben Shelton',                 country: 'USA',       countryCode: 'US', points:  3280 },
+    { rank: 10, name: 'Daniil Medvedev',             country: 'Russia',    countryCode: 'RU', points:  3050 },
+    { rank: 11, name: 'Tommy Paul',                  country: 'USA',       countryCode: 'US', points:  2870 },
+    { rank: 12, name: 'Stefanos Tsitsipas',          country: 'Greece',    countryCode: 'GR', points:  2740 },
+    { rank: 13, name: 'Holger Rune',                 country: 'Denmark',   countryCode: 'DK', points:  2590 },
+    { rank: 14, name: 'Ugo Humbert',                 country: 'France',    countryCode: 'FR', points:  2430 },
+    { rank: 15, name: 'Andrey Rublev',               country: 'Russia',    countryCode: 'RU', points:  2280 },
+    { rank: 16, name: 'Sebastian Korda',             country: 'USA',       countryCode: 'US', points:  2110 },
+    { rank: 17, name: 'Frances Tiafoe',              country: 'USA',       countryCode: 'US', points:  1980 },
+    { rank: 18, name: 'Francisco Cerundolo',         country: 'Argentina', countryCode: 'AR', points:  1850 },
+    { rank: 19, name: 'Casper Ruud',                 country: 'Norway',    countryCode: 'NO', points:  1720 },
+    { rank: 20, name: 'Grigor Dimitrov',             country: 'Bulgaria',  countryCode: 'BG', points:  1640 },
   ],
   wta: [
-    { rank:  1, name: 'Aryna Sabalenka',      country: 'Belarus',        countryCode: 'BY', points: 10485 },
-    { rank:  2, name: 'Iga Swiatek',          country: 'Poland',         countryCode: 'PL', points:  9295 },
-    { rank:  3, name: 'Coco Gauff',           country: 'USA',            countryCode: 'US', points:  6530 },
-    { rank:  4, name: 'Elena Rybakina',       country: 'Kazakhstan',     countryCode: 'KZ', points:  5745 },
-    { rank:  5, name: 'Jessica Pegula',       country: 'USA',            countryCode: 'US', points:  4960 },
-    { rank:  6, name: 'Mirra Andreeva',       country: 'Russia',         countryCode: 'RU', points:  4215 },
-    { rank:  7, name: 'Jasmine Paolini',      country: 'Italy',          countryCode: 'IT', points:  4050 },
-    { rank:  8, name: 'Emma Navarro',         country: 'USA',            countryCode: 'US', points:  3620 },
-    { rank:  9, name: 'Madison Keys',         country: 'USA',            countryCode: 'US', points:  3290 },
-    { rank: 10, name: 'Daria Kasatkina',      country: 'Russia',         countryCode: 'RU', points:  3105 },
-    { rank: 11, name: 'Barbora Krejcikova',   country: 'Czech Republic', countryCode: 'CZ', points:  2870 },
-    { rank: 12, name: 'Paula Badosa',         country: 'Spain',          countryCode: 'ES', points:  2755 },
-    { rank: 13, name: 'Qinwen Zheng',         country: 'China',          countryCode: 'CN', points:  2630 },
-    { rank: 14, name: 'Karolina Muchova',     country: 'Czech Republic', countryCode: 'CZ', points:  2510 },
-    { rank: 15, name: 'Anna Kalinskaya',      country: 'Russia',         countryCode: 'RU', points:  2380 },
-    { rank: 16, name: 'Beatriz Haddad Maia',  country: 'Brazil',         countryCode: 'BR', points:  2225 },
-    { rank: 17, name: 'Elina Svitolina',      country: 'Ukraine',        countryCode: 'UA', points:  2090 },
-    { rank: 18, name: 'Caroline Garcia',      country: 'France',         countryCode: 'FR', points:  1965 },
-    { rank: 19, name: 'Maria Sakkari',        country: 'Greece',         countryCode: 'GR', points:  1870 },
-    { rank: 20, name: 'Liudmila Samsonova',   country: 'Russia',         countryCode: 'RU', points:  1755 },
+    { rank:  1, name: 'Aryna Sabalenka',      country: 'Belarus',    countryCode: 'BY', points: 11380 },
+    { rank:  2, name: 'Elena Rybakina',       country: 'Kazakhstan', countryCode: 'KZ', points:  8240 },
+    { rank:  3, name: 'Iga Swiatek',          country: 'Poland',     countryCode: 'PL', points:  7950 },
+    { rank:  4, name: 'Coco Gauff',           country: 'USA',        countryCode: 'US', points:  6130 },
+    { rank:  5, name: 'Jessica Pegula',       country: 'USA',        countryCode: 'US', points:  5210 },
+    { rank:  6, name: 'Madison Keys',         country: 'USA',        countryCode: 'US', points:  4780 },
+    { rank:  7, name: 'Mirra Andreeva',       country: 'Russia',     countryCode: 'RU', points:  4320 },
+    { rank:  8, name: 'Jasmine Paolini',      country: 'Italy',      countryCode: 'IT', points:  3970 },
+    { rank:  9, name: 'Emma Navarro',         country: 'USA',        countryCode: 'US', points:  3640 },
+    { rank: 10, name: 'Paula Badosa',         country: 'Spain',      countryCode: 'ES', points:  3310 },
+    { rank: 11, name: 'Daria Kasatkina',      country: 'Russia',     countryCode: 'RU', points:  3050 },
+    { rank: 12, name: 'Barbora Krejcikova',   country: 'Czech Republic', countryCode: 'CZ', points: 2830 },
+    { rank: 13, name: 'Qinwen Zheng',         country: 'China',      countryCode: 'CN', points:  2610 },
+    { rank: 14, name: 'Karolina Muchova',     country: 'Czech Republic', countryCode: 'CZ', points: 2440 },
+    { rank: 15, name: 'Anna Kalinskaya',      country: 'Russia',     countryCode: 'RU', points:  2250 },
+    { rank: 16, name: 'Beatriz Haddad Maia',  country: 'Brazil',     countryCode: 'BR', points:  2090 },
+    { rank: 17, name: 'Elina Svitolina',      country: 'Ukraine',    countryCode: 'UA', points:  1950 },
+    { rank: 18, name: 'Caroline Garcia',      country: 'France',     countryCode: 'FR', points:  1820 },
+    { rank: 19, name: 'Maria Sakkari',        country: 'Greece',     countryCode: 'GR', points:  1710 },
+    { rank: 20, name: 'Liudmila Samsonova',   country: 'Russia',     countryCode: 'RU', points:  1590 },
   ],
 };
 
@@ -245,69 +245,97 @@ const DRAW_DATA = {
 // ===== PLAYER PROFILE DATA =====
 const PLAYER_DATA = {
   // ATP
-  'Jannik Sinner':     { cc:'IT', ranking:1,  age:23, height:'188 cm', hand:'Right', backhand:'Two-handed', season:{w:18,l:3,  titles:2, prize:'$3,240,000'}, career:{gs:2,  hi:1, titles:17}, surfaces:{hard:82,clay:67,grass:71}, recent:[{opp:'Carlos Alcaraz',   tourn:'Miami Open F',  score:'4-6, 3-5*',    r:'Live'},{opp:'Alexander Zverev', tourn:'Miami Open SF', score:'7-6, 6-4',     r:'W'},{opp:'Taylor Fritz',     tourn:'Miami Open QF', score:'6-4, 7-6',     r:'W'},{opp:'Ugo Humbert',      tourn:'Miami Open R16',score:'6-3, 6-2',     r:'W'},{opp:'Daniil Medvedev',  tourn:'Australian Open',score:'6-3, 6-4, 6-3',r:'W'}]},
-  'Carlos Alcaraz':    { cc:'ES', ranking:2,  age:21, height:'185 cm', hand:'Right', backhand:'One-handed', season:{w:16,l:4,  titles:1, prize:'$2,800,000'}, career:{gs:4,  hi:1, titles:16}, surfaces:{hard:76,clay:81,grass:79}, recent:[{opp:'Jannik Sinner',    tourn:'Miami Open F',  score:'6-4, 5-3*',    r:'Live'},{opp:'Daniil Medvedev',  tourn:'Miami Open SF', score:'6-3, 6-4',     r:'W'},{opp:'Ben Shelton',      tourn:'Miami Open QF', score:'6-3, 7-5',     r:'W'},{opp:'Holger Rune',      tourn:'Miami Open R16',score:'6-3, 6-4',     r:'W'},{opp:'Novak Djokovic',   tourn:'Wimbledon',     score:'6-2, 6-2, 7-6',r:'W'}]},
-  'Alexander Zverev':  { cc:'DE', ranking:3,  age:27, height:'198 cm', hand:'Right', backhand:'Two-handed', season:{w:14,l:5,  titles:1, prize:'$1,860,000'}, career:{gs:0,  hi:2, titles:23}, surfaces:{hard:73,clay:65,grass:62}, recent:[{opp:'Jannik Sinner',    tourn:'Miami Open SF', score:'6-7, 4-6',     r:'L'},{opp:'Andrey Rublev',    tourn:'Miami Open QF', score:'7-5, 6-3',     r:'W'},{opp:'F. Cerundolo',     tourn:'Miami Open R16',score:'6-2, 6-4',     r:'W'},{opp:'Novak Djokovic',   tourn:'Paris Masters', score:'7-5, 6-4',     r:'W'},{opp:'Carlos Alcaraz',   tourn:'Roland Garros', score:'4-6, 7-5, 3-6, 4-6',r:'L'}]},
-  'Novak Djokovic':    { cc:'RS', ranking:4,  age:37, height:'188 cm', hand:'Right', backhand:'Two-handed', season:{w:11,l:5,  titles:0, prize:'$980,000'},  career:{gs:24, hi:1, titles:99}, surfaces:{hard:84,clay:79,grass:81}, recent:[{opp:'Sebastian Korda',  tourn:'Monte Carlo R16',score:'6-4, 6-2',    r:'W'},{opp:'Carlos Alcaraz',   tourn:'Wimbledon',     score:'2-6, 2-6, 7-6, 6-3, 3-6',r:'L'},{opp:'Carlos Alcaraz',   tourn:'Olympics Final',score:'6-7, 6-4, 6-2',r:'W'},{opp:'Jannik Sinner',    tourn:'Australian Open',score:'3-6, 6-7, 3-6',r:'L'},{opp:'Alexander Zverev', tourn:'Paris Masters', score:'5-7, 4-6',     r:'L'}]},
-  'Daniil Medvedev':   { cc:'RU', ranking:5,  age:28, height:'198 cm', hand:'Right', backhand:'Two-handed', season:{w:12,l:6,  titles:1, prize:'$1,420,000'}, career:{gs:1,  hi:1, titles:21}, surfaces:{hard:78,clay:51,grass:63}, recent:[{opp:'Carlos Alcaraz',   tourn:'Miami Open SF', score:'3-6, 4-6',     r:'L'},{opp:'Tommy Paul',       tourn:'Miami Open QF', score:'6-2, 7-5',     r:'W'},{opp:'Stefanos Tsitsipas',tourn:'Miami Open R16',score:'6-3, 6-4',    r:'W'},{opp:'Jannik Sinner',    tourn:'Australian Open',score:'3-6, 4-6, 6-7',r:'L'},{opp:'Holger Rune',      tourn:'Indian Wells',  score:'6-4, 7-6',     r:'W'}]},
+  'Carlos Alcaraz':          { cc:'ES', ranking:1,  age:21, height:'185 cm', hand:'Right', backhand:'One-handed', season:{w:17,l:4,  titles:2, prize:'$3,120,000'}, career:{gs:4,  hi:1, titles:18}, surfaces:{hard:77,clay:83,grass:80}, recent:[{opp:'Jannik Sinner',    tourn:'AO 2026 R4',        score:'7-6, 6-3, 6-4',     r:'W'},{opp:'Jannik Sinner',     tourn:'Indian Wells 2026 F',score:'6-7, 6-7',           r:'L'},{opp:'Novak Djokovic',   tourn:'Wimbledon 2024 F',   score:'6-2, 6-2, 7-6',     r:'W'},{opp:'Novak Djokovic',   tourn:'Olympics 2024 F',    score:'2-6, 4-6',           r:'L'},{opp:'Daniil Medvedev',  tourn:'US Open 2024 F',     score:'6-3, 6-4, 6-2',     r:'W'}]},
+  'Jannik Sinner':           { cc:'IT', ranking:2,  age:23, height:'188 cm', hand:'Right', backhand:'Two-handed', season:{w:19,l:3,  titles:3, prize:'$3,580,000'}, career:{gs:3,  hi:1, titles:20}, surfaces:{hard:84,clay:69,grass:73}, recent:[{opp:'Carlos Alcaraz',   tourn:'Indian Wells 2026 F',score:'7-6, 7-6',           r:'W'},{opp:'Alexander Zverev', tourn:'AO 2026 SF',         score:'6-4, 6-3, 6-2',     r:'W'},{opp:'Carlos Alcaraz',   tourn:'AO 2026 R4',        score:'6-7, 3-6, 4-6',     r:'L'},{opp:'Daniil Medvedev',  tourn:'AO 2025 F',          score:'3-6, 3-6, 6-4, 6-4, 6-3',r:'W'},{opp:'Alexander Zverev', tourn:'RG 2025 F',           score:'6-3, 6-4, 6-2',     r:'W'}]},
+  'Novak Djokovic':          { cc:'RS', ranking:3,  age:38, height:'188 cm', hand:'Right', backhand:'Two-handed', season:{w:12,l:5,  titles:1, prize:'$1,240,000'}, career:{gs:24, hi:1, titles:99}, surfaces:{hard:84,clay:79,grass:82}, recent:[{opp:'Carlos Alcaraz',   tourn:'Wimbledon 2024 F',   score:'2-6, 2-6, 6-7',     r:'L'},{opp:'Carlos Alcaraz',   tourn:'Olympics 2024 F',    score:'7-6, 6-4',           r:'W'},{opp:'Carlos Alcaraz',   tourn:'RG 2024 SF',         score:'3-6, 2-6, 5-7, 4-6',r:'L'},{opp:'Jannik Sinner',    tourn:'AO 2025 QF',         score:'4-6, 6-7, 5-7',     r:'L'},{opp:'Alexander Zverev', tourn:'ATP Finals 2025 SF',  score:'6-7, 4-6',           r:'L'}]},
+  'Alexander Zverev':        { cc:'DE', ranking:4,  age:27, height:'198 cm', hand:'Right', backhand:'Two-handed', season:{w:13,l:6,  titles:1, prize:'$1,780,000'}, career:{gs:0,  hi:2, titles:24}, surfaces:{hard:74,clay:66,grass:63}, recent:[{opp:'Jannik Sinner',    tourn:'AO 2026 SF',         score:'4-6, 3-6, 2-6',     r:'L'},{opp:'Jannik Sinner',    tourn:'ATP Finals 2025',    score:'7-6, 6-4',           r:'W'},{opp:'Jannik Sinner',    tourn:'RG 2025 F',          score:'3-6, 4-6, 2-6',     r:'L'},{opp:'Novak Djokovic',   tourn:'ATP Finals 2025 SF',  score:'7-6, 6-4',           r:'W'},{opp:'Carlos Alcaraz',   tourn:'Wimbledon 2025 SF',  score:'6-3, 4-6, 3-6, 4-6',r:'L'}]},
+  'Lorenzo Musetti':         { cc:'IT', ranking:5,  age:22, height:'185 cm', hand:'Right', backhand:'One-handed', season:{w:14,l:5,  titles:1, prize:'$1,120,000'}, career:{gs:0,  hi:5, titles:5},  surfaces:{hard:68,clay:76,grass:65}, recent:[{opp:'Carlos Alcaraz',   tourn:'Miami 2026 QF',      score:'4-6, 3-6',           r:'L'},{opp:'Alex de Minaur',   tourn:'Dubai 2026 F',       score:'6-4, 7-6',           r:'W'},{opp:'Jannik Sinner',    tourn:'Nitto Finals 2025',  score:'4-6, 6-7',           r:'L'},{opp:'Taylor Fritz',     tourn:'Paris 2025',         score:'7-6, 6-4',           r:'W'},{opp:'Daniil Medvedev',  tourn:'Vienna 2025',        score:'6-3, 6-4',           r:'W'}]},
+  'Alex de Minaur':          { cc:'AU', ranking:6,  age:25, height:'183 cm', hand:'Right', backhand:'Two-handed', season:{w:13,l:5,  titles:1, prize:'$980,000'},  career:{gs:0,  hi:6, titles:12}, surfaces:{hard:75,clay:58,grass:70}, recent:[{opp:'Lorenzo Musetti',  tourn:'Dubai 2026 F',       score:'4-6, 6-7',           r:'L'},{opp:'Carlos Alcaraz',   tourn:'Wimbledon 2025 QF',  score:'6-7, 2-6, 4-6',     r:'L'},{opp:'Jannik Sinner',    tourn:'Wimbledon 2025 SF',  score:'3-6, 4-6, 5-7',     r:'L'},{opp:'Taylor Fritz',     tourn:'AO 2026 QF',        score:'6-4, 6-3, 7-6',     r:'W'},{opp:'Ben Shelton',      tourn:'Washington 2025 F',  score:'6-4, 7-6',           r:'W'}]},
+  'Taylor Fritz':            { cc:'US', ranking:7,  age:27, height:'196 cm', hand:'Right', backhand:'Two-handed', season:{w:12,l:5,  titles:1, prize:'$1,060,000'}, career:{gs:0,  hi:4, titles:9},  surfaces:{hard:76,clay:55,grass:68}, recent:[{opp:'Alex de Minaur',   tourn:'AO 2026 QF',        score:'4-6, 3-6, 6-7',     r:'L'},{opp:'Jannik Sinner',    tourn:'Indian Wells 2026 SF',score:'4-6, 3-6',          r:'L'},{opp:'Carlos Alcaraz',   tourn:'US Open 2024 F',     score:'3-6, 4-6, 2-6',     r:'L'},{opp:'Lorenzo Musetti',  tourn:'Paris 2025',         score:'6-7, 4-6',           r:'L'},{opp:'Ben Shelton',      tourn:'AO 2026 R16',       score:'7-6, 6-4, 6-3',     r:'W'}]},
+  'Felix Auger-Aliassime':   { cc:'CA', ranking:8,  age:24, height:'188 cm', hand:'Right', backhand:'Two-handed', season:{w:13,l:4,  titles:1, prize:'$1,050,000'}, career:{gs:0,  hi:6, titles:8},  surfaces:{hard:74,clay:61,grass:71}, recent:[{opp:'Jannik Sinner',    tourn:'AO 2026 QF',        score:'6-7, 5-7, 4-6',     r:'L'},{opp:'Carlos Alcaraz',   tourn:'Indian Wells 2026 QF',score:'4-6, 3-6',          r:'L'},{opp:'Taylor Fritz',     tourn:'Davis Cup 2025',     score:'6-4, 6-3',           r:'W'},{opp:'Ben Shelton',      tourn:'Nitto Finals 2025',  score:'6-3, 7-5',           r:'W'},{opp:'Holger Rune',      tourn:'Basel 2025 F',       score:'7-6, 6-4',           r:'W'}]},
+  'Ben Shelton':             { cc:'US', ranking:9,  age:22, height:'193 cm', hand:'Left',  backhand:'Two-handed', season:{w:11,l:5,  titles:1, prize:'$850,000'},  career:{gs:0,  hi:9, titles:4},  surfaces:{hard:72,clay:52,grass:67}, recent:[{opp:'Taylor Fritz',     tourn:'AO 2026 R16',       score:'6-7, 4-6, 3-6',     r:'L'},{opp:'Alex de Minaur',   tourn:'Washington 2025 F',  score:'4-6, 6-7',           r:'L'},{opp:'Carlos Alcaraz',   tourn:'Miami 2026 QF',      score:'3-6, 4-6',           r:'L'},{opp:'Felix Auger-Aliassime',tourn:'Nitto Finals 2025',score:'3-6, 5-7',           r:'L'},{opp:'Lorenzo Musetti',  tourn:'Vienna 2025 QF',     score:'6-4, 7-6',           r:'W'}]},
+  'Daniil Medvedev':         { cc:'RU', ranking:10, age:28, height:'198 cm', hand:'Right', backhand:'Two-handed', season:{w:10,l:6,  titles:0, prize:'$740,000'},  career:{gs:1,  hi:1, titles:21}, surfaces:{hard:78,clay:51,grass:63}, recent:[{opp:'Jannik Sinner',    tourn:'Indian Wells 2026 F',score:'6-7, 6-7',           r:'L'},{opp:'Carlos Alcaraz',   tourn:'AO 2026 R4',        score:'6-7, 3-6, 4-6',     r:'L'},{opp:'Jannik Sinner',    tourn:'AO 2025 F',          score:'6-3, 6-3, 4-6, 4-6, 3-6',r:'L'},{opp:'Felix Auger-Aliassime',tourn:'Nitto Finals 2025',score:'6-3, 7-5',           r:'W'},{opp:'Lorenzo Musetti',  tourn:'Vienna 2025',        score:'3-6, 4-6',           r:'L'}]},
   // WTA
-  'Aryna Sabalenka':   { cc:'BY', ranking:1,  age:26, height:'182 cm', hand:'Right', backhand:'Two-handed', season:{w:19,l:2,  titles:3, prize:'$3,860,000'}, career:{gs:3,  hi:1, titles:14}, surfaces:{hard:84,clay:65,grass:71}, recent:[{opp:'Coco Gauff',       tourn:'Miami Open F',  score:'6-3, 4-5*',    r:'Live'},{opp:'Elena Rybakina',   tourn:'Miami Open SF', score:'6-4, 7-6',     r:'W'},{opp:'Jessica Pegula',   tourn:'Miami Open QF', score:'6-3, 6-2',     r:'W'},{opp:'B. Haddad Maia',   tourn:'Miami Open R16',score:'6-2, 6-1',     r:'W'},{opp:'Madison Keys',     tourn:'Australian Open',score:'6-3, 7-6',    r:'W'}]},
-  'Iga Swiatek':       { cc:'PL', ranking:2,  age:23, height:'175 cm', hand:'Right', backhand:'Two-handed', season:{w:14,l:5,  titles:2, prize:'$2,420,000'}, career:{gs:5,  hi:1, titles:23}, surfaces:{hard:75,clay:88,grass:65}, recent:[{opp:'Coco Gauff',       tourn:'Miami Open SF', score:'6-3, 4-6, 3-6',r:'L'},{opp:'Jasmine Paolini',  tourn:'Miami Open QF', score:'6-2, 6-4',     r:'W'},{opp:'Maria Sakkari',    tourn:'Miami Open R16',score:'6-1, 6-3',     r:'W'},{opp:'Elena Rybakina',   tourn:'Indian Wells',  score:'7-5, 6-3',     r:'W'},{opp:'Aryna Sabalenka',  tourn:'Australian Open',score:'6-7, 5-7',    r:'L'}]},
-  'Coco Gauff':        { cc:'US', ranking:3,  age:20, height:'180 cm', hand:'Right', backhand:'Two-handed', season:{w:15,l:4,  titles:2, prize:'$2,180,000'}, career:{gs:1,  hi:2, titles:9},  surfaces:{hard:77,clay:68,grass:70}, recent:[{opp:'Aryna Sabalenka',  tourn:'Miami Open F',  score:'3-6, 5-4*',    r:'Live'},{opp:'Iga Swiatek',      tourn:'Miami Open SF', score:'3-6, 6-4, 6-3',r:'W'},{opp:'Emma Navarro',     tourn:'Miami Open QF', score:'6-4, 6-3',     r:'W'},{opp:'Paula Badosa',     tourn:'Miami Open R16',score:'7-5, 6-4',     r:'W'},{opp:'Iga Swiatek',      tourn:'Indian Wells',  score:'6-3, 6-1',     r:'W'}]},
-  'Elena Rybakina':    { cc:'KZ', ranking:4,  age:25, height:'184 cm', hand:'Right', backhand:'Two-handed', season:{w:13,l:5,  titles:1, prize:'$1,650,000'}, career:{gs:1,  hi:3, titles:12}, surfaces:{hard:74,clay:61,grass:76}, recent:[{opp:'Aryna Sabalenka',  tourn:'Miami Open SF', score:'4-6, 6-7',     r:'L'},{opp:'Mirra Andreeva',   tourn:'Miami Open QF', score:'7-5, 6-4',     r:'W'},{opp:'Barbora Krejcikova',tourn:'Miami Open R16',score:'6-4, 7-6',    r:'W'},{opp:'Iga Swiatek',      tourn:'Indian Wells',  score:'5-7, 3-6',     r:'L'},{opp:'Aryna Sabalenka',  tourn:'Australian Open',score:'6-7, 5-7',    r:'L'}]},
-  'Jessica Pegula':    { cc:'US', ranking:5,  age:30, height:'170 cm', hand:'Right', backhand:'Two-handed', season:{w:10,l:6,  titles:0, prize:'$880,000'},  career:{gs:0,  hi:3, titles:5},  surfaces:{hard:72,clay:60,grass:63}, recent:[{opp:'Aryna Sabalenka',  tourn:'Miami Open QF', score:'3-6, 2-6',     r:'L'},{opp:'Daria Kasatkina',  tourn:'Miami Open R16',score:'6-3, 7-5',     r:'W'},{opp:'Iga Swiatek',      tourn:'Indian Wells',  score:'4-6, 3-6',     r:'L'},{opp:'Emma Navarro',     tourn:'Doha',          score:'6-4, 6-2',     r:'W'},{opp:'Aryna Sabalenka',  tourn:'US Open',       score:'6-7, 4-6, 5-7',r:'L'}]},
+  'Aryna Sabalenka':         { cc:'BY', ranking:1,  age:26, height:'182 cm', hand:'Right', backhand:'Two-handed', season:{w:18,l:3,  titles:2, prize:'$3,420,000'}, career:{gs:4,  hi:1, titles:16}, surfaces:{hard:85,clay:66,grass:72}, recent:[{opp:'Madison Keys',     tourn:'AO 2026 F',          score:'4-6, 6-3, 5-7',     r:'L'},{opp:'Elena Rybakina',   tourn:'Indian Wells 2026 F',score:'5-7, 4-6',           r:'L'},{opp:'Iga Swiatek',      tourn:'WTA Finals 2025',    score:'6-3, 6-4',           r:'W'},{opp:'Iga Swiatek',      tourn:'US Open 2025 F',     score:'4-6, 3-6',           r:'L'},{opp:'Elena Rybakina',   tourn:'AO 2026 SF',         score:'6-3, 7-5',           r:'W'}]},
+  'Elena Rybakina':          { cc:'KZ', ranking:2,  age:25, height:'184 cm', hand:'Right', backhand:'Two-handed', season:{w:16,l:4,  titles:2, prize:'$2,680,000'}, career:{gs:1,  hi:2, titles:14}, surfaces:{hard:76,clay:63,grass:78}, recent:[{opp:'Aryna Sabalenka',  tourn:'Indian Wells 2026 F',score:'7-5, 6-4',           r:'W'},{opp:'Coco Gauff',       tourn:'Indian Wells 2026 SF',score:'6-3, 7-5',          r:'W'},{opp:'Aryna Sabalenka',  tourn:'AO 2026 SF',         score:'3-6, 5-7',           r:'L'},{opp:'Aryna Sabalenka',  tourn:'AO 2025 QF',         score:'6-7, 4-6',           r:'L'},{opp:'Iga Swiatek',      tourn:'Indian Wells 2025 F',score:'6-4, 7-6',           r:'W'}]},
+  'Iga Swiatek':             { cc:'PL', ranking:3,  age:24, height:'175 cm', hand:'Right', backhand:'Two-handed', season:{w:15,l:5,  titles:2, prize:'$2,590,000'}, career:{gs:5,  hi:1, titles:24}, surfaces:{hard:76,clay:89,grass:66}, recent:[{opp:'Aryna Sabalenka',  tourn:'WTA Finals 2025',    score:'3-6, 4-6',           r:'L'},{opp:'Coco Gauff',       tourn:'Indian Wells 2026 SF',score:'3-6, 2-6',          r:'L'},{opp:'Aryna Sabalenka',  tourn:'RG 2025 SF',         score:'5-7, 4-6',           r:'L'},{opp:'Coco Gauff',       tourn:'AO 2026 QF',        score:'6-2, 6-3',           r:'W'},{opp:'Elena Rybakina',   tourn:'Indian Wells 2025 F',score:'4-6, 6-7',           r:'L'}]},
+  'Coco Gauff':              { cc:'US', ranking:4,  age:20, height:'180 cm', hand:'Right', backhand:'Two-handed', season:{w:14,l:5,  titles:2, prize:'$2,250,000'}, career:{gs:1,  hi:2, titles:11}, surfaces:{hard:78,clay:69,grass:71}, recent:[{opp:'Elena Rybakina',   tourn:'Indian Wells 2026 SF',score:'3-6, 5-7',          r:'L'},{opp:'Iga Swiatek',      tourn:'AO 2026 QF',        score:'2-6, 3-6',           r:'L'},{opp:'Iga Swiatek',      tourn:'Indian Wells 2026 SF',score:'6-3, 6-2',          r:'W'},{opp:'Aryna Sabalenka',  tourn:'US Open 2025 SF',    score:'3-6, 4-6',           r:'L'},{opp:'Iga Swiatek',      tourn:'US Open 2025 F',     score:'4-6, 3-6',           r:'L'}]},
+  'Jessica Pegula':          { cc:'US', ranking:5,  age:31, height:'170 cm', hand:'Right', backhand:'Two-handed', season:{w:11,l:5,  titles:1, prize:'$1,020,000'}, career:{gs:0,  hi:3, titles:6},  surfaces:{hard:73,clay:61,grass:64}, recent:[{opp:'Aryna Sabalenka',  tourn:'AO 2026 QF',        score:'3-6, 2-6',           r:'L'},{opp:'Elena Rybakina',   tourn:'Indian Wells 2026 QF',score:'4-6, 6-7',          r:'L'},{opp:'Madison Keys',     tourn:'WTA Finals 2025',    score:'6-7, 4-6',           r:'L'},{opp:'Mirra Andreeva',   tourn:'Doha 2026',          score:'6-4, 7-5',           r:'W'},{opp:'Iga Swiatek',      tourn:'Cincinnati 2025',    score:'4-6, 3-6',           r:'L'}]},
+  'Madison Keys':            { cc:'US', ranking:6,  age:29, height:'178 cm', hand:'Right', backhand:'Two-handed', season:{w:15,l:4,  titles:2, prize:'$2,180,000'}, career:{gs:1,  hi:6, titles:9},  surfaces:{hard:78,clay:61,grass:66}, recent:[{opp:'Aryna Sabalenka',  tourn:'AO 2026 F',          score:'6-4, 3-6, 7-5',     r:'W'},{opp:'Iga Swiatek',      tourn:'AO 2026 SF',         score:'6-3, 6-4',           r:'W'},{opp:'Aryna Sabalenka',  tourn:'AO 2025 F',          score:'3-6, 6-7',           r:'L'},{opp:'Aryna Sabalenka',  tourn:'Cincinnati 2024',    score:'3-6, 4-6',           r:'L'},{opp:'Jessica Pegula',   tourn:'WTA Finals 2025',    score:'7-6, 6-4',           r:'W'}]},
+  'Mirra Andreeva':          { cc:'RU', ranking:7,  age:17, height:'171 cm', hand:'Right', backhand:'Two-handed', season:{w:14,l:5,  titles:1, prize:'$1,180,000'}, career:{gs:0,  hi:7, titles:3},  surfaces:{hard:74,clay:68,grass:63}, recent:[{opp:'Elena Rybakina',   tourn:'AO 2026 QF',        score:'3-6, 4-6',           r:'L'},{opp:'Coco Gauff',       tourn:'WTA Finals 2025',    score:'6-4, 6-3',           r:'W'},{opp:'Jessica Pegula',   tourn:'Doha 2026',          score:'4-6, 5-7',           r:'L'},{opp:'Iga Swiatek',      tourn:'RG 2025 QF',         score:'3-6, 5-7',           r:'L'},{opp:'Emma Navarro',     tourn:'Cincinnati 2025 SF', score:'6-4, 7-6',           r:'W'}]},
+  'Jasmine Paolini':         { cc:'IT', ranking:8,  age:28, height:'163 cm', hand:'Right', backhand:'Two-handed', season:{w:12,l:5,  titles:1, prize:'$940,000'},  career:{gs:0,  hi:4, titles:7},  surfaces:{hard:71,clay:77,grass:68}, recent:[{opp:'Coco Gauff',       tourn:'Indian Wells 2026 QF',score:'3-6, 2-6',          r:'L'},{opp:'Aryna Sabalenka',  tourn:'WTA Finals 2025 RR', score:'4-6, 3-6',           r:'L'},{opp:'Madison Keys',     tourn:'AO 2026 QF',        score:'4-6, 6-7',           r:'L'},{opp:'Elena Rybakina',   tourn:'Wimbledon 2025 SF',  score:'3-6, 2-6',           r:'L'},{opp:'Iga Swiatek',      tourn:'RG 2025 F',          score:'6-3, 6-2',           r:'L'}]},
+  'Emma Navarro':            { cc:'US', ranking:9,  age:23, height:'172 cm', hand:'Right', backhand:'Two-handed', season:{w:11,l:5,  titles:1, prize:'$870,000'},  career:{gs:0,  hi:9, titles:4},  surfaces:{hard:72,clay:63,grass:67}, recent:[{opp:'Aryna Sabalenka',  tourn:'Indian Wells 2026 QF',score:'2-6, 2-6',          r:'L'},{opp:'Iga Swiatek',      tourn:'AO 2026 R16',       score:'4-6, 3-6',           r:'L'},{opp:'Mirra Andreeva',   tourn:'Cincinnati 2025 SF', score:'4-6, 6-7',           r:'L'},{opp:'Elena Rybakina',   tourn:'Wimbledon 2025 QF',  score:'4-6, 6-7',           r:'L'},{opp:'Madison Keys',     tourn:'US Open 2025 QF',    score:'5-7, 6-4, 4-6',     r:'L'}]},
+  'Paula Badosa':            { cc:'ES', ranking:10, age:26, height:'179 cm', hand:'Right', backhand:'Two-handed', season:{w:11,l:5,  titles:1, prize:'$810,000'},  career:{gs:0,  hi:2, titles:7},  surfaces:{hard:70,clay:74,grass:66}, recent:[{opp:'Elena Rybakina',   tourn:'Indian Wells 2026 R16',score:'4-6, 4-6',         r:'L'},{opp:'Aryna Sabalenka',  tourn:'AO 2026 R16',       score:'3-6, 5-7',           r:'L'},{opp:'Coco Gauff',       tourn:'WTA Finals 2025 RR', score:'6-7, 5-7',           r:'L'},{opp:'Iga Swiatek',      tourn:'RG 2025 QF',         score:'2-6, 4-6',           r:'L'},{opp:'Jasmine Paolini',  tourn:'Rome 2025 SF',       score:'6-3, 7-5',           r:'W'}]},
 };
 
 // ===== HEAD-TO-HEAD DATA =====
 // Key = alphabetically sorted player names joined by '|'
 // record: [wins for name-A (alpha-first), wins for name-B (alpha-second)]
 const H2H_DATA = {
+  // ATP
   'Carlos Alcaraz|Jannik Sinner': {
-    record: [6, 8],
+    record: [6, 9],
     meetings: [
-      { tourn: 'Australian Open 2025',  score: '3-6, 6-7, 3-6',           winner: 'Jannik Sinner'   },
-      { tourn: 'ATP Finals 2024',       score: '6-4, 6-4',                 winner: 'Carlos Alcaraz'  },
-      { tourn: 'Wimbledon 2024 F',      score: '2-6, 6-3, 6-4, 6-2',      winner: 'Carlos Alcaraz'  },
-    ],
-  },
-  'Daniil Medvedev|Jannik Sinner': {
-    record: [10, 7],
-    meetings: [
-      { tourn: 'Miami Open 2025 QF',    score: '2-6, 5-7',                 winner: 'Jannik Sinner'   },
-      { tourn: 'Australian Open 2024 F',score: '3-6, 3-6, 6-4, 6-4, 6-3', winner: 'Jannik Sinner'   },
-      { tourn: 'ATP Finals 2023',       score: '4-6, 4-6',                 winner: 'Daniil Medvedev' },
+      { tourn: 'Australian Open 2026 R4',    score: '7-6, 6-3, 6-4',       winner: 'Carlos Alcaraz' },
+      { tourn: 'Indian Wells 2026 F',        score: '6-7, 6-7',             winner: 'Jannik Sinner'  },
+      { tourn: 'Wimbledon 2025 F',           score: '3-6, 4-6, 2-6',       winner: 'Jannik Sinner'  },
     ],
   },
   'Carlos Alcaraz|Novak Djokovic': {
-    record: [5, 3],
+    record: [6, 4],
     meetings: [
-      { tourn: 'Wimbledon 2024 F',      score: '6-2, 6-2, 7-6',           winner: 'Carlos Alcaraz'  },
-      { tourn: 'Olympics 2024 F',       score: '6-7, 6-4, 6-2',           winner: 'Novak Djokovic'  },
-      { tourn: 'Roland Garros 2024 SF', score: '6-3, 2-6, 5-7, 4-6',      winner: 'Carlos Alcaraz'  },
+      { tourn: 'Olympics 2024 F',            score: '2-6, 4-6',             winner: 'Novak Djokovic'  },
+      { tourn: 'Wimbledon 2024 F',           score: '6-2, 6-2, 7-6',       winner: 'Carlos Alcaraz' },
+      { tourn: 'Roland Garros 2024 SF',      score: '6-3, 2-6, 7-5, 4-6, 6-4', winner: 'Carlos Alcaraz' },
     ],
   },
+  'Alexander Zverev|Jannik Sinner': {
+    record: [4, 7],
+    meetings: [
+      { tourn: 'Australian Open 2026 SF',    score: '4-6, 3-6, 2-6',       winner: 'Jannik Sinner'  },
+      { tourn: 'ATP Finals 2025',            score: '7-6, 6-4',             winner: 'Alexander Zverev' },
+      { tourn: 'Roland Garros 2025 F',       score: '3-6, 4-6, 2-6',       winner: 'Jannik Sinner'  },
+    ],
+  },
+  'Daniil Medvedev|Jannik Sinner': {
+    record: [7, 10],
+    meetings: [
+      { tourn: 'Indian Wells 2026 F',        score: '6-7, 6-7',             winner: 'Jannik Sinner'  },
+      { tourn: 'Australian Open 2025 F',     score: '6-3, 6-3, 4-6, 4-6, 3-6', winner: 'Jannik Sinner' },
+      { tourn: 'ATP Finals 2023',            score: '4-6, 4-6',             winner: 'Daniil Medvedev' },
+    ],
+  },
+  // WTA
   'Aryna Sabalenka|Iga Swiatek': {
-    record: [8, 12],
+    record: [9, 13],
     meetings: [
-      { tourn: 'WTA Finals 2024',       score: '7-6, 6-4',                 winner: 'Iga Swiatek'     },
-      { tourn: 'US Open 2024 F',        score: '3-6, 6-3, 6-3',           winner: 'Aryna Sabalenka' },
-      { tourn: 'Roland Garros 2024 SF', score: '7-5, 3-6, 5-7',           winner: 'Iga Swiatek'     },
-    ],
-  },
-  'Coco Gauff|Iga Swiatek': {
-    record: [7, 13],
-    meetings: [
-      { tourn: 'Miami Open 2025 SF',    score: '3-6, 6-4, 6-3',           winner: 'Coco Gauff'      },
-      { tourn: 'Indian Wells 2025',     score: '6-3, 6-1',                 winner: 'Coco Gauff'      },
-      { tourn: 'US Open 2023 F',        score: '2-6, 6-1, 6-3',           winner: 'Coco Gauff'      },
+      { tourn: 'WTA Finals 2025',            score: '6-3, 6-4',             winner: 'Aryna Sabalenka' },
+      { tourn: 'US Open 2025 F',             score: '4-6, 3-6',             winner: 'Iga Swiatek'    },
+      { tourn: 'Roland Garros 2025 SF',      score: '7-5, 6-4',             winner: 'Aryna Sabalenka' },
     ],
   },
   'Aryna Sabalenka|Elena Rybakina': {
-    record: [9, 6],
+    record: [10, 6],
     meetings: [
-      { tourn: 'Miami Open 2025 SF',    score: '6-4, 7-6',                 winner: 'Aryna Sabalenka' },
-      { tourn: 'Australian Open 2025',  score: '7-6, 6-4',                 winner: 'Aryna Sabalenka' },
-      { tourn: 'Australian Open 2024',  score: '4-6, 7-6, 6-4',           winner: 'Aryna Sabalenka' },
+      { tourn: 'Indian Wells 2026 F',        score: '5-7, 4-6',             winner: 'Elena Rybakina' },
+      { tourn: 'Australian Open 2026 F',     score: '6-3, 7-5',             winner: 'Aryna Sabalenka' },
+      { tourn: 'Australian Open 2025 QF',    score: '6-4, 7-6',             winner: 'Aryna Sabalenka' },
+    ],
+  },
+  'Coco Gauff|Iga Swiatek': {
+    record: [7, 14],
+    meetings: [
+      { tourn: 'Indian Wells 2026 SF',       score: '6-3, 6-2',             winner: 'Coco Gauff'     },
+      { tourn: 'Australian Open 2026 QF',    score: '2-6, 3-6',             winner: 'Iga Swiatek'    },
+      { tourn: 'US Open 2025 F',             score: '4-6, 3-6',             winner: 'Iga Swiatek'    },
+    ],
+  },
+  'Aryna Sabalenka|Madison Keys': {
+    record: [5, 2],
+    meetings: [
+      { tourn: 'Australian Open 2026 F',     score: '4-6, 6-3, 5-7',       winner: 'Madison Keys'   },
+      { tourn: 'Australian Open 2025 F',     score: '6-3, 7-6',             winner: 'Aryna Sabalenka' },
+      { tourn: 'Cincinnati 2024',            score: '6-3, 6-4',             winner: 'Aryna Sabalenka' },
     ],
   },
 };
@@ -324,7 +352,10 @@ const state = {
   prevView:          null,    // Navigation context for back button in player profile
   h2hP1:            null,    // H2H selected player 1
   h2hP2:            null,    // H2H selected player 2
+  playerCache:       {},      // name → parsed API profile object
 };
+
+let _playerDebounceTimer = null;
 
 // ===== DOM REFS =====
 const $ = id => document.getElementById(id);
@@ -1264,6 +1295,71 @@ function loadTournaments() {
 }
 
 // ===== PLAYER PROFILES =====
+async function fetchPlayerProfile(name) {
+  if (state.playerCache[name]) return state.playerCache[name];
+
+  // Step 1: search for the player by name
+  const searchData = await apiFetch(
+    `https://${API_HOST}/api/tennis/search/${encodeURIComponent(name)}`
+  );
+  const results = Array.isArray(searchData?.results) ? searchData.results : [];
+
+  // Find first result that is a Tennis individual player (type 1 = player, not doubles team)
+  const match = results.find(r =>
+    r?.entity?.sport?.name === 'Tennis' && r?.entity?.type === 1
+  );
+  if (!match) return null;
+
+  // Step 2: fetch full player details using the numeric ID
+  const playerData = await apiFetch(
+    `https://${API_HOST}/api/tennis/player/${match.entity.id}`
+  );
+  const team = playerData?.team ?? {};
+  const info = team.playerTeamInfo ?? {};
+
+  // Derive age from birth timestamp (seconds → years)
+  let age = null;
+  if (info.birthDateTimestamp) {
+    age = Math.floor(
+      (Date.now() - info.birthDateTimestamp * 1000) / (365.25 * 24 * 60 * 60 * 1000)
+    );
+  }
+
+  // Height: API returns meters (e.g. 1.88) → display as "188 cm"
+  let height = null;
+  if (info.height) height = `${Math.round(info.height * 100)} cm`;
+
+  // Hand: "right-handed" → "Right", "left-handed" → "Left"
+  let hand = null;
+  if (info.plays) {
+    const m = info.plays.match(/^(right|left)/i);
+    if (m) hand = m[1][0].toUpperCase() + m[1].slice(1);
+  }
+
+  // Career prize money (currency from raw field)
+  let prize = null;
+  if (info.prizeTotal != null) {
+    const currency = info.prizeTotalRaw?.currency ?? '';
+    const sym = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : (currency ? currency + '\u00a0' : '');
+    prize = sym + Math.round(info.prizeTotal).toLocaleString('en-US');
+  }
+
+  const profile = {
+    source: 'api',
+    name: team.fullName ?? team.name ?? name,
+    country: team.country?.name ?? null,
+    countryCode: team.country?.alpha2 ?? '',
+    ranking: team.ranking ?? info.currentRanking ?? null,
+    age,
+    height,
+    hand,
+    prize,
+  };
+
+  state.playerCache[name] = profile;
+  return profile;
+}
+
 function openPlayerProfile(name) {
   if (state.currentTour === 'tournaments') {
     state.prevView = state.activeTournament
@@ -1272,8 +1368,33 @@ function openPlayerProfile(name) {
   } else {
     state.prevView = { type: 'rankings', tour: state.currentTour || 'atp' };
   }
+
+  // Show panel with loading state immediately
   showPlayerPanel();
-  renderPlayerProfile(name);
+  playerPanel.innerHTML = `
+    <div class="profile-view">
+      <button class="draw-back-btn" id="profileBackBtn">← Back</button>
+      <div class="profile-loading">
+        <div class="spinner"></div>
+        <span>Loading profile…</span>
+      </div>
+    </div>`;
+  document.getElementById('profileBackBtn').addEventListener('click', goBack);
+
+  // Debounce: rapid clicks only trigger a single fetch for the last name
+  clearTimeout(_playerDebounceTimer);
+  _playerDebounceTimer = setTimeout(async () => {
+    let profile = null;
+    try {
+      profile = await fetchPlayerProfile(name);
+    } catch { /* network/API error — fall through to PLAYER_DATA */ }
+
+    if (profile) {
+      renderPlayerProfileFromAPI(profile);
+    } else {
+      renderPlayerProfile(name);
+    }
+  }, 500);
 }
 
 function goBack() {
@@ -1405,6 +1526,59 @@ function renderPlayerProfile(name) {
         <section class="profile-section profile-section--last">
           <h3 class="profile-section-title">Recent Results</h3>
           <div class="recent-results">${recentRows}</div>
+        </section>
+      </div>
+    </div>`;
+
+  document.getElementById('profileBackBtn').addEventListener('click', goBack);
+}
+
+function renderPlayerProfileFromAPI(profile) {
+  const flag = countryFlag(profile.countryCode);
+
+  const metaParts = [];
+  if (profile.ranking != null) metaParts.push(`<span class="profile-rank">#${profile.ranking} in the World</span>`);
+  if (profile.age != null)     metaParts.push(`<span>Age ${profile.age}</span>`);
+  if (profile.height)          metaParts.push(`<span>${escHtml(profile.height)}</span>`);
+
+  const metaHtml = metaParts.length
+    ? `<div class="profile-meta">${metaParts.join('<span class="profile-sep">·</span>')}</div>`
+    : '';
+  const handHtml = profile.hand
+    ? `<div class="profile-meta"><span>${escHtml(profile.hand)}-handed</span></div>`
+    : '';
+
+  // Build stat cards for whatever fields the API returned
+  const statCards = [];
+  if (profile.ranking != null) statCards.push(['Ranking',      `#${profile.ranking}`]);
+  if (profile.country)         statCards.push(['Country',      escHtml(profile.country)]);
+  if (profile.age != null)     statCards.push(['Age',          String(profile.age)]);
+  if (profile.height)          statCards.push(['Height',       escHtml(profile.height)]);
+  if (profile.hand)            statCards.push(['Plays',        `${escHtml(profile.hand)}-handed`]);
+  if (profile.prize)           statCards.push(['Career Prize', escHtml(profile.prize)]);
+
+  const statsHtml = statCards.map(([label, val]) => `
+    <div class="profile-stat-card">
+      <span class="stat-value">${val}</span>
+      <span class="stat-label">${escHtml(label)}</span>
+    </div>`).join('');
+
+  playerPanel.innerHTML = `
+    <div class="profile-view">
+      <button class="draw-back-btn" id="profileBackBtn">← Back</button>
+      <div class="profile-header">
+        <div class="profile-flag-big">${flag}</div>
+        <div class="profile-header-info">
+          <h2 class="profile-name">${escHtml(profile.name)}</h2>
+          ${metaHtml}${handHtml}
+        </div>
+      </div>
+      <div class="profile-sections">
+        <section class="profile-section profile-section--last">
+          <h3 class="profile-section-title">
+            Player Info <span class="profile-api-badge">Live · RapidAPI</span>
+          </h3>
+          <div class="profile-stat-grid">${statsHtml}</div>
         </section>
       </div>
     </div>`;
