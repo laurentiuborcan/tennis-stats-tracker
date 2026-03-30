@@ -102,7 +102,11 @@ input  { font-family: inherit; font-size: 1rem; }
   gap: 0;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;          /* Firefox */
 }
+.tabs-bar::-webkit-scrollbar { display: none; }  /* Chrome / Safari */
 .tab-btn {
   display: flex;
   align-items: center;
@@ -116,6 +120,8 @@ input  { font-family: inherit; font-size: 1rem; }
   transition: color var(--transition), border-color var(--transition),
               background var(--transition);
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  flex-shrink: 0;                 /* keep each tab at its natural width */
+  white-space: nowrap;
 }
 .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.025); }
 .tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
@@ -258,7 +264,9 @@ input  { font-family: inherit; font-size: 1rem; }
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   box-shadow: var(--shadow-card);
 }
 
@@ -1307,7 +1315,9 @@ mark {
   .logo-text { font-size: 1rem; }
   .main { padding: 1rem 0.75rem 2rem; }
   .tab-btn { padding: 0.65rem 0.9rem; font-size: 0.85rem; }
-  .col-country { display: none; }
+  /* Hide both the header cell and all body cells for the country column */
+  .col-country,
+  .cell-country { display: none; }
   .rankings-table th,
   .rankings-table td { padding: 0.7rem 0.75rem; }
   .col-rank { width: 56px; }
@@ -1318,6 +1328,16 @@ mark {
   .draw-title { font-size: 1.15rem; }
   .draw-filter-bar { gap: 0.3rem; }
   .draw-filter-btn { padding: 0.25rem 0.65rem; font-size: 0.76rem; }
+}
+
+@media (max-width: 400px) {
+  /* Tighten table further on very small phones so Player + Points fit */
+  .col-rank { width: 44px; }
+  .col-points { width: 84px; }
+  .rankings-table th,
+  .rankings-table td { padding: 0.65rem 0.55rem; }
+  .rank-badge { width: 24px; height: 24px; font-size: 0.72rem; }
+  .rank-num { font-size: 0.82rem; }
 }
 
 @media (max-width: 380px) {
