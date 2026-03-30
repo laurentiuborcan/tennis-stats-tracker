@@ -1315,6 +1315,14 @@ mark {
   .logo-text { font-size: 1rem; }
   .main { padding: 1rem 0.75rem 2rem; }
   .tab-btn { padding: 0.65rem 0.9rem; font-size: 0.85rem; }
+  /* Extend tab bar flush with viewport edges so overflow-x:auto has
+     the full viewport width as its scroll container */
+  .tabs-bar {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
   /* Hide both the header cell and all body cells for the country column */
   .col-country,
   .cell-country { display: none; }

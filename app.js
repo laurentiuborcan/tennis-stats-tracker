@@ -1559,7 +1559,7 @@ function showH2HPanel() {
   playerPanel.style.display      = 'none';
   h2hPanel.style.display         = 'block';
   toolbar.style.display          = '';
-  demoBanner.style.display       = '';
+  demoBanner.style.display       = 'none';
 }
 
 function renderH2HComparison(p1Name, p2Name) {
@@ -1729,9 +1729,13 @@ function loadH2H() {
 // ===== ACTIVATE TAB =====
 function activateTab(tour) {
   state.currentTour = tour;
+  let activeBtn = null;
   document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tour === tour);
+    const isActive = btn.dataset.tour === tour;
+    btn.classList.toggle('active', isActive);
+    if (isActive) activeBtn = btn;
   });
+  if (activeBtn) activeBtn.scrollIntoView({ inline: 'nearest', block: 'nearest' });
 }
 
 // ===== LOAD TOUR (entry point for tab clicks) =====
