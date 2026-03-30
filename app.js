@@ -113,42 +113,30 @@ const DRAW_DATA = {
   'miami-open-atp': {
     rounds: [
       { name: 'Final', matches: [
-        { p1:_p('Jannik Sinner','IT',1),    p2:_p('Carlos Alcaraz','ES',2),
-          status:'live', winner:null, sets:[_s(6,4),_s(3,5)], inProgress:true, court:'Stadium Court' },
+        { p1:_p('Carlos Alcaraz','ES',1), p2:_p('Jannik Sinner','IT',2),
+          status:'upcoming', sets:[], scheduled:'Mar 30', court:'Stadium Court' },
       ]},
       { name: 'Semi-Finals', matches: [
-        { p1:_p('Jannik Sinner','IT',1),    p2:_p('Alexander Zverev','DE',3),
-          status:'completed', winner:1, sets:[_s(7,6),_s(6,4)] },
-        { p1:_p('Carlos Alcaraz','ES',2),   p2:_p('Daniil Medvedev','RU',4),
-          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
+        { p1:_p('Carlos Alcaraz','ES',1), p2:_p('TBD','',null),
+          status:'upcoming', sets:[] },
+        { p1:_p('Jannik Sinner','IT',2),  p2:_p('TBD','',null),
+          status:'upcoming', sets:[] },
       ]},
       { name: 'Quarter-Finals', matches: [
-        { p1:_p('Jannik Sinner','IT',1),    p2:_p('Taylor Fritz','US',8),
-          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
-        { p1:_p('Alexander Zverev','DE',3), p2:_p('Andrey Rublev','RU',7),
-          status:'completed', winner:1, sets:[_s(7,5),_s(6,3)] },
-        { p1:_p('Carlos Alcaraz','ES',2),   p2:_p('Ben Shelton','US',14),
-          status:'completed', winner:1, sets:[_s(6,3),_s(7,5)] },
-        { p1:_p('Daniil Medvedev','RU',4),  p2:_p('Tommy Paul','US',11),
-          status:'completed', winner:1, sets:[_s(6,2),_s(7,5)] },
+        { p1:_p('Carlos Alcaraz','ES',1),        p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('TBD','',null),                  p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Jannik Sinner','IT',2),         p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('TBD','',null),                  p2:_p('TBD','',null),  status:'upcoming', sets:[] },
       ]},
       { name: 'Round of 16', matches: [
-        { p1:_p('Jannik Sinner','IT',1),      p2:_p('Ugo Humbert','FR',15),
-          status:'completed', winner:1, sets:[_s(6,3),_s(6,2)] },
-        { p1:_p('Taylor Fritz','US',8),        p2:_p('Grigor Dimitrov','BG',10),
-          status:'completed', winner:1, sets:[_s(7,6),_s(4,6),_s(7,6)] },
-        { p1:_p('Alexander Zverev','DE',3),    p2:_p('Francisco Cerundolo','AR',18),
-          status:'completed', winner:1, sets:[_s(6,2),_s(6,4)] },
-        { p1:_p('Andrey Rublev','RU',7),       p2:_p('Alex de Minaur','AU',9),
-          status:'completed', winner:1, sets:[_s(4,6),_s(6,3),_s(7,5)] },
-        { p1:_p('Carlos Alcaraz','ES',2),      p2:_p('Holger Rune','DK',13),
-          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
-        { p1:_p('Ben Shelton','US',14),        p2:_p('Casper Ruud','NO',6),
-          status:'completed', winner:1, sets:[_s(7,5),_s(6,4)] },
-        { p1:_p('Daniil Medvedev','RU',4),     p2:_p('Stefanos Tsitsipas','GR',12),
-          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
-        { p1:_p('Tommy Paul','US',11),         p2:_p('Sebastian Korda','US',16),
-          status:'completed', winner:1, sets:[_s(7,6),_s(6,3)] },
+        { p1:_p('Carlos Alcaraz','ES',1),        p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Taylor Fritz','US',7),          p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Alexander Zverev','DE',4),      p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('TBD','',null),                  p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Jannik Sinner','IT',2),         p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Ben Shelton','US',9),           p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Daniil Medvedev','RU',10),      p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('TBD','',null),                  p2:_p('TBD','',null),  status:'upcoming', sets:[] },
       ]},
     ],
   },
@@ -157,42 +145,30 @@ const DRAW_DATA = {
   'miami-open-wta': {
     rounds: [
       { name: 'Final', matches: [
-        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('Coco Gauff','US',3),
-          status:'live', winner:null, sets:[_s(6,3),_s(4,5)], inProgress:true, court:'Stadium Court' },
+        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('Elena Rybakina','KZ',2),
+          status:'upcoming', sets:[], scheduled:'Mar 29', court:'Stadium Court' },
       ]},
       { name: 'Semi-Finals', matches: [
-        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('Elena Rybakina','KZ',4),
-          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
-        { p1:_p('Coco Gauff','US',3),      p2:_p('Iga Swiatek','PL',2),
-          status:'completed', winner:1, sets:[_s(3,6),_s(6,4),_s(6,3)] },
+        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('TBD','',null),
+          status:'upcoming', sets:[] },
+        { p1:_p('Elena Rybakina','KZ',2),  p2:_p('TBD','',null),
+          status:'upcoming', sets:[] },
       ]},
       { name: 'Quarter-Finals', matches: [
-        { p1:_p('Aryna Sabalenka','BY',1), p2:_p('Jessica Pegula','US',5),
-          status:'completed', winner:1, sets:[_s(6,3),_s(6,2)] },
-        { p1:_p('Elena Rybakina','KZ',4),  p2:_p('Mirra Andreeva','RU',6),
-          status:'completed', winner:1, sets:[_s(7,5),_s(6,4)] },
-        { p1:_p('Coco Gauff','US',3),      p2:_p('Emma Navarro','US',8),
-          status:'completed', winner:1, sets:[_s(6,4),_s(6,3)] },
-        { p1:_p('Iga Swiatek','PL',2),     p2:_p('Jasmine Paolini','IT',7),
-          status:'completed', winner:1, sets:[_s(6,2),_s(6,4)] },
+        { p1:_p('Aryna Sabalenka','BY',1),  p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('TBD','',null),             p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Elena Rybakina','KZ',2),   p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Coco Gauff','US',4),       p2:_p('TBD','',null),  status:'upcoming', sets:[] },
       ]},
       { name: 'Round of 16', matches: [
-        { p1:_p('Aryna Sabalenka','BY',1),    p2:_p('Beatriz Haddad Maia','BR',16),
-          status:'completed', winner:1, sets:[_s(6,2),_s(6,1)] },
-        { p1:_p('Jessica Pegula','US',5),      p2:_p('Daria Kasatkina','RU',10),
-          status:'completed', winner:1, sets:[_s(6,3),_s(7,5)] },
-        { p1:_p('Elena Rybakina','KZ',4),      p2:_p('Barbora Krejcikova','CZ',11),
-          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
-        { p1:_p('Mirra Andreeva','RU',6),      p2:_p('Madison Keys','US',9),
-          status:'completed', winner:1, sets:[_s(6,4),_s(3,6),_s(6,3)] },
-        { p1:_p('Coco Gauff','US',3),          p2:_p('Paula Badosa','ES',12),
-          status:'completed', winner:1, sets:[_s(7,5),_s(6,4)] },
-        { p1:_p('Emma Navarro','US',8),        p2:_p('Qinwen Zheng','CN',13),
-          status:'completed', winner:1, sets:[_s(6,3),_s(6,4)] },
-        { p1:_p('Iga Swiatek','PL',2),         p2:_p('Maria Sakkari','GR',19),
-          status:'completed', winner:1, sets:[_s(6,1),_s(6,3)] },
-        { p1:_p('Jasmine Paolini','IT',7),     p2:_p('Karolina Muchova','CZ',14),
-          status:'completed', winner:1, sets:[_s(6,4),_s(7,6)] },
+        { p1:_p('Aryna Sabalenka','BY',1),  p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Jessica Pegula','US',5),   p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Elena Rybakina','KZ',2),   p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Mirra Andreeva','RU',7),   p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Coco Gauff','US',4),       p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Emma Navarro','US',9),     p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Iga Swiatek','PL',3),      p2:_p('TBD','',null),  status:'upcoming', sets:[] },
+        { p1:_p('Jasmine Paolini','IT',8),  p2:_p('TBD','',null),  status:'upcoming', sets:[] },
       ]},
     ],
   },
@@ -211,32 +187,20 @@ const DRAW_DATA = {
           status:'upcoming', sets:[], scheduled:'Apr 12', court:'Court Rainier III' },
       ]},
       { name: 'Quarter-Finals', matches: [
-        { p1:_p('Jannik Sinner','IT',1),    p2:_p('TBD','',null),
-          status:'upcoming', sets:[], scheduled:'Apr 11' },
-        { p1:_p('Alexander Zverev','DE',3), p2:_p('TBD','',null),
-          status:'upcoming', sets:[], scheduled:'Apr 11' },
-        { p1:_p('Carlos Alcaraz','ES',2),   p2:_p('TBD','',null),
-          status:'upcoming', sets:[], scheduled:'Apr 11' },
-        { p1:_p('Novak Djokovic','RS',4),   p2:_p('TBD','',null),
-          status:'upcoming', sets:[], scheduled:'Apr 11' },
+        { p1:_p('Carlos Alcaraz','ES',1),    p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 11' },
+        { p1:_p('Alexander Zverev','DE',4),  p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 11' },
+        { p1:_p('Jannik Sinner','IT',2),     p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 11' },
+        { p1:_p('Novak Djokovic','RS',3),    p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 11' },
       ]},
       { name: 'Round of 16', matches: [
-        { p1:_p('Jannik Sinner','IT',1),       p2:_p('Francisco Cerundolo','AR'),
-          status:'completed', winner:1, sets:[_s(6,4),_s(6,2)] },
-        { p1:_p('Alexander Zverev','DE',3),    p2:_p('Grigor Dimitrov','BG',10),
-          status:'completed', winner:1, sets:[_s(7,5),_s(6,3)] },
-        { p1:_p('Carlos Alcaraz','ES',2),      p2:_p('Holger Rune','DK',13),
-          status:'completed', winner:1, sets:[_s(6,2),_s(6,3)] },
-        { p1:_p('Novak Djokovic','RS',4),      p2:_p('Sebastian Korda','US',16),
-          status:'completed', winner:1, sets:[_s(6,4),_s(6,2)] },
-        { p1:_p('Andrey Rublev','RU',7),       p2:_p('Ugo Humbert','FR',15),
-          status:'live', winner:null, sets:[_s(4,6),_s(3,2)], inProgress:true, court:'Court Rainier III' },
-        { p1:_p('Taylor Fritz','US',8),        p2:_p('Stefanos Tsitsipas','GR',12),
-          status:'live', winner:null, sets:[_s(6,7),_s(5,4)], inProgress:true, court:'Court des Princes' },
-        { p1:_p('Daniil Medvedev','RU',5),     p2:_p('Tommy Paul','US',11),
-          status:'upcoming', sets:[], scheduled:'Apr 10, 2:00 PM' },
-        { p1:_p('Casper Ruud','NO',6),         p2:_p('Ben Shelton','US',14),
-          status:'upcoming', sets:[], scheduled:'Apr 10, 4:00 PM' },
+        { p1:_p('Carlos Alcaraz','ES',1),    p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
+        { p1:_p('TBD','',null),              p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
+        { p1:_p('Alexander Zverev','DE',4),  p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
+        { p1:_p('TBD','',null),              p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
+        { p1:_p('Jannik Sinner','IT',2),     p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
+        { p1:_p('TBD','',null),              p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
+        { p1:_p('Novak Djokovic','RS',3),    p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
+        { p1:_p('TBD','',null),              p2:_p('TBD','',null),  status:'upcoming', sets:[], scheduled:'Apr 10' },
       ]},
     ],
   },
@@ -1836,12 +1800,19 @@ function init() {
 
   // Refresh button (toolbar)
   refreshBtn.addEventListener('click', () => {
-    if (!state.currentTour) return;
-    bustCache(state.currentTour);
-    if (state.currentTour === 'live') {
+    const tour = state.currentTour;
+    if (!tour) return;
+    if (tour === 'live') {
+      bustCache('live');
       loadLive(true);
+    } else if (tour === 'tournaments') {
+      renderTournaments(state.tourFilter);
+    } else if (tour === 'h2h' || tour === null) {
+      // no-op: H2H and player profile have no refreshable remote data
     } else {
-      loadRankings(state.currentTour, true);
+      // ATP / WTA rankings
+      bustCache(tour);
+      loadRankings(tour, true);
     }
   });
 
