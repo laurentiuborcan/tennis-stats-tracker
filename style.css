@@ -850,6 +850,38 @@ mark {
 }
 .draw-empty-sub { font-size: 0.8rem; color: var(--text-dim); }
 
+/* ===== LOAD RESULTS BUTTON ===== */
+.draw-load-results {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.load-results-btn {
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.load-results-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
+}
+.load-results-btn:disabled { opacity: 0.7; cursor: default; }
+.load-results-btn--loaded {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+.load-results-error {
+  font-size: 0.78rem;
+  color: #ef4444;
+}
+
 /* ===== MATCH CARDS ===== */
 .match-card {
   background: var(--bg-card);

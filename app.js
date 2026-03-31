@@ -11,6 +11,20 @@ const ENDPOINTS = {
   live: `https://${API_HOST}/api/tennis/events/live`,
 };
 
+const TOURNAMENT_IDS = {
+  'miami-open-atp':                { uniqueId: 2430 },
+  'miami-open-wta':                { uniqueId: 2587 },
+  'monte-carlo-rolex-masters-atp': { uniqueId: 2391 },
+  'roland-garros-atp':             { uniqueId: 2480 },
+  'roland-garros-wta':             { uniqueId: 2577 },
+  'wimbledon-atp':                 { uniqueId: 2361 },
+  'wimbledon-wta':                 { uniqueId: 2600 },
+  'us-open-atp':                   { uniqueId: 2449 },
+  'us-open-wta':                   { uniqueId: 2601 },
+  'australian-open-atp':           { uniqueId: 2363 },
+  'australian-open-wta':           { uniqueId: 2571 },
+};
+
 // Cache TTLs in milliseconds
 const TTL = {
   atp:  24 * 60 * 60 * 1000,  // 24 hours
@@ -313,10 +327,12 @@ const state = {
   activeTournament:  null,    // slug key when a draw is open
   drawFilter:        'all',   // All / completed / live / upcoming in draw view
   ageTick:           null,
-  prevView:          null,    // Navigation context for back button in player profile
-  h2hP1:            null,    // H2H selected player 1
-  h2hP2:            null,    // H2H selected player 2
-  playerCache:       {},      // name → parsed API profile object
+  prevView:             null,    // Navigation context for back button in player profile
+  h2hP1:               null,    // H2H selected player 1
+  h2hP2:               null,    // H2H selected player 2
+  playerCache:          {},      // name → parsed API profile object
+  tournamentSeasonIds:  {},      // uniqueId → seasonId
+  tournamentResults:    {},      // slug → { rounds: [...] }
 };
 
 let _playerDebounceTimer = null;
@@ -426,6 +442,90 @@ async function apiFetch(url) {
   }
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
+}
+
+// ===== TOURNAMENT RESULTS =====
+async function getTournamentSeasonId(uniqueId) {
+  if (state.tournamentSeasonIds[uniqueId]) return state.tournamentSeasonIds[uniqueId];
+  const data = await apiFetch(`https://${API_HOST}/api/tennis/tournament/${uniqueId}/seasons`);
+  const seasons = data?.seasons ?? [];
+  const season = seasons.find(s => s.year === '2026' || String(s.name ?? '').includes('2026'))
+                 ?? seasons[0];
+  if (!season) throw new Error('No 2026 season found');
+  state.tournamentSeasonIds[uniqueId] = season.id;
+  return season.id;
+}
+
+function parseApiEvent(ev) {
+  const hs = ev.homeScore ?? {};
+  const as = ev.awayScore ?? {};
+
+  const sets = [];
+  for (let i = 1; i <= 5; i++) {
+    const p1 = hs[`period${i}`];
+    const p2 = as[`period${i}`];
+    if (p1 == null && p2 == null) break;
+    sets.push({ p1: p1 ?? 0, p2: p2 ?? 0 });
+  }
+
+  const type = ev.status?.type ?? 'notstarted';
+  let status = 'upcoming', inProgress = false;
+  if (type === 'finished' || type === 'canceled') status = 'completed';
+  else if (type === 'inprogress') { status = 'live'; inProgress = true; }
+
+  let winner = null;
+  if (status === 'completed' && sets.length > 0) {
+    const p1Sets = sets.filter(s => s.p1 > s.p2).length;
+    const p2Sets = sets.filter(s => s.p2 > s.p1).length;
+    winner = p1Sets > p2Sets ? 1 : 2;
+  }
+
+  const parseSeed = s => { if (!s) return null; const n = parseInt(s, 10); return isNaN(n) ? s : n; };
+
+  return {
+    p1: { name: ev.homeTeam?.name ?? 'TBD', cc: ev.homeTeam?.country?.alpha2 ?? '', seed: parseSeed(ev.homeTeamSeed) },
+    p2: { name: ev.awayTeam?.name ?? 'TBD', cc: ev.awayTeam?.country?.alpha2 ?? '', seed: parseSeed(ev.awayTeamSeed) },
+    status, winner, sets, inProgress,
+  };
+}
+
+async function fetchTournamentResults(slug) {
+  if (state.tournamentResults[slug]) return state.tournamentResults[slug];
+
+  const { uniqueId } = TOURNAMENT_IDS[slug];
+  const seasonId = await getTournamentSeasonId(uniqueId);
+  const data = await apiFetch(
+    `https://${API_HOST}/api/tennis/tournament/${uniqueId}/season/${seasonId}/events/last/0`
+  );
+
+  const events = data?.events ?? [];
+  const roundMap = new Map();
+  for (const ev of events) {
+    const roundNum  = ev.roundInfo?.round ?? 0;
+    const roundName = ev.roundInfo?.name ?? `Round ${roundNum}`;
+    if (!roundMap.has(roundNum)) roundMap.set(roundNum, { name: roundName, round: roundNum, matches: [] });
+    roundMap.get(roundNum).matches.push(parseApiEvent(ev));
+  }
+
+  // Sort descending (finals first)
+  const rounds = [...roundMap.values()].sort((a, b) => b.round - a.round);
+  const result = { rounds };
+  state.tournamentResults[slug] = result;
+  return result;
+}
+
+async function loadTournamentResults(key) {
+  const btn  = document.getElementById('loadResultsBtn');
+  const errEl = document.getElementById('loadResultsError');
+  if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+  if (errEl) errEl.textContent = '';
+  try {
+    await fetchTournamentResults(key);
+    renderTournamentDetail(key, state.drawFilter);
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Load Live Results'; }
+    if (errEl) errEl.textContent = e.status === 429 ? 'API quota exceeded' : 'Failed to load results';
+  }
 }
 
 // ===== HELPERS =====
@@ -1066,12 +1166,23 @@ function renderTournamentDetail(key, filter) {
   state.activeTournament = key;
   state.drawFilter       = filter;
 
-  const draw = DRAW_DATA[key];
+  const hasApiSupport  = !!TOURNAMENT_IDS[key];
+  const resultsLoaded  = !!state.tournamentResults[key];
+  const draw           = state.tournamentResults[key] || DRAW_DATA[key];
+
   const FILTER_LABELS = {
     all: 'All Matches', completed: 'Completed', live: 'In Progress', upcoming: 'Upcoming', draw: 'Draw',
   };
 
-  if (!draw) {
+  // Tournament metadata from DEMO_TOURNAMENTS
+  const tournMeta = (() => {
+    const tourKey = key.endsWith('-wta') ? 'wta' : 'atp';
+    return DEMO_TOURNAMENTS[tourKey]?.find(t => tournSlug(t.name, tourKey) === key) || null;
+  })();
+  const meta = tournMeta || {};
+
+  // Simple empty state for tournaments with no draw and no API support
+  if (!draw && !hasApiSupport) {
     tournamentsPanel.innerHTML = `
       <button class="draw-back-btn" id="drawBackBtn">← Tournaments</button>
       <div class="draw-empty-state">
@@ -1085,13 +1196,24 @@ function renderTournamentDetail(key, filter) {
     return;
   }
 
+  // Load Results button (shown whenever API support exists)
+  const loadBtnHtml = hasApiSupport ? `
+    <div class="draw-load-results">
+      <button class="load-results-btn${resultsLoaded ? ' load-results-btn--loaded' : ''}"
+              id="loadResultsBtn"${resultsLoaded ? ' disabled' : ''}>
+        ${resultsLoaded ? 'Results loaded ✓' : 'Load Live Results'}
+      </button>
+      <span class="load-results-error" id="loadResultsError"></span>
+    </div>` : '';
+
   // Count matches per filter for badge counts
   function countMatches(f) {
+    if (!draw) return 0;
     return draw.rounds.reduce((n, r) =>
       n + (f === 'all' ? r.matches.length : r.matches.filter(m => m.status === f).length), 0);
   }
 
-  const filterBtns = ['all', 'completed', 'live', 'upcoming', 'draw'].map(f => {
+  const filterBtns = !draw ? '' : ['all', 'completed', 'live', 'upcoming', 'draw'].map(f => {
     if (f === 'draw') {
       return `<button class="draw-filter-btn draw-filter-btn--draw${filter === 'draw' ? ' active' : ''}" data-filter="draw">
         <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0" aria-hidden="true">
@@ -1111,40 +1233,34 @@ function renderTournamentDetail(key, filter) {
     </button>`;
   }).join('');
 
-  // Filter rounds
-  const visibleRounds = filter === 'all'
-    ? draw.rounds
-    : draw.rounds
-        .map(r => ({ ...r, matches: r.matches.filter(m => m.status === filter) }))
-        .filter(r => r.matches.length > 0);
+  // Content area
+  let contentArea;
+  if (!draw) {
+    contentArea = `<div class="draw-empty-state">
+      <p>No results loaded yet.</p>
+      <p class="draw-empty-sub">Click "Load Live Results" above to fetch match data.</p>
+    </div>`;
+  } else if (filter === 'draw') {
+    contentArea = renderBracket(key);
+  } else {
+    const visibleRounds = filter === 'all'
+      ? draw.rounds
+      : draw.rounds
+          .map(r => ({ ...r, matches: r.matches.filter(m => m.status === filter) }))
+          .filter(r => r.matches.length > 0);
+    const roundsHtml = visibleRounds.length
+      ? visibleRounds.map(round => `
+          <section class="draw-round">
+            <h3 class="draw-round-title">${escHtml(round.name)}</h3>
+            <div class="draw-round-matches">
+              ${round.matches.map(renderMatchCard).join('')}
+            </div>
+          </section>`).join('')
+      : `<div class="draw-empty-state"><p>No ${FILTER_LABELS[filter].toLowerCase()} matches.</p></div>`;
+    contentArea = `<div class="draw-rounds">${roundsHtml}</div>`;
+  }
 
-  const roundsHtml = visibleRounds.length
-    ? visibleRounds.map(round => `
-        <section class="draw-round">
-          <h3 class="draw-round-title">${escHtml(round.name)}</h3>
-          <div class="draw-round-matches">
-            ${round.matches.map(renderMatchCard).join('')}
-          </div>
-        </section>`).join('')
-    : `<div class="draw-empty-state">
-        <p>No ${FILTER_LABELS[filter].toLowerCase()} matches.</p>
-      </div>`;
-
-  const contentArea = filter === 'draw'
-    ? renderBracket(key)
-    : `<div class="draw-rounds">${roundsHtml}</div>`;
-
-  // Build header
-  const catCls   = categoryClass(draw.rounds[0] ? 'Masters 1000' : '');
-  const tournMeta = (() => {
-    // Find source tournament metadata from DEMO_TOURNAMENTS
-    const tourKey = key.endsWith('-wta') ? 'wta' : 'atp';
-    const slug    = key;
-    return DEMO_TOURNAMENTS[tourKey]?.find(t => tournSlug(t.name, tourKey) === slug) || null;
-  })();
-  const meta = tournMeta || {};
-
-  const isLive = (meta.status === 'ongoing') || draw.rounds.some(r => r.matches.some(m => m.status === 'live'));
+  const isLive    = (meta.status === 'ongoing') || (draw?.rounds ?? []).some(r => r.matches.some(m => m.status === 'live'));
   const surfBadge = meta.surface
     ? `<span class="badge badge-surface badge-${meta.surface}">${meta.surface[0].toUpperCase() + meta.surface.slice(1)}</span>` : '';
   const catBadge  = meta.category
@@ -1163,8 +1279,9 @@ function renderTournamentDetail(key, filter) {
           ${meta.dates    ? `<span class="draw-meta-item">${escHtml(meta.dates)}</span><span class="draw-meta-sep">·</span>` : ''}
           <div class="draw-badges">${surfBadge}${catBadge}</div>
         </div>
+        ${loadBtnHtml}
       </div>
-      <div class="draw-filter-bar">${filterBtns}</div>
+      ${draw ? `<div class="draw-filter-bar">${filterBtns}</div>` : ''}
       ${contentArea}
     </div>`;
 
@@ -1175,6 +1292,10 @@ function renderTournamentDetail(key, filter) {
   tournamentsPanel.querySelectorAll('.draw-filter-btn').forEach(btn =>
     btn.addEventListener('click', () => renderTournamentDetail(key, btn.dataset.filter))
   );
+  const loadBtn = document.getElementById('loadResultsBtn');
+  if (loadBtn && !resultsLoaded) {
+    loadBtn.addEventListener('click', () => loadTournamentResults(key));
+  }
 }
 
 function categoryClass(cat) {
