@@ -521,6 +521,7 @@ async function loadTournamentResults(key) {
   if (errEl) errEl.textContent = '';
   try {
     await fetchTournamentResults(key);
+    demoBanner.style.display = 'none';
     renderTournamentDetail(key, state.drawFilter);
   } catch (e) {
     if (btn) { btn.disabled = false; btn.textContent = 'Load Live Results'; }
@@ -617,7 +618,7 @@ function showTournamentsArea() {
   h2hPanel.style.display         = 'none';
   playerPanel.style.display      = 'none';
   toolbar.style.display          = '';
-  demoBanner.style.display       = '';
+  demoBanner.style.display       = 'none';
 }
 
 function showPlayerPanel() {
