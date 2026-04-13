@@ -85,7 +85,7 @@ const DEMO = {
 // ===== TOURNAMENT DEMO DATA =====
 const DEMO_TOURNAMENTS = {
   atp: [
-    { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 17 – 29',     category: 'Masters 1000', status: 'ongoing'  },
+    { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 17 – 29',     category: 'Masters 1000', status: 'completed' },
     { name: 'Monte Carlo Rolex Masters',    location: 'Monte Carlo, Monaco',   surface: 'clay',  dates: 'Apr 6 – 12',      category: 'Masters 1000', status: 'upcoming' },
     { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 27 – May 3',  category: 'Masters 1000', status: 'upcoming' },
     { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 11 – 17',     category: 'Masters 1000', status: 'upcoming' },
@@ -100,7 +100,7 @@ const DEMO_TOURNAMENTS = {
     { name: 'Nitto ATP Finals',             location: 'Turin, Italy',          surface: 'hard',  dates: 'Nov 8 – 15',      category: 'Finals',       status: 'upcoming' },
   ],
   wta: [
-    { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 17 – 29',     category: 'WTA 1000',     status: 'ongoing'  },
+    { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 17 – 29',     category: 'WTA 1000',     status: 'completed' },
     { name: 'Porsche Tennis Grand Prix',    location: 'Stuttgart, Germany',    surface: 'clay',  dates: 'Apr 13 – 19',     category: 'WTA 500',      status: 'upcoming' },
     { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 27 – May 3',  category: 'WTA 1000',     status: 'upcoming' },
     { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 11 – 17',     category: 'WTA 1000',     status: 'upcoming' },
@@ -1261,7 +1261,8 @@ function renderTournamentDetail(key, filter) {
     contentArea = `<div class="draw-rounds">${roundsHtml}</div>`;
   }
 
-  const isLive    = (meta.status === 'ongoing') || (draw?.rounds ?? []).some(r => r.matches.some(m => m.status === 'live'));
+  const isLive    = meta.status !== 'completed'
+    && ((meta.status === 'ongoing') || (draw?.rounds ?? []).some(r => r.matches.some(m => m.status === 'live')));
   const surfBadge = meta.surface
     ? `<span class="badge badge-surface badge-${meta.surface}">${meta.surface[0].toUpperCase() + meta.surface.slice(1)}</span>` : '';
   const catBadge  = meta.category
@@ -1376,7 +1377,7 @@ function loadTournaments() {
   showTournamentsArea();
   stopAgeTick();
   lastUpdEl.textContent = '';
-  statusEl.textContent  = 'Demo data';
+  statusEl.textContent  = '';
   renderTournaments(state.tourFilter);
 }
 
