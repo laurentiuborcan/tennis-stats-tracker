@@ -1068,14 +1068,8 @@ function renderBracket(key) {
   const draw = state.tournamentResults[key] || DRAW_DATA[key];
   if (!draw) return `<div class="draw-empty-state"><p>No bracket data available.</p></div>`;
 
-  // Filter to standard bracket rounds (Final, SF, QF, R16 — max 4 columns).
-  // draw.rounds is Final-first; filter then reverse so earliest round is
-  // leftmost (ri=0) and Final is rightmost, matching the bracket geometry.
-  const BRACKET_ROUNDS = new Set(['Final', 'Semi-Finals', 'Quarter-Finals', 'Round of 16']);
-  const rounds = [...draw.rounds]
-    .filter(r => BRACKET_ROUNDS.has(r.name))
-    .reverse();  // → [R16, QF, SF, Final] left-to-right
-  if (!rounds.length) return `<div class="draw-empty-state"><p>No bracket data available.</p></div>`;
+  // Reverse so earliest round (R16) is leftmost (index 0)
+  const rounds = [...draw.rounds].reverse();
 
   // Layout constants (all in px)
   const CARD_H  = 49;   // 2×24px player rows + 1px divider
@@ -1231,6 +1225,8 @@ function renderTournamentDetail(key, filter) {
 
   const filterBtns = !draw ? '' : ['all', 'completed', 'live', 'upcoming', 'draw'].map(f => {
     if (f === 'draw') {
+      // Hide Draw button when live results are loaded — list view is canonical for real data
+      if (resultsLoaded) return '';
       return `<button class="draw-filter-btn draw-filter-btn--draw${filter === 'draw' ? ' active' : ''}" data-filter="draw">
         <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0" aria-hidden="true">
           <rect x="0.5" y="0.5" width="3" height="3.5" rx="0.5" stroke="currentColor"/>
@@ -1256,7 +1252,7 @@ function renderTournamentDetail(key, filter) {
       <p>No results loaded yet.</p>
       <p class="draw-empty-sub">Click "Load Live Results" above to fetch match data.</p>
     </div>`;
-  } else if (filter === 'draw') {
+  } else if (filter === 'draw' && !resultsLoaded) {
     contentArea = renderBracket(key);
   } else {
     const visibleRounds = filter === 'all'
