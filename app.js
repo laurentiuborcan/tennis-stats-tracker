@@ -507,8 +507,17 @@ async function fetchTournamentResults(slug) {
     roundMap.get(roundNum).matches.push(parseApiEvent(ev));
   }
 
-  // Sort descending (finals first)
-  const rounds = [...roundMap.values()].sort((a, b) => b.round - a.round);
+  // Sort rounds Final-first using explicit priority map
+  const ROUND_ORDER = {
+    'Final': 0, 'Semi-Finals': 1, 'Quarter-Finals': 2,
+    'Round of 16': 3, 'Round of 32': 4, 'Round of 64': 5,
+    'Round of 128': 6,
+  };
+  const rounds = [...roundMap.values()].sort((a, b) => {
+    const pa = ROUND_ORDER[a.name] ?? 99;
+    const pb = ROUND_ORDER[b.name] ?? 99;
+    return pa - pb;
+  });
   const result = { rounds };
   state.tournamentResults[slug] = result;
   return result;
