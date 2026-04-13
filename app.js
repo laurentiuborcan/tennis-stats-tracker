@@ -1065,7 +1065,7 @@ function renderBracketCard(match) {
 }
 
 function renderBracket(key) {
-  const draw = DRAW_DATA[key];
+  const draw = state.tournamentResults[key] || DRAW_DATA[key];
   if (!draw) return `<div class="draw-empty-state"><p>No bracket data available.</p></div>`;
 
   // Reverse so earliest round (R16) is leftmost (index 0)
