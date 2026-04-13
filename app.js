@@ -86,7 +86,7 @@ const DEMO = {
 const DEMO_TOURNAMENTS = {
   atp: [
     { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 17 – 29',     category: 'Masters 1000', status: 'completed' },
-    { name: 'Monte Carlo Rolex Masters',    location: 'Monte Carlo, Monaco',   surface: 'clay',  dates: 'Apr 6 – 12',      category: 'Masters 1000', status: 'upcoming' },
+    { name: 'Monte Carlo Rolex Masters',    location: 'Monte Carlo, Monaco',   surface: 'clay',  dates: 'Apr 6 – 12',      category: 'Masters 1000', status: 'completed' },
     { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 27 – May 3',  category: 'Masters 1000', status: 'upcoming' },
     { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 11 – 17',     category: 'Masters 1000', status: 'upcoming' },
     { name: 'Roland Garros',                location: 'Paris, France',         surface: 'clay',  dates: 'May 24 – Jun 7',  category: 'Grand Slam',   status: 'upcoming' },
@@ -524,8 +524,9 @@ async function fetchTournamentResults(slug) {
 }
 
 async function loadTournamentResults(key) {
-  const btn  = document.getElementById('loadResultsBtn');
-  const errEl = document.getElementById('loadResultsError');
+  const btn    = document.getElementById('loadResultsBtn');
+  const errEl  = document.getElementById('loadResultsError');
+  const autoEl = document.getElementById('autoLoadIndicator');
   if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
   if (errEl) errEl.textContent = '';
   try {
@@ -533,8 +534,9 @@ async function loadTournamentResults(key) {
     demoBanner.style.display = 'none';
     renderTournamentDetail(key, state.drawFilter);
   } catch (e) {
-    if (btn) { btn.disabled = false; btn.textContent = 'Load Live Results'; }
-    if (errEl) errEl.textContent = e.status === 429 ? 'API quota exceeded' : 'Failed to load results';
+    if (btn)    { btn.disabled = false; btn.textContent = 'Load Live Results'; }
+    if (autoEl) autoEl.textContent = '';
+    if (errEl)  errEl.textContent = e.status === 429 ? 'API quota exceeded' : 'Failed to load results';
   }
 }
 
@@ -1212,15 +1214,32 @@ function renderTournamentDetail(key, filter) {
     return;
   }
 
-  // Load Results button (shown whenever API support exists)
-  const loadBtnHtml = hasApiSupport ? `
-    <div class="draw-load-results">
-      <button class="load-results-btn${resultsLoaded ? ' load-results-btn--loaded' : ''}"
-              id="loadResultsBtn"${resultsLoaded ? ' disabled' : ''}>
-        ${resultsLoaded ? 'Results loaded ✓' : 'Load Live Results'}
-      </button>
-      <span class="load-results-error" id="loadResultsError"></span>
-    </div>` : '';
+  // Header action area: depends on tournament status
+  // completed + API → auto-load (show spinner while fetching, nothing once loaded)
+  // ongoing   + API → manual "Load Live Results" button
+  // upcoming  + API → nothing
+  const autoLoad = hasApiSupport && meta.status === 'completed' && !resultsLoaded;
+  let loadBtnHtml = '';
+  if (hasApiSupport) {
+    if (meta.status === 'ongoing') {
+      loadBtnHtml = `
+        <div class="draw-load-results">
+          <button class="load-results-btn${resultsLoaded ? ' load-results-btn--loaded' : ''}"
+                  id="loadResultsBtn"${resultsLoaded ? ' disabled' : ''}>
+            ${resultsLoaded ? 'Results loaded ✓' : 'Load Live Results'}
+          </button>
+          <span class="load-results-error" id="loadResultsError"></span>
+        </div>`;
+    } else if (autoLoad) {
+      loadBtnHtml = `
+        <div class="draw-load-results">
+          <span class="draw-auto-loading" id="autoLoadIndicator">
+            <span class="spinner-sm"></span>Loading results…
+          </span>
+          <span class="load-results-error" id="loadResultsError"></span>
+        </div>`;
+    }
+  }
 
   // Count matches per filter for badge counts
   function countMatches(f) {
@@ -1252,10 +1271,12 @@ function renderTournamentDetail(key, filter) {
   // Content area
   let contentArea;
   if (!draw) {
-    contentArea = `<div class="draw-empty-state">
-      <p>No results loaded yet.</p>
-      <p class="draw-empty-sub">Click "Load Live Results" above to fetch match data.</p>
-    </div>`;
+    contentArea = autoLoad
+      ? `<div class="draw-empty-state"><p class="draw-empty-sub">Fetching results…</p></div>`
+      : `<div class="draw-empty-state">
+          <p>Draw not yet available for this tournament.</p>
+          <p class="draw-empty-sub">Check back closer to the start date.</p>
+        </div>`;
   } else if (filter === 'draw') {
     contentArea = renderBracket(key);
   } else {
@@ -1313,6 +1334,7 @@ function renderTournamentDetail(key, filter) {
   if (loadBtn && !resultsLoaded) {
     loadBtn.addEventListener('click', () => loadTournamentResults(key));
   }
+  if (autoLoad) loadTournamentResults(key);
 }
 
 function categoryClass(cat) {
