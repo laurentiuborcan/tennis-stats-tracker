@@ -1068,8 +1068,14 @@ function renderBracket(key) {
   const draw = state.tournamentResults[key] || DRAW_DATA[key];
   if (!draw) return `<div class="draw-empty-state"><p>No bracket data available.</p></div>`;
 
-  // Reverse so earliest round (R16) is leftmost (index 0)
-  const rounds = [...draw.rounds].reverse();
+  // Filter to standard bracket rounds (Final, SF, QF, R16 — max 4 columns).
+  // draw.rounds is Final-first; filter then reverse so earliest round is
+  // leftmost (ri=0) and Final is rightmost, matching the bracket geometry.
+  const BRACKET_ROUNDS = new Set(['Final', 'Semi-Finals', 'Quarter-Finals', 'Round of 16']);
+  const rounds = [...draw.rounds]
+    .filter(r => BRACKET_ROUNDS.has(r.name))
+    .reverse();  // → [R16, QF, SF, Final] left-to-right
+  if (!rounds.length) return `<div class="draw-empty-state"><p>No bracket data available.</p></div>`;
 
   // Layout constants (all in px)
   const CARD_H  = 49;   // 2×24px player rows + 1px divider
