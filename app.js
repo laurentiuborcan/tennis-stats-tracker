@@ -25,6 +25,8 @@ const TOURNAMENT_IDS = {
   'australian-open-wta':           { uniqueId: 2571 },
   'internazionali-bnl-d-italia-atp': { uniqueId: 2488 },
   'internazionali-bnl-d-italia-wta': { uniqueId: 2569 },
+  'mutua-madrid-open-atp':           { uniqueId: 2374 },
+  'mutua-madrid-open-wta':           { uniqueId: 2607 },
 };
 
 // Cache TTLs in milliseconds
@@ -89,7 +91,7 @@ const DEMO_TOURNAMENTS = {
   atp: [
     { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 17 – 29',     category: 'Masters 1000', status: 'completed' },
     { name: 'Monte Carlo Rolex Masters',    location: 'Monte Carlo, Monaco',   surface: 'clay',  dates: 'Apr 6 – 12',      category: 'Masters 1000', status: 'completed' },
-    { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 27 – May 3',  category: 'Masters 1000', status: 'upcoming' },
+    { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 22 – May 3',  category: 'Masters 1000', status: 'completed' },
     { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 6 – 17',      category: 'Masters 1000', status: 'ongoing'  },
     { name: 'Roland Garros',                location: 'Paris, France',         surface: 'clay',  dates: 'May 24 – Jun 7',  category: 'Grand Slam',   status: 'upcoming' },
     { name: 'Cinch Championships',          location: 'London, UK',            surface: 'grass', dates: 'Jun 15 – 21',     category: '500',          status: 'upcoming' },
@@ -104,7 +106,7 @@ const DEMO_TOURNAMENTS = {
   wta: [
     { name: 'Miami Open',                   location: 'Miami, USA',            surface: 'hard',  dates: 'Mar 17 – 29',     category: 'WTA 1000',     status: 'completed' },
     { name: 'Porsche Tennis Grand Prix',    location: 'Stuttgart, Germany',    surface: 'clay',  dates: 'Apr 13 – 19',     category: 'WTA 500',      status: 'upcoming' },
-    { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 27 – May 3',  category: 'WTA 1000',     status: 'upcoming' },
+    { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 27 – May 3',  category: 'WTA 1000',     status: 'completed' },
     { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 11 – 17',     category: 'WTA 1000',     status: 'ongoing'  },
     { name: 'Roland Garros',                location: 'Paris, France',         surface: 'clay',  dates: 'May 24 – Jun 7',  category: 'Grand Slam',   status: 'upcoming' },
     { name: 'Birmingham Classic',           location: 'Birmingham, UK',        surface: 'grass', dates: 'Jun 8 – 14',      category: 'WTA 250',      status: 'upcoming' },
