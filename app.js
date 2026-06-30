@@ -27,6 +27,8 @@ const TOURNAMENT_IDS = {
   'internazionali-bnl-d-italia-wta': { uniqueId: 2569 },
   'mutua-madrid-open-atp':           { uniqueId: 2374 },
   'mutua-madrid-open-wta':           { uniqueId: 2607 },
+  'halle-open-atp':                  { uniqueId: 2493 },
+  'cinch-championships-atp':         { uniqueId: 2494 },
 };
 
 // Cache TTLs in milliseconds
@@ -94,8 +96,8 @@ const DEMO_TOURNAMENTS = {
     { name: 'Mutua Madrid Open',            location: 'Madrid, Spain',         surface: 'clay',  dates: 'Apr 22 – May 3',  category: 'Masters 1000', status: 'completed' },
     { name: "Internazionali BNL d'Italia",  location: 'Rome, Italy',           surface: 'clay',  dates: 'May 6 – 17',      category: 'Masters 1000', status: 'completed' },
     { name: 'Roland Garros',                location: 'Paris, France',         surface: 'clay',  dates: 'May 24 – Jun 7',  category: 'Grand Slam',   status: 'completed' },
-    { name: 'Cinch Championships',          location: 'London, UK',            surface: 'grass', dates: 'Jun 15 – 21',     category: '500',          status: 'upcoming' },
-    { name: 'Halle Open',                   location: 'Halle, Germany',        surface: 'grass', dates: 'Jun 15 – 21',     category: '500',          status: 'upcoming' },
+    { name: 'Cinch Championships',          location: 'London, UK',            surface: 'grass', dates: 'Jun 15 – 21',     category: '500',          status: 'completed' },
+    { name: 'Halle Open',                   location: 'Halle, Germany',        surface: 'grass', dates: 'Jun 15 – 21',     category: '500',          status: 'completed' },
     { name: 'Wimbledon',                    location: 'London, UK',            surface: 'grass', dates: 'Jun 29 – Jul 12', category: 'Grand Slam',   status: 'ongoing'  },
     { name: 'National Bank Open',           location: 'Montreal, Canada',      surface: 'hard',  dates: 'Aug 3 – 9',       category: 'Masters 1000', status: 'upcoming' },
     { name: 'Western & Southern Open',      location: 'Cincinnati, USA',       surface: 'hard',  dates: 'Aug 10 – 16',     category: 'Masters 1000', status: 'upcoming' },
